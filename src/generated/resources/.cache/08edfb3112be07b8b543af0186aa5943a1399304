@@ -1,0 +1,5 @@
+// 1.20.1	2024-07-08T04:49:13.8776063	Tags for minecraft:entity_type mod id soul_forge
+e00f2931577049b9a4400a87ed9c249373be376c data/soul_forge/tags/entity_types/drops_dragon_soul.json
+a26182e8687abedcef79e6adbf4440708b12d3e0 data/soul_forge/tags/entity_types/drops_ender_soul.json
+3a3836d2d9bf6bd0e81bac7367e9fb41927b3967 data/soul_forge/tags/entity_types/drops_nether_soul.json
+47396636da780729461c40e15edefb0fad336a1d data/soul_forge/tags/entity_types/drops_undead_soul.json
