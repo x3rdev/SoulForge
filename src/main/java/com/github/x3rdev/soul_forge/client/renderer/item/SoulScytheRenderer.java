@@ -15,7 +15,6 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class SoulScytheRenderer extends GeoItemRenderer<SoulScytheItem> {
-    public static final ResourceLocation OUTLINE_LOCATION = new ResourceLocation(SoulForge.MOD_ID, "textures/item/soul_scythe_outline.png");
     public SoulScytheRenderer() {
         super(new DefaultedItemGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "soul_scythe")));
         addRenderLayer(new AutoGlowingGeoLayer<>(this){
