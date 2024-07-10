@@ -4,6 +4,7 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.item.SoulBottleItem;
 import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
 import com.github.x3rdev.soul_forge.common.item.SoulSteelArmorItem;
+import com.github.x3rdev.soul_forge.common.item.WispAmuletItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
@@ -31,7 +32,8 @@ public class ItemRegistry {
             () -> new SoulSteelArmorItem(ArmorItem.Type.LEGGINGS));
     public static final RegistryObject<Item> SOUL_STEEL_BOOTS = ITEMS.register("soul_steel_boots",
             () -> new SoulSteelArmorItem(ArmorItem.Type.BOOTS));
-
+    public static final RegistryObject<Item> WISP_AMULET = ITEMS.register("wisp_amulet",
+            WispAmuletItem::new);
     public static class ModItemTab {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);

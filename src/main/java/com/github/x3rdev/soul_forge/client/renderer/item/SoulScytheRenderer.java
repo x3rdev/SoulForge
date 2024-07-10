@@ -17,11 +17,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 public class SoulScytheRenderer extends GeoItemRenderer<SoulScytheItem> {
     public SoulScytheRenderer() {
         super(new DefaultedItemGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "soul_scythe")));
-        addRenderLayer(new AutoGlowingGeoLayer<>(this){
-            @Override
-            protected RenderType getRenderType(SoulScytheItem animatable) {
-                return RenderType.eyes(new ResourceLocation(SoulForge.MOD_ID, "textures/item/soul_scythe_glowmask.png"));
-            }
-        });
+        addRenderLayer(new AutoGlowingGeoLayer<>(this));
     }
+
 }

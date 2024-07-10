@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common;
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulTypes;
+import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
@@ -14,12 +15,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class CommonSetup {
 
+    public static void attributeSetup(EntityAttributeCreationEvent event) {
+        event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
+    }
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         Level level = event.getEntity().level();

@@ -40,6 +40,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.ENDER_SOUL.get(), EnderSoulRenderer::new);
         event.registerEntityRenderer(EntityRegistry.DRAGON_SOUL.get(), DragonSoulRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SOUL_SCYTHE_PROJECTILE.get(), SoulScytheProjectileRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.WISP.get(), WispRenderer::new);
     }
 
 }

@@ -1,0 +1,97 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"bones": {
+				"wisp": {
+					"rotation": {
+						"vector": ["3*math.sin(query.anim_time*150)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "2*math.sin(query.anim_time*150)", 0]
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": [0, "-20+40*math.cos(query.anim_time*1200)", 0]
+					}
+				},
+				"right_wing": {
+					"rotation": {
+						"vector": [0, "20+40*-math.cos(query.anim_time*1200)", 0]
+					}
+				}
+			}
+		},
+		"fly": {
+			"loop": true,
+			"bones": {
+				"wisp": {
+					"rotation": {
+						"vector": ["15+3*math.sin(query.anim_time*300)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "2*math.sin(query.anim_time*300)", 0]
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": [0, "-20+40*math.cos(query.anim_time*1500)", 0]
+					}
+				},
+				"right_wing": {
+					"rotation": {
+						"vector": [0, "20+40*-math.cos(query.anim_time*1500)", 0]
+					}
+				}
+			}
+		},
+		"skill": {
+			"animation_length": 5,
+			"bones": {
+				"wisp": {
+					"rotation": {
+						"0.0": {
+							"vector": ["15+3*math.sin(query.anim_time*300)", 0, 0]
+						},
+						"1.0": {
+							"vector": [12.79, "50*math.cos(query.anim_time*100)", 0]
+						},
+						"3.0": {
+							"vector": [12.79, "-360+50*math.sin(query.anim_time*100)", 0]
+						},
+						"5.0": {
+							"vector": ["15+3*math.sin(query.anim_time*300)", -360, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, "2*math.sin(query.anim_time*300)", 0]
+						},
+						"1.0": {
+							"vector": ["20*math.cos(query.anim_time*200)", -26, "20*math.sin(query.anim_time*200)"]
+						},
+						"3.0": {
+							"vector": [0, "2*math.sin(query.anim_time*300)", 0]
+						},
+						"5.0": {
+							"vector": [0, "2*math.sin(query.anim_time*300)", 0]
+						}
+					}
+				},
+				"left_wing": {
+					"rotation": {
+						"vector": [0, "-20+40*math.cos(query.anim_time*1500)", 0]
+					}
+				},
+				"right_wing": {
+					"rotation": {
+						"vector": [0, "20+40*-math.cos(query.anim_time*1500)", 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

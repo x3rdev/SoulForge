@@ -4,6 +4,7 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectileEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulTypes;
+import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -45,6 +46,12 @@ public class EntityRegistry {
             MobCategory.MISC,
             1.5F,
             0.5F);
+    public static final RegistryObject<EntityType<WispEntity>> WISP = ENTITIES.register("wisp",
+            () -> EntityType.Builder.<WispEntity>of(WispEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .noSave()
+                    .noSummon()
+                    .build("wisp"));
     public static <T extends Entity> RegistryObject<EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> entity, MobCategory mobCategory, float width, float height) {
         return ENTITIES.register(name,
                 () -> EntityType.Builder.of(entity, mobCategory).sized(width, height).build(name));
