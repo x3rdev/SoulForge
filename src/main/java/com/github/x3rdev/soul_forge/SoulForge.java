@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.registry.BlockItemRegistry;
+import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.mojang.logging.LogUtils;
@@ -23,6 +24,7 @@ public class SoulForge {
 
 
         BlockItemRegistry.BLOCK_ITEMS.register(modEventBus);
+        BlockRegistry.BLOCKS.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "soul_forge:block/soul_brick_slab"
+    },
+    "type=double": {
+      "model": "soul_forge:block/soul_bricks"
+    },
+    "type=top": {
+      "model": "soul_forge:block/soul_brick_slab_top"
+    }
+  }
+}
