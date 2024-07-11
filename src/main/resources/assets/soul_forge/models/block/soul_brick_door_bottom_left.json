@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "textures": {
+    "bottom": "soul_forge:block/soul_brick_door_bottom",
+    "top": "soul_forge:block/soul_brick_door_top"
+  }
+}
