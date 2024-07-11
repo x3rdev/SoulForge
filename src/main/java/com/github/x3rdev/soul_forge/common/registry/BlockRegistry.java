@@ -27,4 +27,6 @@ public class BlockRegistry {
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS)));
     public static final RegistryObject<Block> SOUL_BRICK_DOOR = BLOCKS.register("soul_brick_door",
             () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_DOOR), BlockSetType.POLISHED_BLACKSTONE));
+    public static final RegistryObject<Block> SOUL_STEEL_BARS = BLOCKS.register("soul_steel_bars",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)));
 }
