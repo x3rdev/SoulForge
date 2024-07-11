@@ -22,4 +22,6 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOUL_BRICK_WALL.get(), new Item.Properties()));
     public static final RegistryObject<Item> CHISELED_SOUL_BRICKS = BLOCK_ITEMS.register("chiseled_soul_bricks",
             () -> new BlockItem(BlockRegistry.CHISELED_SOUL_BRICKS.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SOUL_BRICK_COLUMN = BLOCK_ITEMS.register("soul_brick_column",
+            () -> new BlockItem(BlockRegistry.SOUL_BRICK_COLUMN.get(), new Item.Properties()));
 }
