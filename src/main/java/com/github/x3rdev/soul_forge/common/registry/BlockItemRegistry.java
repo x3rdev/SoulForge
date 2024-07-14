@@ -28,4 +28,18 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOUL_BRICK_DOOR.get(), new Item.Properties()));
     public static final RegistryObject<Item> SOUL_STEEL_BARS = BLOCK_ITEMS.register("soul_steel_bars",
             () -> new BlockItem(BlockRegistry.SOUL_STEEL_BARS.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SOUL_CANDLESTICK = BLOCK_ITEMS.register("soul_candlestick",
+            () -> new BlockItem(BlockRegistry.SOUL_CANDLESTICK.get(), new Item.Properties()) {
+                @Override
+                public String getDescriptionId() {
+                    return this.getOrCreateDescriptionId();
+                }
+            });
+    public static final RegistryObject<Item> SOUL_CANDELABRA = BLOCK_ITEMS.register("soul_candelabra",
+            () -> new BlockItem(BlockRegistry.SOUL_CANDELABRA.get(), new Item.Properties()) {
+                @Override
+                public String getDescriptionId() {
+                    return this.getOrCreateDescriptionId();
+                }
+            });
 }

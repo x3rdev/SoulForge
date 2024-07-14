@@ -34,6 +34,8 @@ public class ItemRegistry {
             () -> new SoulSteelArmorItem(ArmorItem.Type.BOOTS));
     public static final RegistryObject<Item> WISP_AMULET = ITEMS.register("wisp_amulet",
             WispAmuletItem::new);
+    public static final RegistryObject<Item> SOUL_GEM = ITEMS.register("soul_gem",
+            () -> new Item(new Item.Properties()));
     public static class ModItemTab {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);

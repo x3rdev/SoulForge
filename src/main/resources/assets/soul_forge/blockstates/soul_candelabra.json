@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "soul_forge:block/soul_candelabra"
+    },
+    "facing=west": {
+      "model": "soul_forge:block/soul_candelabra",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "soul_forge:block/soul_candelabra",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "soul_forge:block/soul_candelabra",
+      "y": 180
+    }
+  }
+}

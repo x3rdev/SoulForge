@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.block.SoulCandleBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -29,4 +30,8 @@ public class BlockRegistry {
             () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.IRON_DOOR), BlockSetType.POLISHED_BLACKSTONE));
     public static final RegistryObject<Block> SOUL_STEEL_BARS = BLOCKS.register("soul_steel_bars",
             () -> new IronBarsBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)));
+    public static final RegistryObject<Block> SOUL_CANDLESTICK = BLOCKS.register("soul_candlestick",
+            () -> new SoulCandleBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN)));
+    public static final RegistryObject<Block> SOUL_CANDELABRA = BLOCKS.register("soul_candelabra",
+            () -> new SoulCandleBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN)));
 }
