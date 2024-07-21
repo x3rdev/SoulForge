@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.block.ObeliskBlock;
 import com.github.x3rdev.soul_forge.common.block.SoulCandleBlock;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -34,4 +35,6 @@ public class BlockRegistry {
             () -> new SoulCandleBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN)));
     public static final RegistryObject<Block> SOUL_CANDELABRA = BLOCKS.register("soul_candelabra",
             () -> new SoulCandleBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN)));
+    public static final RegistryObject<Block> OBELISK = BLOCKS.register("obelisk",
+            () -> new ObeliskBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)));
 }

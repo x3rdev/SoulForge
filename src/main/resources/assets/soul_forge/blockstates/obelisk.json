@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "facing=east,half=upper": {
+      "model": "soul_forge:block/obelisk_upper",
+      "y": 270
+    },
+    "facing=east,half=lower": {
+      "model": "soul_forge:block/obelisk_lower",
+      "y": 270
+    },
+    "axis=z,half=upper": {
+      "model": "soul_forge:block/obelisk_upper",
+      "x": 90
+    },
+    "axis=z,half=lower": {
+      "model": "soul_forge:block/obelisk_lower",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

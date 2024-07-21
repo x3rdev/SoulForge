@@ -42,4 +42,6 @@ public class BlockItemRegistry {
                     return this.getOrCreateDescriptionId();
                 }
             });
+    public static final RegistryObject<Item> OBELISK = BLOCK_ITEMS.register("obelisk",
+            () -> new BlockItem(BlockRegistry.OBELISK.get(), new Item.Properties()));
 }
