@@ -1,0 +1,6 @@
+{
+  "parent": "soul_forge:block/gecko_block",
+  "textures": {
+    "particle": "soul_forge:block/soul_bricks"
+  }
+}

@@ -1,10 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
-import com.github.x3rdev.soul_forge.common.registry.BlockItemRegistry;
-import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
-import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
+import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,7 +19,7 @@ public class SoulForge {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
-
+        BlockEntityRegistry.BLOCK_ENTITIES.register(modEventBus);
         BlockItemRegistry.BLOCK_ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);

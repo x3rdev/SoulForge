@@ -4,9 +4,9 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "soul_forge:block/candlestick_1",
+		"0": "soul_forge:block/candlestick_2",
 		"1": "soul_forge:block/candle_flame",
-		"particle": "soul_forge:block/chiseled_soul_bricks"
+		"particle": "soul_forge:block/soul_bricks"
 	},
 	"elements": [
 		{
@@ -302,35 +302,5 @@
 				"down": {"uv": [2.5, 14.5, 4, 15.5], "texture": "#0"}
 			}
 		}
-	],
-	"gui_light": "front",
-	"display": {
-		"thirdperson_righthand": {
-			"translation": [0, 0, -3],
-			"scale": [0.8, 0.8, 0.8]
-		},
-		"thirdperson_lefthand": {
-			"translation": [0, 0, -3],
-			"scale": [0.8, 0.8, 0.8]
-		},
-		"firstperson_righthand": {
-			"translation": [0, 0, -4.5],
-			"scale": [0.8, 0.8, 0.8]
-		},
-		"firstperson_lefthand": {
-			"translation": [0, 0, -4.5],
-			"scale": [0.8, 0.8, 0.8]
-		},
-		"ground": {
-			"translation": [0, -2.5, -3],
-			"scale": [0.6, 0.6, 0.6]
-		},
-		"gui": {
-			"translation": [0, -2, 0],
-			"scale": [0.7, 0.7, 0.7]
-		},
-		"fixed": {
-			"translation": [0, -2, -7]
-		}
-	}
+	]
 }

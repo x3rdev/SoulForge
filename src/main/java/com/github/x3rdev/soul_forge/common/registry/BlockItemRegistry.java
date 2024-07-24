@@ -29,19 +29,13 @@ public class BlockItemRegistry {
     public static final RegistryObject<Item> SOUL_STEEL_BARS = BLOCK_ITEMS.register("soul_steel_bars",
             () -> new BlockItem(BlockRegistry.SOUL_STEEL_BARS.get(), new Item.Properties()));
     public static final RegistryObject<Item> SOUL_CANDLESTICK = BLOCK_ITEMS.register("soul_candlestick",
-            () -> new BlockItem(BlockRegistry.SOUL_CANDLESTICK.get(), new Item.Properties()) {
-                @Override
-                public String getDescriptionId() {
-                    return this.getOrCreateDescriptionId();
-                }
-            });
+            () -> new BlockItem(BlockRegistry.SOUL_CANDLESTICK.get(), new Item.Properties()));
     public static final RegistryObject<Item> SOUL_CANDELABRA = BLOCK_ITEMS.register("soul_candelabra",
-            () -> new BlockItem(BlockRegistry.SOUL_CANDELABRA.get(), new Item.Properties()) {
-                @Override
-                public String getDescriptionId() {
-                    return this.getOrCreateDescriptionId();
-                }
-            });
+            () -> new BlockItem(BlockRegistry.SOUL_CANDELABRA.get(), new Item.Properties()));
     public static final RegistryObject<Item> OBELISK = BLOCK_ITEMS.register("obelisk",
             () -> new BlockItem(BlockRegistry.OBELISK.get(), new Item.Properties()));
+    public static final RegistryObject<Item> DARK_TOMB = BLOCK_ITEMS.register("dark_tomb",
+            () -> new BlockItem(BlockRegistry.DARK_TOMB.get(), new Item.Properties()));
+    public static final RegistryObject<Item> STATUE = BLOCK_ITEMS.register("statue",
+            () -> new BlockItem(BlockRegistry.STATUE.get(), new Item.Properties()));
 }

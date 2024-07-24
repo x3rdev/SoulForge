@@ -1,21 +1,69 @@
 {
   "variants": {
-    "facing=east,half=upper": {
+    "facing=east,half=upper,nether_star=false": {
       "model": "soul_forge:block/obelisk_upper",
-      "y": 270
-    },
-    "facing=east,half=lower": {
-      "model": "soul_forge:block/obelisk_lower",
-      "y": 270
-    },
-    "axis=z,half=upper": {
-      "model": "soul_forge:block/obelisk_upper",
-      "x": 90
-    },
-    "axis=z,half=lower": {
-      "model": "soul_forge:block/obelisk_lower",
-      "x": 90,
       "y": 90
+    },
+    "facing=east,half=lower,nether_star=false": {
+      "model": "soul_forge:block/obelisk_lower",
+      "y": 90
+    },
+    "facing=north,half=upper,nether_star=false": {
+      "model": "soul_forge:block/obelisk_upper",
+      "y": 0
+    },
+    "facing=north,half=lower,nether_star=false": {
+      "model": "soul_forge:block/obelisk_lower",
+      "y": 0
+    },
+    "facing=south,half=upper,nether_star=false": {
+      "model": "soul_forge:block/obelisk_upper",
+      "y": 180
+    },
+    "facing=south,half=lower,nether_star=false": {
+      "model": "soul_forge:block/obelisk_lower",
+      "y": 180
+    },
+    "facing=west,half=upper,nether_star=false": {
+      "model": "soul_forge:block/obelisk_upper",
+      "y": 270
+    },
+    "facing=west,half=lower,nether_star=false": {
+      "model": "soul_forge:block/obelisk_lower",
+      "y": 270
+    },
+
+    "facing=east,half=upper,nether_star=true": {
+      "model": "soul_forge:block/obelisk_upper_star",
+      "y": 90
+    },
+    "facing=east,half=lower,nether_star=true": {
+      "model": "soul_forge:block/obelisk_lower_star",
+      "y": 90
+    },
+    "facing=north,half=upper,nether_star=true": {
+      "model": "soul_forge:block/obelisk_upper_star",
+      "y": 0
+    },
+    "facing=north,half=lower,nether_star=true": {
+      "model": "soul_forge:block/obelisk_lower_star",
+      "y": 0
+    },
+    "facing=south,half=upper,nether_star=true": {
+      "model": "soul_forge:block/obelisk_upper_star",
+      "y": 180
+    },
+    "facing=south,half=lower,nether_star=true": {
+      "model": "soul_forge:block/obelisk_lower_star",
+      "y": 180
+    },
+    "facing=west,half=upper,nether_star=true": {
+      "model": "soul_forge:block/obelisk_upper_star",
+      "y": 270
+    },
+    "facing=west,half=lower,nether_star=true": {
+      "model": "soul_forge:block/obelisk_lower_star",
+      "y": 270
     }
   }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "soul_forge:block/soul_candlestick"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "soul_forge:item/soul_candlestick"
+  }
 }
