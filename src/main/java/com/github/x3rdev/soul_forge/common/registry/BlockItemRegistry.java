@@ -38,4 +38,6 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.DARK_TOMB.get(), new Item.Properties()));
     public static final RegistryObject<Item> STATUE = BLOCK_ITEMS.register("statue",
             () -> new BlockItem(BlockRegistry.STATUE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SOUL_CHANDELIER = BLOCK_ITEMS.register("soul_chandelier",
+            () -> new BlockItem(BlockRegistry.SOUL_CHANDELIER.get(), new Item.Properties()));
 }

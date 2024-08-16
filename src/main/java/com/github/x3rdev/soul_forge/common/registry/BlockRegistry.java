@@ -40,4 +40,6 @@ public class BlockRegistry {
             () -> new DarkTombBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)));
     public static final RegistryObject<Block> STATUE = BLOCKS.register("statue",
             () -> new StatueBlock(BlockBehaviour.Properties.copy(Blocks.STONE)));
+    public static final RegistryObject<Block> SOUL_CHANDELIER = BLOCKS.register("soul_chandelier",
+            () -> new SoulChandelierBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN)));
 }
