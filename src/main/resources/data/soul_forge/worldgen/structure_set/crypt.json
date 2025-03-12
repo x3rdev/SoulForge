@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "soul_forge:crypt",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 678912345,
+    "spacing": 32,
+    "separation": 16
+  }
+}

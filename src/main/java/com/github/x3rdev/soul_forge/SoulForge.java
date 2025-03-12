@@ -25,6 +25,7 @@ public class SoulForge {
         EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
+        StructureRegistry.STRUCTURES.register(modEventBus);
 
         modEventBus.addListener(CommonSetup::attributeSetup);
         forgeBus.addListener(CommonSetup::onDeath);

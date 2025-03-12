@@ -11,6 +11,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -36,6 +37,9 @@ public class ItemRegistry {
             WispAmuletItem::new);
     public static final RegistryObject<Item> SOUL_GEM = ITEMS.register("soul_gem",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.GHOST, 0x5063c0, 0x77a2fb, new Item.Properties()));
+
     public static class ModItemTab {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);

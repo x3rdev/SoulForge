@@ -1,10 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
-import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectileEntity;
-import com.github.x3rdev.soul_forge.common.entity.SoulTypes;
-import com.github.x3rdev.soul_forge.common.entity.WispEntity;
+import com.github.x3rdev.soul_forge.common.entity.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -52,6 +49,13 @@ public class EntityRegistry {
                     .noSave()
                     .noSummon()
                     .build("wisp"));
+    public static final RegistryObject<EntityType<GhostEntity>> GHOST = registerMob("ghost",
+            GhostEntity::new,
+            MobCategory.MONSTER,
+            0.6F,
+            1.8F);
+
+
     public static <T extends Entity> RegistryObject<EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> entity, MobCategory mobCategory, float width, float height) {
         return ENTITIES.register(name,
                 () -> EntityType.Builder.of(entity, mobCategory).sized(width, height).build(name));
