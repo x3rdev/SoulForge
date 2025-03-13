@@ -13,5 +13,4 @@ public class GhostRenderer extends GeoEntityRenderer<GhostEntity> {
     public GhostRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "ghost")));
     }
-
 }

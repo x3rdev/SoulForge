@@ -5,7 +5,7 @@
   "max_distance_from_center": 80,
   "biomes": "#soul_forge:has_structure/crypt_biomes",
   "step": "surface_structures",
-  "terrain_adaptation": "none",
+  "terrain_adaptation": "bury",
   "start_height": {
     "absolute": -6
   },

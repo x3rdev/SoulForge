@@ -38,7 +38,7 @@ public class SoulScytheItem extends SwordItem implements GeoItem {
         if(!pLevel.isClientSide()) {
             SoulScytheProjectileEntity projectile = new SoulScytheProjectileEntity(pLevel, pLivingEntity, pStack);
             projectile.setPos(pLivingEntity.getEyePosition().add(0, -0.30F, 0).add(pLivingEntity.getLookAngle().normalize()));
-            projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, 0.85F, 0.05F);
+            projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, 1.0F, 0.05F);
             pLevel.addFreshEntity(projectile);
         }
     }

@@ -41,6 +41,7 @@ public class WispAmuletItem extends Item {
         }
         return false;
     }
+
     private void setWisp(ItemStack stack, WispEntity wisp) {
         CompoundTag tag = stack.getOrCreateTag();
         tag.putUUID(WISP_UUID_KEY, wisp.getUUID());
