@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
+import com.github.x3rdev.soul_forge.common.registry.DamageTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -37,7 +38,7 @@ public class SoulScytheProjectileEntity extends Projectile {
             super.tick();
             level().getEntities(this, this.getBoundingBox().inflate(0.25F)).forEach(entity -> {
                 if(entity != getOwner()) {
-                    entity.hurt(this.damageSources().sweetBerryBush(), 8);
+                    entity.hurt(new DamageTypeRegistry(level().registryAccess()).scythe(this, owner), 8);
                 }
             });
             HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
