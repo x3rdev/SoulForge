@@ -10,8 +10,8 @@ import net.neoforged.neoforge.common.NeoForge;
 @Mod(value = SoulForge.MOD_ID, dist = Dist.CLIENT)
 public class SoulForgeClient {
 
-    public SoulForgeClient(IEventBus modEventBus, ModContainer modContainer) {
-        IEventBus forgeBus = NeoForge.EVENT_BUS;
+    public SoulForgeClient(ModContainer modContainer) {
+        IEventBus modEventBus = modContainer.getEventBus();
 
         modEventBus.addListener(ClientSetup::registerRenderers);
     }

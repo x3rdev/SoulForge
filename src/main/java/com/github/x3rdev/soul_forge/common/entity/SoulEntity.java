@@ -69,7 +69,7 @@ public class SoulEntity extends Entity implements GeoEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-
+        builder.define(DATA_SOUL_TYPE, null);
     }
 
     @Override
