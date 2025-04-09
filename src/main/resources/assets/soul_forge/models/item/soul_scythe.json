@@ -111,6 +111,6 @@
     }
   },
   "textures": {
-    "particle": "item/soul_scythe_1"
+    "particle": "item/soul_scythe"
   }
 }
