@@ -3,7 +3,7 @@ run-name: New build available 🚀
 on:
   push:
     branches:
-      [master]
+      [1.21.x]
 jobs:
   Build:
     runs-on: ubuntu-latest
