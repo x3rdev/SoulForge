@@ -3,8 +3,6 @@ package com.github.x3rdev.soul_forge;
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
-
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
