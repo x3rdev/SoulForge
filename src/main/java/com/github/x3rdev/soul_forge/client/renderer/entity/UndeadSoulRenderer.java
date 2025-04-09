@@ -11,9 +11,9 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class UndeadSoulRenderer extends BaseSoulRenderer {
 
-    private static final ResourceLocation FLAME_TEXTURE = new ResourceLocation(SoulForge.MOD_ID, "textures/entity/undead_soul_flame.png");
+    private static final ResourceLocation FLAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/entity/undead_soul_flame.png");
     public UndeadSoulRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "undead_soul")));
+        super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "undead_soul")));
 
     }
 

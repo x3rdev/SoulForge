@@ -9,7 +9,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 public class DarkTombRenderer extends GeoBlockRenderer<DarkTombBlockEntity> {
 
     public DarkTombRenderer() {
-        super(new DefaultedBlockGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "dark_tomb")));
+        super(new DefaultedBlockGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "dark_tomb")));
     }
 
 }

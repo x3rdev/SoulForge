@@ -9,7 +9,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class SoulSteelArmorRenderer extends GeoArmorRenderer<SoulSteelArmorItem> {
     public SoulSteelArmorRenderer() {
-        super(new DefaultedItemGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "armor/soul_steel")));
+        super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "armor/soul_steel")));
         addRenderLayer(new AutoGlowingGeoLayer<>(this));
     }
 }

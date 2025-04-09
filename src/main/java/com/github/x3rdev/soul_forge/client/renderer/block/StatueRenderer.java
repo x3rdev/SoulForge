@@ -9,6 +9,6 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 public class StatueRenderer extends GeoBlockRenderer<StatueBlockEntity> {
 
     public StatueRenderer() {
-        super(new DefaultedBlockGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "statue")));
+        super(new DefaultedBlockGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "statue")));
     }
 }

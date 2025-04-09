@@ -7,44 +7,40 @@ import com.github.x3rdev.soul_forge.common.item.SoulSteelArmorItem;
 import com.github.x3rdev.soul_forge.common.item.WispAmuletItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.*;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
 
 public class ItemRegistry {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulForge.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, SoulForge.MOD_ID);
 
-    public static final RegistryObject<Item> SOUL_SCYTHE = ITEMS.register("soul_scythe",
+    public static final DeferredHolder<Item, Item> SOUL_SCYTHE = ITEMS.register("soul_scythe",
             SoulScytheItem::new);
-    public static final RegistryObject<Item> SMALL_SOUL_BOTTLE = ITEMS.register("small_soul_bottle",
+    public static final DeferredHolder<Item, Item> SMALL_SOUL_BOTTLE = ITEMS.register("small_soul_bottle",
             () -> new SoulBottleItem(10));
-    public static final RegistryObject<Item> LARGE_SOUL_BOTTLE = ITEMS.register("large_soul_bottle",
+    public static final DeferredHolder<Item, Item> LARGE_SOUL_BOTTLE = ITEMS.register("large_soul_bottle",
             () -> new SoulBottleItem(20));
-    public static final RegistryObject<Item> SOUL_STEEL_HELMET = ITEMS.register("soul_steel_helmet",
+    public static final DeferredHolder<Item, Item> SOUL_STEEL_HELMET = ITEMS.register("soul_steel_helmet",
             () -> new SoulSteelArmorItem(ArmorItem.Type.HELMET));
-    public static final RegistryObject<Item> SOUL_STEEL_CHESTPLATE = ITEMS.register("soul_steel_chestplate",
+    public static final DeferredHolder<Item, Item> SOUL_STEEL_CHESTPLATE = ITEMS.register("soul_steel_chestplate",
             () -> new SoulSteelArmorItem(ArmorItem.Type.CHESTPLATE));
-    public static final RegistryObject<Item> SOUL_STEEL_LEGGINGS = ITEMS.register("soul_steel_leggings",
+    public static final DeferredHolder<Item, Item> SOUL_STEEL_LEGGINGS = ITEMS.register("soul_steel_leggings",
             () -> new SoulSteelArmorItem(ArmorItem.Type.LEGGINGS));
-    public static final RegistryObject<Item> SOUL_STEEL_BOOTS = ITEMS.register("soul_steel_boots",
+    public static final DeferredHolder<Item, Item> SOUL_STEEL_BOOTS = ITEMS.register("soul_steel_boots",
             () -> new SoulSteelArmorItem(ArmorItem.Type.BOOTS));
-    public static final RegistryObject<Item> WISP_AMULET = ITEMS.register("wisp_amulet",
+    public static final DeferredHolder<Item, Item> WISP_AMULET = ITEMS.register("wisp_amulet",
             WispAmuletItem::new);
-    public static final RegistryObject<Item> SOUL_GEM = ITEMS.register("soul_gem",
+    public static final DeferredHolder<Item, Item> SOUL_GEM = ITEMS.register("soul_gem",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityRegistry.GHOST, 0x5063c0, 0x77a2fb, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
+            () -> new SpawnEggItem(EntityRegistry.GHOST.get(), 0x5063c0, 0x77a2fb, new Item.Properties()));
 
     public static class ModItemTab {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);
 
-        public static final RegistryObject<CreativeModeTab> SOLARIS_ITEM_TAB = CREATIVE_MODE_TABS.register("main", () -> CreativeModeTab.builder()
+        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOLARIS_ITEM_TAB = CREATIVE_MODE_TABS.register("main", () -> CreativeModeTab.builder()
                 .icon(Items.NAME_TAG::getDefaultInstance)
                 .title(Component.translatable("itemGroup." + SoulForge.MOD_ID))
                 .displayItems((displayParameters, output) -> {

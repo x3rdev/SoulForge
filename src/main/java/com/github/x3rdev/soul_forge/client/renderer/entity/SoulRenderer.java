@@ -11,9 +11,9 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class SoulRenderer extends BaseSoulRenderer {
 
-    private static final ResourceLocation FLAME_TEXTURE = new ResourceLocation(SoulForge.MOD_ID, "textures/entity/soul_flame.png");
+    private static final ResourceLocation FLAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/entity/soul_flame.png");
     public SoulRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "soul")));
+        super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul")));
     }
 
     @Nullable

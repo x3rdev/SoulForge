@@ -3,31 +3,33 @@ package com.github.x3rdev.soul_forge;
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
-@Mod(SoulForge.MOD_ID)
+@Mod(value = SoulForge.MOD_ID)
 public class SoulForge {
 
     public static final String MOD_ID = "soul_forge";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public SoulForge() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+    public SoulForge(ModContainer modContainer) {
+        IEventBus modEventBus = modContainer.getEventBus();
 
         BlockEntityRegistry.BLOCK_ENTITIES.register(modEventBus);
         BlockItemRegistry.BLOCK_ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
+        DataComponentRegistry.DATA_COMPONENTS.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
 
         modEventBus.addListener(CommonSetup::attributeSetup);
-        forgeBus.addListener(CommonSetup::onDeath);
+        NeoForge.EVENT_BUS.addListener(CommonSetup::onDeath);
     }
 }

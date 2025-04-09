@@ -27,7 +27,7 @@ public class SoulCandleBlock extends WallTorchBlock {
     private static VoxelShape SHAPE_WEST;
 
     public SoulCandleBlock(Properties pProperties) {
-        super(pProperties, ParticleTypes.SOUL_FIRE_FLAME);
+        super(ParticleTypes.SOUL_FIRE_FLAME, pProperties);
     }
 
     @Override
@@ -78,10 +78,8 @@ public class SoulCandleBlock extends WallTorchBlock {
 
     @Override
     public String getDescriptionId() {
-        if (this.descriptionId == null) {
-            this.descriptionId = Util.makeDescriptionId("block", BuiltInRegistries.BLOCK.getKey(this));
-        }
-
-        return this.descriptionId;
+        return Util.makeDescriptionId("block", BuiltInRegistries.BLOCK.getKey(this));
     }
+
+
 }

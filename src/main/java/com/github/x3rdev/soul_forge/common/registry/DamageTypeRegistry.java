@@ -18,7 +18,7 @@ public class DamageTypeRegistry {
     private final Registry<DamageType> damageTypes;
 
     private final ResourceKey<DamageType> scythe = ResourceKey.create(Registries.DAMAGE_TYPE,
-            new ResourceLocation(SoulForge.MOD_ID, "scythe"));
+            ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "scythe"));
 
     public DamageTypeRegistry(RegistryAccess registryAccess) {
         this.damageTypes = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);

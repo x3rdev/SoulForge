@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common.item;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.entity.SoulTypes;
+import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -19,11 +20,12 @@ import java.util.Objects;
 
 public class SoulBottleItem extends Item {
 
-    private static final String SOUL_TYPE_KEY = "soul_type";
-    private static final String SOUL_COUNT_KEY = "soul_count";
     private final int capacity;
     public SoulBottleItem(int capacity) {
-        super(new Properties());
+        super(new Properties()
+                .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), null)
+                .component(DataComponentRegistry.STORED_SOUL_COUNT.get(), 0)
+        );
         this.capacity = capacity;
     }
 
@@ -46,13 +48,13 @@ public class SoulBottleItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(getSoulType(pStack) != null) {
-            int soulCount = getSoulCount(pStack);
-            String soulType = formatSoulTypeName(getSoulType(pStack).toString());
-            pTooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", soulCount + " " + soulType).withStyle(Style.EMPTY.withColor(getSoulType(pStack).color())));
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        if(getSoulType(stack) != null) {
+            int soulCount = getSoulCount(stack);
+            String soulType = formatSoulTypeName(getSoulType(stack));
+            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", soulCount + " " + soulType).withColor(getSoulType(stack).color()));
         } else {
-            pTooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", "0").withStyle(ChatFormatting.GRAY));
+            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", "0").withColor(0x28292e));
         }
     }
 
@@ -69,7 +71,7 @@ public class SoulBottleItem extends Item {
     private boolean canBottleFitSoul(ItemStack stack, SoulType entitySoulType) {
         SoulType bottleSoulType = getSoulType(stack);
         int bottleSoulCount = getSoulCount(stack);
-        if(Objects.isNull(bottleSoulType)) {
+        if(bottleSoulType == null) {
             return entitySoulType.size() <= capacity;
         }
         if(bottleSoulType.equals(entitySoulType)) {
@@ -79,30 +81,26 @@ public class SoulBottleItem extends Item {
     }
 
     private void setSoulType(ItemStack stack, @Nullable SoulType soulType) {
-        CompoundTag tag = stack.getOrCreateTag();
-        String name = soulType != null ? soulType.toString() : "";
-        tag.putString(SOUL_TYPE_KEY, name);
+        stack.set(DataComponentRegistry.STORED_SOUL_TYPE, soulType.toString());
     }
+
     private @Nullable SoulType getSoulType(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
         for (SoulTypes soulType : SoulTypes.values()) {
-            if(soulType.toString().equals(tag.getString(SOUL_TYPE_KEY))) {
+            if(soulType.toString().equals(stack.get(DataComponentRegistry.STORED_SOUL_TYPE))) {
                 return soulType;
             }
         }
         return null;
     }
     private void setSoulCount(ItemStack stack, int count) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt(SOUL_COUNT_KEY, count);
+        stack.set(DataComponentRegistry.STORED_SOUL_COUNT, count);
     }
     private int getSoulCount(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
-        return tag.getInt(SOUL_COUNT_KEY);
+        return stack.get(DataComponentRegistry.STORED_SOUL_COUNT);
     }
 
-    private String formatSoulTypeName(String s) {
-        String input = s.replace('_', ' ').replace("soul", "");
+    private String formatSoulTypeName(SoulType type) {
+        String input = type.toString().replace('_', ' ').replace("soul", "");
         String[] words = input.split("\\s");
         StringBuilder result = new StringBuilder();
         for (String word : words) {

@@ -11,13 +11,13 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class DragonSoulRenderer extends BaseSoulRenderer {
 
-    private static final ResourceLocation FLAME_TEXTURE = new ResourceLocation(SoulForge.MOD_ID, "textures/entity/dragon_soul_flame.png");
-    private static final ResourceLocation HEAD_TEXTURE = new ResourceLocation(SoulForge.MOD_ID, "textures/entity/dragon_soul_head.png");
-    private static final ResourceLocation PARTICLE_TEXTURE = new ResourceLocation(SoulForge.MOD_ID, "textures/entity/dragon_soul_particles.png");
+    private static final ResourceLocation FLAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/entity/dragon_soul_flame.png");
+    private static final ResourceLocation HEAD_TEXTURE = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/entity/dragon_soul_head.png");
+    private static final ResourceLocation PARTICLE_TEXTURE = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/entity/dragon_soul_particles.png");
 
 
     public DragonSoulRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "dragon_soul")));
+        super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "dragon_soul")));
     }
 
     @Nullable

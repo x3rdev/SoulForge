@@ -16,10 +16,8 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -34,12 +32,22 @@ public class StatueBlock extends Block implements EntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
+
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if (!pLevel.isClientSide && pPlayer.isCreative()) {
-                DoublePlantBlock.preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!level.isClientSide && player.isCreative()) {
+            DoubleBlockHalf half = state.getValue(HALF);
+            if (half == DoubleBlockHalf.LOWER) {
+                BlockPos blockpos = pos.above();
+                BlockState blockstate = level.getBlockState(blockpos);
+                if (blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                    level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
+                }
+            }
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable

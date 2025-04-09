@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
@@ -34,19 +35,19 @@ public class ObeliskBlock extends Block {
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            DoubleBlockHalf half = pState.getValue(HALF);
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        if (!level.isClientSide && player.isCreative()) {
+            DoubleBlockHalf half = state.getValue(HALF);
             if (half.equals(DoubleBlockHalf.UPPER)) {
-                BlockPos blockpos = pPos.below();
-                BlockState blockstate = pLevel.getBlockState(blockpos);
+                BlockPos blockpos = pos.below();
+                BlockState blockstate = level.getBlockState(blockpos);
                 if (blockstate.is(this) && blockstate.getValue(HALF).equals(DoubleBlockHalf.LOWER)) {
-                    pLevel.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                    pLevel.levelEvent(pPlayer, 2001, blockpos, Block.getId(blockstate));
+                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                    level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
                 }
             }
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
     }
 
     @Nullable

@@ -19,12 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -32,6 +29,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class WispEntity extends AmbientCreature implements GeoEntity, TraceableEntity {
+
     private static final EntityDataAccessor<Boolean> DATA_IS_ON_COOLDOWN = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     protected static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("fly");
@@ -143,9 +141,9 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_IS_ON_COOLDOWN, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_IS_ON_COOLDOWN, false);
     }
 
     @Override

@@ -9,14 +9,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GhostEntity extends Monster implements GeoEntity {
@@ -48,15 +44,12 @@ public class GhostEntity extends Monster implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 1, this::controller)
-                .triggerableAnim("attack", ATTACK_ANIM));
-    }
-
-    protected <E extends GhostEntity> PlayState controller(final AnimationState<E> event) {
-        if(event.isMoving()) {
-            return event.setAndContinue(WALK_ANIM);
-        }
-        return event.setAndContinue(IDLE_ANIM);
+        controllers.add(new AnimationController<GeoAnimatable>(this, "controller", 1, state -> {
+            if(state.isMoving()) {
+                return state.setAndContinue(WALK_ANIM);
+            }
+            return state.setAndContinue(IDLE_ANIM);
+        }).triggerableAnim("attack", ATTACK_ANIM));
     }
 
     @Override

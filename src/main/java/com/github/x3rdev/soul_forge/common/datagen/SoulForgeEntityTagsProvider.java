@@ -5,22 +5,21 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraftforge.common.data.ExistingFileHelper;
+
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class SoulForgeEntityTagsProvider extends EntityTypeTagsProvider {
 
-    public static final TagKey<EntityType<?>> DROPS_UNDEAD_SOUL = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(SoulForge.MOD_ID, "drops_undead_soul"));
-    public static final TagKey<EntityType<?>> DROPS_NETHER_SOUL = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(SoulForge.MOD_ID, "drops_nether_soul"));
-    public static final TagKey<EntityType<?>> DROPS_ENDER_SOUL = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(SoulForge.MOD_ID, "drops_ender_soul"));;
-    public static final TagKey<EntityType<?>> DROPS_DRAGON_SOUL = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(SoulForge.MOD_ID, "drops_dragon_soul"));;
+    public static final TagKey<EntityType<?>> DROPS_UNDEAD_SOUL = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "drops_undead_soul"));
+    public static final TagKey<EntityType<?>> DROPS_NETHER_SOUL = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "drops_nether_soul"));
+    public static final TagKey<EntityType<?>> DROPS_ENDER_SOUL = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "drops_ender_soul"));;
+    public static final TagKey<EntityType<?>> DROPS_DRAGON_SOUL = TagKey.create(Registries.ENTITY_TYPE,ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "drops_dragon_soul"));;
 
 
 

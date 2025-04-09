@@ -13,7 +13,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class WispRenderer extends GeoEntityRenderer<WispEntity> {
     public WispRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(new ResourceLocation(SoulForge.MOD_ID, "wisp")));
+        super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "wisp")));
     }
 
     @Override

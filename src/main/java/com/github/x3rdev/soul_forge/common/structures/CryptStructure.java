@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.structures;
 
 import com.github.x3rdev.soul_forge.common.registry.StructureRegistry;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -12,22 +13,28 @@ import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.Optional;
 
 public class CryptStructure extends Structure {
 
-    public static final Codec<CryptStructure> CODEC = RecordCodecBuilder.<CryptStructure>mapCodec(instance ->
+    public static final MapCodec<CryptStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(CryptStructure.settingsCodec(instance),
                     StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
                     ResourceLocation.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(structure -> structure.startJigsawName),
                     Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.size),
                     HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
                     Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
-                    Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter)
-            ).apply(instance, CryptStructure::new)).codec();
+                    Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
+                    DimensionPadding.CODEC.optionalFieldOf("dimension_padding", JigsawStructure.DEFAULT_DIMENSION_PADDING).forGetter(structure -> structure.dimensionPadding),
+                    LiquidSettings.CODEC.optionalFieldOf("liquid_settings", JigsawStructure.DEFAULT_LIQUID_SETTINGS).forGetter(structure -> structure.liquidSettings)
+            ).apply(instance, CryptStructure::new));
 
     private final Holder<StructureTemplatePool> startPool;
     private final Optional<ResourceLocation> startJigsawName;
@@ -35,8 +42,18 @@ public class CryptStructure extends Structure {
     private final HeightProvider startHeight;
     private final Optional<Heightmap.Types> projectStartToHeightmap;
     private final int maxDistanceFromCenter;
+    private final DimensionPadding dimensionPadding;
+    private final LiquidSettings liquidSettings;
 
-    public CryptStructure(Structure.StructureSettings config, Holder<StructureTemplatePool> startPool, Optional<ResourceLocation> startJigsawName, int size, HeightProvider startHeight, Optional<Heightmap.Types> projectStartToHeightmap, int maxDistanceFromCenter) {
+    public CryptStructure(Structure.StructureSettings config,
+                          Holder<StructureTemplatePool> startPool,
+                          Optional<ResourceLocation> startJigsawName,
+                          int size,
+                          HeightProvider startHeight,
+                          Optional<Heightmap.Types> projectStartToHeightmap,
+                          int maxDistanceFromCenter,
+                          DimensionPadding dimensionPadding,
+                          LiquidSettings liquidSettings) {
         super(config);
         this.startPool = startPool;
         this.startJigsawName = startJigsawName;
@@ -44,6 +61,8 @@ public class CryptStructure extends Structure {
         this.startHeight = startHeight;
         this.projectStartToHeightmap = projectStartToHeightmap;
         this.maxDistanceFromCenter = maxDistanceFromCenter;
+        this.dimensionPadding = dimensionPadding;
+        this.liquidSettings = liquidSettings;
     }
 
     private static boolean extraSpawningChecks(Structure.GenerationContext context) {
@@ -77,7 +96,10 @@ public class CryptStructure extends Structure {
                         blockPos,
                         false,
                         this.projectStartToHeightmap,
-                        this.maxDistanceFromCenter);
+                        this.maxDistanceFromCenter,
+                        PoolAliasLookup.EMPTY,
+                        this.dimensionPadding,
+                        this.liquidSettings);
 
 
         return structurePiecesGenerator;
