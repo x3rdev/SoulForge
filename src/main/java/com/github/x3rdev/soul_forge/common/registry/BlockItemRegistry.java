@@ -40,4 +40,6 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.STATUE.get(), new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_CHANDELIER = BLOCK_ITEMS.register("soul_chandelier",
             () -> new BlockItem(BlockRegistry.SOUL_CHANDELIER.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, Item> SOUL_CRYSTAL_ORE = BLOCK_ITEMS.register("soul_crystal_ore",
+            () -> new BlockItem(BlockRegistry.SOUL_CRYSTAL_ORE.get(), new Item.Properties()));
 }
