@@ -43,5 +43,5 @@ public class BlockRegistry {
     public static final DeferredHolder<Block, Block> SOUL_CHANDELIER = BLOCKS.register("soul_chandelier",
             () -> new SoulChandelierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN)));
     public static final DeferredHolder<Block, Block> SOUL_CRYSTAL_ORE = BLOCKS.register("soul_crystal_ore",
-            () -> new SoulCrystalOre(BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE)));
-    }
+            () -> new SoulCrystalOre(BlockBehaviour.Properties.of()));
+}
