@@ -25,6 +25,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.SOUL_SCYTHE_PROJECTILE.get(), SoulScytheProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WISP.get(), WispRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(), GhostRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.NERGAL.get(), NergalRenderer::new);
 
         event.registerBlockEntityRenderer(BlockEntityRegistry.DARK_TOMB.get(), pContext -> new DarkTombRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), pContext -> new StatueRenderer());

@@ -1,10 +1,7 @@
 package com.github.x3rdev.soul_forge.common;
 
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
-import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
-import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
-import com.github.x3rdev.soul_forge.common.entity.SoulTypes;
-import com.github.x3rdev.soul_forge.common.entity.WispEntity;
+import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.tags.TagKey;
@@ -25,6 +22,7 @@ public class CommonSetup {
     public static void attributeSetup(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
         event.put(EntityRegistry.GHOST.get(), GhostEntity.createAttributes());
+        event.put(EntityRegistry.NERGAL.get(), NergalEntity.createAttributes());
     }
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {

@@ -54,6 +54,11 @@ public class EntityRegistry {
             MobCategory.MONSTER,
             0.6F,
             1.8F);
+    public static final DeferredHolder<EntityType<?>, EntityType<NergalEntity>> NERGAL = registerMob("nergal",
+            NergalEntity::new,
+            MobCategory.MONSTER,
+            2.5F,
+            4F);
 
 
     public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> entity, MobCategory mobCategory, float width, float height) {

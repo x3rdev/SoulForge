@@ -1,0 +1,35 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.nergal.idle": {
+			"loop": true,
+			"bones": {
+				"arm_left": {
+					"rotation": {
+						"vector": [0, -27.5, 57.5],
+						"easing": "linear"
+					}
+				},
+				"forearm_left": {
+					"rotation": {
+						"vector": [17.17679, 53.10479, 21.13216],
+						"easing": "linear"
+					}
+				},
+				"hand_left": {
+					"rotation": {
+						"vector": [0, 0, 10],
+						"easing": "linear"
+					}
+				},
+				"bone": {
+					"rotation": {
+						"vector": [0, 0, 0],
+						"easing": "linear"
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

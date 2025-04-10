@@ -8,6 +8,7 @@ import com.github.x3rdev.soul_forge.common.item.WispAmuletItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -34,13 +35,15 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> SOUL_GEM = ITEMS.register("soul_gem",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
-            () -> new SpawnEggItem(EntityRegistry.GHOST.get(), 0x5063c0, 0x77a2fb, new Item.Properties()));
+            () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0x5063c0, 0x77a2fb, new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_CRYSTAL = ITEMS.register("soul_crystal",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> ECTOPLASM = ITEMS.register("ectoplasm",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> NECRONOMICON = ITEMS.register("necronomicon",
             () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> NERGAL_SPAWN_EGG = ITEMS.register("nergal_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.NERGAL, 0x394c59, 0x49aef2, new Item.Properties()));
 
     public static class ModItemTab {
 
