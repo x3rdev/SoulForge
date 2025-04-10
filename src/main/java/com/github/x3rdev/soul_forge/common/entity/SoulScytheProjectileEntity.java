@@ -58,7 +58,6 @@ public class SoulScytheProjectileEntity extends Projectile {
             double d0 = this.getX() + vec3.x;
             double d1 = this.getY() + vec3.y;
             double d2 = this.getZ() + vec3.z;
-            this.lookAt(EntityAnchorArgument.Anchor.FEET, new Vec3(d0, d1, d2));
             this.setPos(d0, d1, d2);
         } else {
             this.discard();
@@ -91,7 +90,6 @@ public class SoulScytheProjectileEntity extends Projectile {
     @Override
     public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
         super.shootFromRotation(pShooter, pX, pY, pZ, pVelocity, pInaccuracy);
-        this.lookAt(EntityAnchorArgument.Anchor.FEET, this.position().add(getDeltaMovement()));
     }
 
     @Override

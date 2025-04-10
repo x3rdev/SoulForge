@@ -11,7 +11,16 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.phys.Vec3;
+import org.joml.AxisAngle4d;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import software.bernie.geckolib.util.RenderUtil;
+
+import java.util.Vector;
 
 public class SoulScytheProjectileRenderer extends EntityRenderer<SoulScytheProjectileEntity> {
     private final ItemRenderer itemRenderer;
@@ -21,14 +30,15 @@ public class SoulScytheProjectileRenderer extends EntityRenderer<SoulScytheProje
     }
 
     @Override
-    public void render(SoulScytheProjectileEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
-        pPoseStack.pushPose();
-        pPoseStack.mulPose(Axis.YP.rotation((float) (-Blaze3D.getTime()*6F)));
-        pPoseStack.translate(1, 0.25F, 0);
-        pPoseStack.mulPose(Axis.ZP.rotationDegrees(90F));
-        this.itemRenderer.renderStatic(pEntity.getItem(), ItemDisplayContext.GROUND, pPackedLight, OverlayTexture.NO_OVERLAY, pPoseStack, pBuffer, pEntity.level(), pEntity.getId());
-        pPoseStack.popPose();
-        super.render(pEntity, pEntityYaw, pPartialTick, pPoseStack, pBuffer, pPackedLight);
+    public void render(SoulScytheProjectileEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotation((float) (-Blaze3D.getTime()*6F)));
+        poseStack.translate(1, 0.25F, 0);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(90F));
+        this.itemRenderer.renderStatic(entity.getItem(), ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, entity.level(), entity.getId());
+        poseStack.popPose();
+        super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
