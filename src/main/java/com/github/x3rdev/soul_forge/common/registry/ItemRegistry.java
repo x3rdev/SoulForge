@@ -37,6 +37,10 @@ public class ItemRegistry {
             () -> new SpawnEggItem(EntityRegistry.GHOST.get(), 0x5063c0, 0x77a2fb, new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_CRYSTAL = ITEMS.register("soul_crystal",
             () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> ECTOPLASM = ITEMS.register("ectoplasm",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> NECRONOMICON = ITEMS.register("necronomicon",
+            () -> new Item(new Item.Properties()));
 
     public static class ModItemTab {
 
