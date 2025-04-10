@@ -303,14 +303,6 @@
 					"name": "armorRightBoot",
 					"parent": "bipedRightLeg",
 					"pivot": [2, 12, 0]
-				},
-				{
-					"name": "bone2",
-					"pivot": [-1.00577, 19.6, -4.125]
-				},
-				{
-					"name": "bone",
-					"pivot": [0.99423, 17.6, -4.125]
 				}
 			]
 		}
