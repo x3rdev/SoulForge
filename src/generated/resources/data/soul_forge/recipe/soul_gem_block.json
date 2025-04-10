@@ -4,15 +4,15 @@
   "key": {
     "C": {
       "item": "soul_forge:soul_gem"
-    },
-    "pattern": [
+    }
+  },
+  "pattern": [
       "CC ",
       "CC ",
       "   "
-    ],
-    "result": {
+  ],
+  "result": {
       "count": 1,
       "id": "soul_forge:soul_gem_block"
    }
-  }
 }
