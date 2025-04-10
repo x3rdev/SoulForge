@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "ingridients": [
+  "ingredients": [
     {
       "item": "soul_forge:soul_gem_block"
     }
