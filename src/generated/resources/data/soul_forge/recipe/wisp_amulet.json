@@ -4,15 +4,18 @@
   "key": {
     "G": {
       "item": "soul_forge:soul_gem"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
   },
   "pattern": [
-      "GG ",
-      "GG ",
-      "   "
+      " I ",
+      "I I",
+      " G "
   ],
   "result": {
       "count": 1,
-      "id": "soul_forge:soul_gem_block"
+      "id": "soul_forge:wisp_amulet"
    }
 }
