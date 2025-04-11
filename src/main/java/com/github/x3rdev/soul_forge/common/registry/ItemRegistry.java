@@ -42,8 +42,6 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> RESEARCHER_GLASSES = ITEMS.register("researcher_glasses",
             () -> new ResearcherGlasses(ArmorItem.Type.HELMET));
-    public static final DeferredHolder<Item, Item> soulwood_stick = ITEMS.register("soulwood_stick",
-            () -> new Item(new Item.Properties()));
 
     public static class ModItemTab {
 
