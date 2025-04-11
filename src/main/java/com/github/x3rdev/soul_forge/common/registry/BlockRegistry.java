@@ -46,4 +46,6 @@ public class BlockRegistry {
             () -> new SoulCrystalOre(BlockBehaviour.Properties.of()));
     public static final DeferredHolder<Block, Block> SOUL_GEM_BLOCK = BLOCKS.register("soul_gem_block",
             () -> new SoulGemBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_BLOCK)));
+    public static final DeferredHolder<Block, Block> SOULWOOD_PLANKS = BLOCKS.register("soulwood_planks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
 }

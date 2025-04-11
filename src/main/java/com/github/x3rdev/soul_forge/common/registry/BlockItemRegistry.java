@@ -44,5 +44,6 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOUL_CRYSTAL_ORE.get(), new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_GEM_BLOCK = BLOCK_ITEMS.register("soul_gem_block",
             () -> new BlockItem(BlockRegistry.SOUL_GEM_BLOCK.get(), new Item.Properties()));
-
+    public static final DeferredHolder<Item, Item> SOULWOOD_PLANKS = BLOCK_ITEMS.register("soulwood_planks",
+            () -> new BlockItem(BlockRegistry.SOULWOOD_PLANKS.get(), new Item.Properties()));
 }
