@@ -78,7 +78,7 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${project.minecraft_version}:${project.sbl_version}"
+    implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:19.19.0.219"
 }
 
@@ -95,7 +95,8 @@ tasks.withType(ProcessResources).configureEach {
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            geckolib_version_range : geckolib_version_range
+            geckolib_version_range : geckolib_version_range,
+            sbl_version_range : sbl_version_range
     ]
     inputs.properties replaceProperties
 
