@@ -1,7 +1,9 @@
-package com.github.x3rdev.soul_forge.common.entity;
+package com.github.x3rdev.soul_forge.common.entity.nergal;
 
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.mojang.serialization.Dynamic;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;

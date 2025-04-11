@@ -27,3 +27,9 @@ mandatory=true
 versionRange="${geckolib_version_range}"
 ordering="NONE"
 side="BOTH"
+[[dependencies.${mod_id}]]
+modId="smartbrainlib"
+mandatory=true
+versionRange="${sbl_version_range}"
+ordering="NONE"
+side="SERVER"
