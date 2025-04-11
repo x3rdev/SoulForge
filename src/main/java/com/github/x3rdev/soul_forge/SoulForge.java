@@ -26,6 +26,7 @@ public class SoulForge {
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
+        ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
 
         modEventBus.addListener(CommonSetup::attributeSetup);
         NeoForge.EVENT_BUS.addListener(CommonSetup::onDeath);
