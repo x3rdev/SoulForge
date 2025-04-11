@@ -14,8 +14,7 @@
   },
   "pattern": [
       "HHH",
-      "LIL",
-      "   "
+      "LIL"
   ],
   "result": {
       "count": 1,
