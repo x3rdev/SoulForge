@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "soul_forge:murky_lens"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "H": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+      "HHH",
+      "LIL",
+      "   "
+  ],
+  "result": {
+      "count": 1,
+      "id": "soul_forge:reseacher_glasses"
+   }
+}

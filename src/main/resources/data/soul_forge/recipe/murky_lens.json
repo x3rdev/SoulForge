@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "soul_forge:ectoplasm"
+    },
+    "G": {
+      "item": "minecraft:glass_panel"
+    }
+  },
+  "pattern": [
+      " G ",
+      "GEG",
+      " G "
+  ],
+  "result": {
+      "count": 1,
+      "id": "soul_forge:murky_lens"
+   }
+}
