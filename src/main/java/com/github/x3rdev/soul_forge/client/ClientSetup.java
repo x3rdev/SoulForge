@@ -1,12 +1,15 @@
 package com.github.x3rdev.soul_forge.client;
 
+import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
 import com.github.x3rdev.soul_forge.client.renderer.block.DarkTombRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.StatueRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
 
 public class ClientSetup {
@@ -27,4 +30,8 @@ public class ClientSetup {
         event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), pContext -> new StatueRenderer());
     }
 
+    @SubscribeEvent
+    public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ParticleRegistry.SOUL_PARTICLE.get(), SoulParticle.Provider::new);
+    }
 }
