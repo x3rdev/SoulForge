@@ -81,7 +81,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                     triggerAnim("controller", "skill");
                 }
             }
-            level().addParticle((ParticleOptions) ParticleRegistry.SOUL_PARTICLE, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            level().addParticle(ParticleRegistry.SOUL_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
     }
 
