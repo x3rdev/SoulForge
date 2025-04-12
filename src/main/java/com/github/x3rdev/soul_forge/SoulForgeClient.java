@@ -14,5 +14,6 @@ public class SoulForgeClient {
         IEventBus modEventBus = modContainer.getEventBus();
 
         modEventBus.addListener(ClientSetup::registerRenderers);
+        modEventBus.addListener(ClientSetup::registerParticleProviders);
     }
 }
