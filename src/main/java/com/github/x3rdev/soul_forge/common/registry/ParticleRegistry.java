@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ParticleRegistry {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
-            DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, "SoulForge.MOD_ID");
+            DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, "soul_forge");
 
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SOUL_PARTICLE = PARTICLE_TYPES.register(
     "soul_particle",
