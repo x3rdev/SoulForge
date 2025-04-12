@@ -9,7 +9,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = SoulForge.MOD_ID, bus = EventBusSubscriber.Bus.MOD)

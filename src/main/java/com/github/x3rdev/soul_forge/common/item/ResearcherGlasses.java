@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 
 public class ResearcherGlasses extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public ResearcherGlasses(Type pType) {
         super(ArmorMaterials.GOLD, pType, new Properties());
     }
@@ -31,7 +32,8 @@ public class ResearcherGlasses extends ArmorItem implements GeoItem {
             public @Nullable <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (this.renderer == null)
                     this.renderer = new ResearcherGlassesRenderer();
-                return this.renderer;            }
+                return this.renderer;
+            }
         });
     }
 

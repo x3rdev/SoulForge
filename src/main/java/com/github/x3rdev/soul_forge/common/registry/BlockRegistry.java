@@ -14,10 +14,10 @@ public class BlockRegistry {
 
     public static final DeferredHolder<Block, Block> SOUL_BRICKS = BLOCKS.register("soul_bricks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
-    public static final DeferredHolder<Block, Block> CRACKED_SOUL_BRICKS = BLOCKS.register("cracked_soul_bricks",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CRACKED_STONE_BRICKS)));
     public static final DeferredHolder<Block, Block> SOUL_BRICK_STAIRS = BLOCKS.register("soul_brick_stairs",
             () -> new StairBlock(SOUL_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_STAIRS)));
+    public static final DeferredHolder<Block, Block> CRACKED_SOUL_BRICKS = BLOCKS.register("cracked_soul_bricks",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CRACKED_STONE_BRICKS)));
     public static final DeferredHolder<Block, Block> SOUL_BRICK_SLAB = BLOCKS.register("soul_brick_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICK_SLAB)));
     public static final DeferredHolder<Block, Block> SOUL_BRICK_WALL = BLOCKS.register("soul_brick_wall",

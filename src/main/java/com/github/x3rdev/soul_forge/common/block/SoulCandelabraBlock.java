@@ -25,7 +25,7 @@ public class SoulCandelabraBlock extends SoulCandleBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if(SHAPE_NORTH == null) {
+        if (SHAPE_NORTH == null) {
             SHAPE_NORTH = Stream.of(
                     Block.box(6.5, 4, 10, 9.5, 6, 16),
                     Block.box(6, 8, 9.5, 10, 10, 13.5),
@@ -54,19 +54,19 @@ public class SoulCandelabraBlock extends SoulCandleBlock {
         }
         switch (pState.getValue(FACING)) {
             case EAST -> {
-                if(SHAPE_EAST == null) {
+                if (SHAPE_EAST == null) {
                     SHAPE_EAST = BlockUtil.rotateShape(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH);
                 }
                 return SHAPE_EAST;
             }
             case SOUTH -> {
-                if(SHAPE_SOUTH == null) {
+                if (SHAPE_SOUTH == null) {
                     SHAPE_SOUTH = BlockUtil.rotateShape(Direction.NORTH, Direction.WEST, SHAPE_NORTH);
                 }
                 return SHAPE_SOUTH;
             }
             case WEST -> {
-                if(SHAPE_WEST == null) {
+                if (SHAPE_WEST == null) {
                     SHAPE_WEST = BlockUtil.rotateShape(Direction.NORTH, Direction.EAST, SHAPE_NORTH);
                 }
                 return SHAPE_WEST;

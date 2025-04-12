@@ -3,7 +3,6 @@ package com.github.x3rdev.soul_forge.common.entity;
 import com.github.x3rdev.soul_forge.common.registry.DamageTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +21,7 @@ public class SoulScytheProjectileEntity extends Projectile {
     private final ItemStack stack;
     private boolean returning = false;
     private int age;
+
     public SoulScytheProjectileEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.stack = ItemStack.EMPTY;
@@ -39,7 +39,7 @@ public class SoulScytheProjectileEntity extends Projectile {
         if (this.level().isClientSide || (owner == null || !owner.isRemoved()) && this.level().hasChunkAt(this.blockPosition()) && this.age++ < 200) {
             super.tick();
             level().getEntities(this, this.getBoundingBox().inflate(0.25F)).forEach(entity -> {
-                if(entity != getOwner()) {
+                if (entity != getOwner()) {
                     entity.hurt(new DamageTypeRegistry(level().registryAccess()).scythe(this, owner), 8);
                 }
             });
@@ -47,10 +47,10 @@ public class SoulScytheProjectileEntity extends Projectile {
             if (hitresult.getType() != HitResult.Type.MISS && !EventHooks.onProjectileImpact(this, hitresult)) {
                 this.onHit(hitresult);
             }
-            if(age > 45) {
+            if (age > 45) {
                 returnProjectile();
             }
-            if(getOwner() != null && returning && distanceToSqr(getOwner()) < 2.5) {
+            if (getOwner() != null && returning && distanceToSqr(getOwner()) < 2.5) {
                 this.remove(RemovalReason.DISCARDED);
             }
 
@@ -77,8 +77,8 @@ public class SoulScytheProjectileEntity extends Projectile {
     @Override
     public Vec3 getDeltaMovement() {
         int i = 1;
-        if(returning) {
-            if(getOwner() != null) {
+        if (returning) {
+            if (getOwner() != null) {
                 setDeltaMovement(position().vectorTo(getOwner().getPosition(0).add(0, 1, 0)).normalize());
             } else {
                 i = -1;

@@ -1,7 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;

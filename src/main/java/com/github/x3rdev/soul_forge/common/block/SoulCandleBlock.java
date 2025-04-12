@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -32,7 +31,7 @@ public class SoulCandleBlock extends WallTorchBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if(SHAPE_NORTH == null) {
+        if (SHAPE_NORTH == null) {
             SHAPE_NORTH = Stream.of(
                     Block.box(8, 7, 7.5, 8, 13, 9.5),
                     Block.box(6.5, 4, 10, 9.5, 6, 16),
@@ -48,19 +47,19 @@ public class SoulCandleBlock extends WallTorchBlock {
         }
         switch (pState.getValue(FACING)) {
             case EAST -> {
-                if(SHAPE_EAST == null) {
+                if (SHAPE_EAST == null) {
                     SHAPE_EAST = BlockUtil.rotateShape(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH);
                 }
                 return SHAPE_EAST;
             }
             case SOUTH -> {
-                if(SHAPE_SOUTH == null) {
+                if (SHAPE_SOUTH == null) {
                     SHAPE_SOUTH = BlockUtil.rotateShape(Direction.NORTH, Direction.WEST, SHAPE_NORTH);
                 }
                 return SHAPE_SOUTH;
             }
             case WEST -> {
-                if(SHAPE_WEST == null) {
+                if (SHAPE_WEST == null) {
                     SHAPE_WEST = BlockUtil.rotateShape(Direction.NORTH, Direction.EAST, SHAPE_NORTH);
                 }
                 return SHAPE_WEST;

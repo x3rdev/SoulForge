@@ -6,7 +6,6 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,21 +18,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
-
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
 
 public class WispEntity extends AmbientCreature implements GeoEntity, TraceableEntity {
 
-    private static final EntityDataAccessor<Boolean> DATA_IS_ON_COOLDOWN = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     protected static final RawAnimation FLY_ANIM = RawAnimation.begin().thenLoop("fly");
     protected static final RawAnimation SKILL_ANIM = RawAnimation.begin().thenPlay("skill");
+    private static final EntityDataAccessor<Boolean> DATA_IS_ON_COOLDOWN = SynchedEntityData.defineId(WispEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     @Nullable
@@ -50,6 +46,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
         this(EntityRegistry.WISP.get(), level);
         this.owner = owner;
     }
+
     public static AttributeSupplier createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 4.0F)
@@ -61,7 +58,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
     @Override
     public void tick() {
         super.tick();
-        if(!this.level().isClientSide()) {
+        if (!this.level().isClientSide()) {
             if (!ownerExists()) {
                 this.discard();
                 return;
@@ -70,8 +67,8 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                 this.discard();
                 return;
             }
-            if(cooldown-- <= 0) {
-                if(getOwner().getHealth() < getOwner().getMaxHealth()) {
+            if (cooldown-- <= 0) {
+                if (getOwner().getHealth() < getOwner().getMaxHealth()) {
                     cooldown = 20 * 10;
                     getOwner().heal(3F);
                     triggerAnim("controller", "skill");
@@ -83,16 +80,16 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        if(getOwner() != null) {
+        if (getOwner() != null) {
             Vec3 targetPos = targetPosition();
             Vec3 delta = position().vectorTo(targetPos);
 
-            if(delta.lengthSqr() > 0.1) {
-                if(delta.lengthSqr() < 1) {
+            if (delta.lengthSqr() > 0.1) {
+                if (delta.lengthSqr() < 1) {
                     setDeltaMovement(delta.normalize().scale(0.05));
-                } else if(delta.lengthSqr() < 4) {
+                } else if (delta.lengthSqr() < 4) {
                     setDeltaMovement(delta.normalize().scale(0.25));
-                } else if(delta.lengthSqr() < 8) {
+                } else if (delta.lengthSqr() < 8) {
                     setDeltaMovement(delta.normalize().scale(0.5));
                 } else {
                     setDeltaMovement(delta.normalize().scale(0.75));
@@ -104,7 +101,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
 
     //TODO make the player has the item in their baubles, inventory for now
     private boolean ownerExists() {
-         return getOwner() != null && level().players().contains(getOwner())
+        return getOwner() != null && level().players().contains(getOwner())
                 && getOwner().getInventory().hasAnyMatching(stack -> stack.is(ItemRegistry.WISP_AMULET.get()));
     }
 
@@ -114,7 +111,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
 
     @Nullable
     public Player getOwner() {
-        if(!this.level().isClientSide()) {
+        if (!this.level().isClientSide()) {
             return owner;
         }
         return null;
@@ -153,7 +150,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
     }
 
     protected <E extends WispEntity> PlayState controller(final AnimationState<E> event) {
-        if(event.isMoving()) {
+        if (event.isMoving()) {
             return event.setAndContinue(FLY_ANIM);
         }
         return event.setAndContinue(IDLE_ANIM);

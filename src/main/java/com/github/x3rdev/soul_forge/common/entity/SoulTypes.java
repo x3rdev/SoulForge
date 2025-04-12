@@ -11,7 +11,7 @@ public enum SoulTypes implements SoulType {
     private final int size;
     private final int color;
 
-    SoulTypes(String name, int size, int color){
+    SoulTypes(String name, int size, int color) {
         this.name = name;
         this.size = size;
         this.color = color;

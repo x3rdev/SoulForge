@@ -7,9 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
-
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -21,6 +18,7 @@ import java.util.function.Consumer;
 
 public class SoulSteelArmorItem extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public SoulSteelArmorItem(Type pType) {
         super(ArmorMaterials.GOLD, pType, new Properties());
     }
@@ -34,7 +32,8 @@ public class SoulSteelArmorItem extends ArmorItem implements GeoItem {
             public @Nullable <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (this.renderer == null)
                     this.renderer = new SoulSteelArmorRenderer();
-                return this.renderer;            }
+                return this.renderer;
+            }
         });
     }
 

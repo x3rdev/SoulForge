@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 public class SoulScytheItem extends SwordItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public SoulScytheItem() {
         super(Tiers.DIAMOND, new Properties());
     }
@@ -39,7 +40,7 @@ public class SoulScytheItem extends SwordItem implements GeoItem {
         if (pLivingEntity instanceof Player player) {
             player.getCooldowns().addCooldown(this, 10);
         }
-        if(!pLevel.isClientSide()) {
+        if (!pLevel.isClientSide()) {
             SoulScytheProjectileEntity projectile = new SoulScytheProjectileEntity(pLevel, pLivingEntity, pStack);
             projectile.setPos(pLivingEntity.getEyePosition().add(0, -0.30F, 0).add(pLivingEntity.getLookAngle().normalize()));
             projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, 1.0F, 0.05F);
@@ -64,7 +65,7 @@ public class SoulScytheItem extends SwordItem implements GeoItem {
 
             @Override
             public @Nullable BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
-                if(this.renderer == null) {
+                if (this.renderer == null) {
                     this.renderer = new SoulScytheRenderer();
                 }
                 return renderer;

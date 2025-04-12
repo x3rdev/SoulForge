@@ -22,6 +22,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class SoulEntity extends Entity implements GeoEntity {
     private static final EntityDataAccessor<String> DATA_SOUL_TYPE = SynchedEntityData.defineId(SoulEntity.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public SoulEntity(EntityType<?> pEntityType, Level pLevel, SoulType soulType) {
         super(pEntityType, pLevel);
         this.entityData.set(DATA_SOUL_TYPE, soulType.toString());
@@ -34,7 +35,7 @@ public class SoulEntity extends Entity implements GeoEntity {
         if (!this.isNoGravity()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.0025D, 0.0D));
         }
-        if (!this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > (double)1.0E-5F || (this.tickCount + this.getId()) % 4 == 0) {
+        if (!this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > (double) 1.0E-5F || (this.tickCount + this.getId()) % 4 == 0) {
             this.move(MoverType.SELF, this.getDeltaMovement());
         }
     }
@@ -42,9 +43,9 @@ public class SoulEntity extends Entity implements GeoEntity {
     @Override
     public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
         ItemStack stack = pPlayer.getItemInHand(pHand);
-        if(stack.getItem() instanceof SoulBottleItem soulBottleItem) {
+        if (stack.getItem() instanceof SoulBottleItem soulBottleItem) {
             boolean bottleFilled = soulBottleItem.tryFillBottle(stack, this, pPlayer);
-            if(bottleFilled) {
+            if (bottleFilled) {
                 this.remove(RemovalReason.DISCARDED);
                 pPlayer.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH);
                 return InteractionResult.sidedSuccess(pPlayer.level().isClientSide());
@@ -55,7 +56,7 @@ public class SoulEntity extends Entity implements GeoEntity {
 
     public SoulType getSoulType() {
         for (SoulTypes soulType : SoulTypes.values()) {
-            if(soulType.toString().equals(entityData.get(DATA_SOUL_TYPE))) {
+            if (soulType.toString().equals(entityData.get(DATA_SOUL_TYPE))) {
                 return soulType;
             }
         }

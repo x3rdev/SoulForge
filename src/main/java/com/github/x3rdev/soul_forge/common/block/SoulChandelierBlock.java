@@ -18,7 +18,7 @@ public class SoulChandelierBlock extends Block {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if(SHAPE == null) {
+        if (SHAPE == null) {
             SHAPE = Shapes.join(Block.box(4, 1, 4, 12, 3, 12), Block.box(6, 3, 6, 10, 16, 10), BooleanOp.OR);
         }
         return SHAPE;
