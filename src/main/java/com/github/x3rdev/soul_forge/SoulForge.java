@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge;
 
+import com.github.x3rdev.soul_forge.client.particle.ModParticles;
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
@@ -26,7 +27,7 @@ public class SoulForge {
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
-        ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
+        ModParticles.PARTICLE_TYPES.register(modEventBus);
 
         modEventBus.addListener(CommonSetup::attributeSetup);
         NeoForge.EVENT_BUS.addListener(CommonSetup::onDeath);

@@ -3,14 +3,13 @@ package com.github.x3rdev.soul_forge.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public class SoulParticle extends TextureSheetParticle {
-    private final SpriteSet spriteSet;
 
     protected SoulParticle(ClientLevel level, double x, double y, double z, SpriteSet spriteSet, double xSpeed, double ySpeed, double zSpeed) {
         super(level, x, y, x, xSpeed, ySpeed, zSpeed);
-        this.spriteSet = spriteSet;
         this.gravity = 0;
         this.setSpriteFromAge(spriteSet);
     }
@@ -20,16 +19,17 @@ public class SoulParticle extends TextureSheetParticle {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public static class Provider implements ParticleProvider<SimpleParticleType> {
+    public static class MyParticleProvider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteSet;
 
-        public Provider(SpriteSet spriteSet) {
+        public MyParticleProvider(SpriteSet spriteSet) {
             this.spriteSet = spriteSet;
         }
 
+        @Nullable
         @Override
-        public @Nullable Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new SoulParticle(level, x, y, z, this.spriteSet, xSpeed, ySpeed, zSpeed);
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientlevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new SoulParticle(clientlevel, x, y, z, this.spriteSet, xSpeed, ySpeed, zSpeed);
         }
     }
 }

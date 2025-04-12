@@ -1,17 +1,12 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
-import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
+import com.github.x3rdev.soul_forge.client.particle.ModParticles;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
-import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,7 +18,6 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -82,7 +76,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                 }
             }
         } else {
-            level().addParticle(ParticleRegistry.SOUL_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            level().addParticle(ModParticles.SOUL_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
 
     }

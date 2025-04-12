@@ -5,7 +5,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(value = SoulForge.MOD_ID, dist = Dist.CLIENT)
 public class SoulForgeClient {
@@ -14,6 +13,6 @@ public class SoulForgeClient {
         IEventBus modEventBus = modContainer.getEventBus();
 
         modEventBus.addListener(ClientSetup::registerRenderers);
-        modEventBus.addListener(ClientSetup::registerParticleProviders);
+        modEventBus.addListener(ClientSetup::registerParticleProvider);
     }
 }
