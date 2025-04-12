@@ -29,6 +29,8 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -98,16 +100,21 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public BrainActivityGroup<? extends NergalEntity> getFightTasks() {
+    public BrainActivityGroup<NergalEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
-                new AnimatableMeleeAttack<>(0));
+                new FirstApplicableBehaviour<>(
+                    new AnimatableMeleeAttack<>(0).cooldownFor(mob -> 10)
+                )
+        );
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-
+        controllers.add(new AnimationController<>(this, "controller", state -> {
+            return PlayState.CONTINUE;
+        }));
     }
 
     @Override
