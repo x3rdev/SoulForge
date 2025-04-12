@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.client;
 
 import com.github.x3rdev.soul_forge.client.particle.ModParticles;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
+import com.github.x3rdev.soul_forge.client.particle.SoulParticle.MyParticleProvider;
 import com.github.x3rdev.soul_forge.client.renderer.block.DarkTombRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.StatueRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
@@ -32,6 +33,6 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerParticleProvider(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ModParticles.SOUL_PARTICLE.get(), SoulParticle.MyParticleProvider::new);
+        event.registerSpriteSet(ModParticles.SOUL_PARTICLE.get(), MyParticleProvider::new);
     }
 }
