@@ -31,6 +31,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -38,6 +39,10 @@ import java.util.List;
 public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity> {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+
 
     public NergalEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -49,11 +54,12 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     public static AttributeSupplier createAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 250.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.3F)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.5)
-                .add(Attributes.ATTACK_DAMAGE, 30.0)
+                .add(Attributes.ARMOR, 12F)
+                .add(Attributes.ATTACK_DAMAGE, 30.0F)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.1F)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
+                .add(Attributes.MAX_HEALTH, 70.0F)
+                .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .build();
     }
 
@@ -105,7 +111,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
                 new FirstApplicableBehaviour<>(
-                    new AnimatableMeleeAttack<>(0).cooldownFor(mob -> 10)
+                    new AnimatableMeleeAttack<>(0).cooldownFor(mob -> 100),
+                    new SummonGhostsAttack().cooldownFor(entity -> 100)
                 )
         );
     }
@@ -113,7 +120,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", state -> {
-            return PlayState.CONTINUE;
+
+            return state.setAndContinue(IDLE);
         }));
     }
 
