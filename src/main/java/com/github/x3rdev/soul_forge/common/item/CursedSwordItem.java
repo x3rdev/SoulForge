@@ -21,6 +21,11 @@ public class CursedSwordItem extends SwordItem implements GeoItem {
     }
 
     @Override
+    public int getEnchantmentValue() {
+        return 1;
+    }
+
+    @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
             private CursedSwordRenderer renderer = null;
