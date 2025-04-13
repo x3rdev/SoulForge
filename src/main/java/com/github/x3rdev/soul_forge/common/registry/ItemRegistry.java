@@ -43,8 +43,7 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> RESEARCHER_GLASSES = ITEMS.register("researcher_glasses",
             () -> new ResearcherGlasses(ArmorItem.Type.HELMET));
     public static final DeferredHolder<Item, Item> CURSED_SWORD = ITEMS.register("cursed_sword",
-            () -> new SwordItem(Tiers.NETHERITE, new Item.Properties().fireResistant().attributes(SwordItem.createAttributes(Tiers.NETHERITE, 3, -2.4F))));
-
+            CursedSwordItem::new);
     public static class ModItemTab {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);
