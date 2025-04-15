@@ -22,11 +22,6 @@ public class SoulRenderer extends BaseSoulRenderer {
         super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul")));
     }
 
-    @Override
-    public void actuallyRender(PoseStack poseStack, SoulEntity animatable, BakedGeoModel model, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
-    }
-
     @Nullable
     @Override
     protected ResourceLocation getTextureOverrideForBone(GeoBone bone, SoulEntity animatable, float partialTick) {

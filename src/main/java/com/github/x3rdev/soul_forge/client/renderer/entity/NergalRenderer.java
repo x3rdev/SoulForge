@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
 import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,11 +19,6 @@ public class NergalRenderer extends GeoEntityRenderer<NergalEntity> {
 
     public NergalRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "nergal")));
-        addRenderLayer(new AutoGlowingGeoLayer<>(this) {
-            @Override
-            protected @NotNull RenderType getRenderType(NergalEntity animatable, @Nullable MultiBufferSource bufferSource) {
-                return RenderType.eyes(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
-            }
-        });
+        addRenderLayer(new SoulGlowingLayer<>(this));
     }
 }

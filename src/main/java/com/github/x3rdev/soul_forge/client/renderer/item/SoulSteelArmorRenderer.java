@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.client.renderer.item;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
 import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
 import com.github.x3rdev.soul_forge.common.item.SoulSteelArmorItem;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,11 +17,6 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 public class SoulSteelArmorRenderer extends GeoArmorRenderer<SoulSteelArmorItem> {
     public SoulSteelArmorRenderer() {
         super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "armor/soul_steel")));
-        addRenderLayer(new AutoGlowingGeoLayer<>(this){
-            @Override
-            protected @NotNull RenderType getRenderType(SoulSteelArmorItem animatable, @Nullable MultiBufferSource bufferSource) {
-                return RenderType.eyes(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
-            };
-    });
-}
+        addRenderLayer(new SoulGlowingLayer<>(this));
+    }
 }

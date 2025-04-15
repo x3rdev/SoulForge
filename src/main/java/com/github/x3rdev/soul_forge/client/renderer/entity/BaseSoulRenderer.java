@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
+import com.github.x3rdev.soul_forge.client.shader.RenderTypeRegistry;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,7 +34,7 @@ public class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEntity> {
 
     @Override
     public RenderType getRenderType(SoulEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.eyes(texture);
+        return RenderTypeRegistry.soul(texture);
     }
 
     @Override

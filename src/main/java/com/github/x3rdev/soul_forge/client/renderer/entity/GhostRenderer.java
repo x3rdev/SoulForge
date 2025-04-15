@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
 import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
 import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,11 +20,6 @@ public class GhostRenderer extends GeoEntityRenderer<GhostEntity> {
 
     public GhostRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "ghost")));
-        addRenderLayer(new AutoGlowingGeoLayer<>(this) {
-            @Override
-            protected @NotNull RenderType getRenderType(GhostEntity animatable, @Nullable MultiBufferSource bufferSource) {
-                return RenderType.eyes(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
-            }
-        });
+        addRenderLayer(new SoulGlowingLayer<>(this));
     }
 }

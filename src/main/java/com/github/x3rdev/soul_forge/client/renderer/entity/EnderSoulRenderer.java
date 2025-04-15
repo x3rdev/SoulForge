@@ -14,7 +14,6 @@ public class EnderSoulRenderer extends BaseSoulRenderer {
     private static final ResourceLocation FLAME_TEXTURE = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/entity/ender_soul_flame.png");
     public EnderSoulRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "ender_soul")));
-
     }
 
     @Nullable
