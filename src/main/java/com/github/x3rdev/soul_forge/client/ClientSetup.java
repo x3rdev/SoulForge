@@ -1,19 +1,30 @@
 package com.github.x3rdev.soul_forge.client;
 
-import com.github.x3rdev.soul_forge.client.particle.ModParticles;
-import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
+import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle.MyParticleProvider;
 import com.github.x3rdev.soul_forge.client.renderer.block.DarkTombRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.StatueRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.Objects;
 
 
 public class ClientSetup {
+
+    @Nullable
+    private static ShaderInstance soulShader;
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -34,5 +45,21 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerParticleProvider(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.SOUL_PARTICLE.get(), MyParticleProvider::new);
+    }
+
+    @SubscribeEvent
+    public static void registerShaders(RegisterShadersEvent event) {
+        ResourceProvider provider = event.getResourceProvider();
+        try {
+            event.registerShader(new ShaderInstance(provider, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
+                soulShader = shaderInstance;
+            });
+        } catch (IOException e) {
+            SoulForge.LOGGER.warn("Failed to load shader", e);
+        }
+    }
+
+    public static ShaderInstance getSoulShader() {
+        return Objects.requireNonNull(soulShader, "Attempted to get shader before they have finished loading.");
     }
 }
