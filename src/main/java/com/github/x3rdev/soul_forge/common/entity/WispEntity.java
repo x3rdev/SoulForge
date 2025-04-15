@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.entity;
 
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -74,9 +75,8 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                     triggerAnim("controller", "skill");
                 }
             }
-        }
-        if (this.tickCount % 30 == 0) {
-            level().addParticle(ModParticles.SOUL_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+        } else if (this.tickCount % 30 == 0) {
+            level().addParticle(ParticleRegistry.SOUL_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
     }
 

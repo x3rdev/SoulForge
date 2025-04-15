@@ -7,6 +7,7 @@ import com.github.x3rdev.soul_forge.client.renderer.block.StatueRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +45,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerParticleProvider(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ModParticles.SOUL_PARTICLE.get(), MyParticleProvider::new);
+        event.registerSpriteSet(ParticleRegistry.SOUL_PARTICLE.get(), MyParticleProvider::new);
     }
 
     @SubscribeEvent
