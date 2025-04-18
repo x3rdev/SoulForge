@@ -25,6 +25,7 @@ public class CommonSetup {
         event.put(EntityRegistry.GHOST.get(), GhostEntity.createAttributes());
         event.put(EntityRegistry.NERGAL.get(), NergalEntity.createAttributes());
     }
+
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         Level level = event.getEntity().level();

@@ -30,8 +30,9 @@ public class SoulSteelArmorItem extends ArmorItem implements GeoItem {
 
             @Override
             public @Nullable <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
-                if (this.renderer == null)
+                if (this.renderer == null) {
                     this.renderer = new SoulSteelArmorRenderer();
+                }
                 return this.renderer;
             }
         });

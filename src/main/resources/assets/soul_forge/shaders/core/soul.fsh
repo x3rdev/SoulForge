@@ -10,11 +10,14 @@ uniform float FogEnd;
 
 in float vertexDistance;
 in vec4 vertexColor;
+in vec4 overlayColor;
 in vec2 texCoord0;
 
 out vec4 fragColor;
 
 void main() {
-    vec4 color = texture(Sampler0, texCoord0) * vertexColor;
-    fragColor = color * ColorModulator * linear_fog_fade(vertexDistance, FogStart, FogEnd);
+    vec4 color = texture(Sampler0, texCoord0);
+    color *= vertexColor * ColorModulator;
+    color.rgb = mix(overlayColor.rgb, color.rgb, overlayColor.a+0.5);
+    fragColor = color * linear_fog_fade(vertexDistance, FogStart, FogEnd);
 }
