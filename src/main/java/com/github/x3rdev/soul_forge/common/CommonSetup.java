@@ -16,10 +16,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 
 public class CommonSetup {
 
+    @SubscribeEvent
     public static void attributeSetup(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
         event.put(EntityRegistry.GHOST.get(), GhostEntity.createAttributes());

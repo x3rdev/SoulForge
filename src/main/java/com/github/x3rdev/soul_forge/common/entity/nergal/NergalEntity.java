@@ -30,19 +30,18 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity> {
+public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity>, SyncedBoneEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-
+    private final RawAnimation ATTACK1 = RawAnimation.begin().thenLoop("attack1");
 
     public NergalEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -120,7 +119,6 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", state -> {
-
             return state.setAndContinue(IDLE);
         }));
     }
@@ -129,6 +127,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
+
 
 
 }

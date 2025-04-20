@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
+import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
@@ -30,5 +31,6 @@ public class SoulForge {
 
         modEventBus.addListener(CommonSetup::attributeSetup);
         NeoForge.EVENT_BUS.addListener(CommonSetup::onDeath);
+        modEventBus.addListener(PacketRegistry::registerPayloadHandlers);
     }
 }
