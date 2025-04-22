@@ -1,6 +1,14 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
+import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
@@ -8,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -35,13 +44,15 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity>, SyncedBoneEntity {
+public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity> {
+
+    public static final EntityDataAccessor<AABB> DEBUG_ATTACK_BOX = SynchedEntityData.defineId(NergalEntity.class, EntityDataRegistry.DEBUG_BOX.get());
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private final RawAnimation ATTACK1 = RawAnimation.begin().thenLoop("attack1");
+    private final RawAnimation ATTACK1 = RawAnimation.begin().thenPlay("attack1");
 
     public NergalEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -96,7 +107,9 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public BrainActivityGroup<NergalEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(
-                        new TargetOrRetaliate<>(),
+                        new TargetOrRetaliate<>().attackablePredicate(livingEntity -> {
+                            return !livingEntity.getType().equals(this.getType());
+                        }),
                         new SetPlayerLookTarget<>(),
                         new SetRandomLookTarget<>()),
                 new OneRandomBehaviour<>(
@@ -110,17 +123,20 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
                 new FirstApplicableBehaviour<>(
-                    new AnimatableMeleeAttack<>(0).cooldownFor(mob -> 100),
-                    new SummonGhostsAttack().cooldownFor(entity -> 100)
+                    new NergalSwingAttack().cooldownFor(mob -> 100)
+//                    new SummonGhostsAttack().cooldownFor(entity -> 100)
                 )
         );
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", state -> {
+        controllers.add(new AnimationController<>(this, "c", state -> {
+            if(state.isMoving()) {
+                return state.setAndContinue(WALK);
+            }
             return state.setAndContinue(IDLE);
-        }));
+        }).triggerableAnim("attack1", ATTACK1));
     }
 
     @Override
@@ -128,6 +144,9 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
         return cache;
     }
 
-
-
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DEBUG_ATTACK_BOX, AABB.INFINITE);
+    }
 }
