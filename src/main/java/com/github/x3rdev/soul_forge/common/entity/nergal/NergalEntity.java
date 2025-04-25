@@ -71,7 +71,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 .add(Attributes.ATTACK_KNOCKBACK, 1.1F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
                 .add(Attributes.MAX_HEALTH, 70.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.MOVEMENT_SPEED, 0.05F)
                 .add(Attributes.FOLLOW_RANGE, 32F)
                 .build();
     }
