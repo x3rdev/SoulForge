@@ -18,7 +18,12 @@ public class SoulParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_LIT;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    }
+
+    @Override
+    protected int getLightColor(float partialTick) {
+        return 240;
     }
 
     public static class MyParticleProvider implements ParticleProvider<SimpleParticleType> {
