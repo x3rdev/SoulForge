@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -49,9 +50,9 @@ public class BlockRegistry {
     public static final DeferredHolder<Block, LeavesBlock> SOULWOOD_LEAVES = BLOCKS.register("soulwood_leaves",
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
     public static final DeferredHolder<Block, SoulwoodLianaBlock> SOULWOOD_LIANA = BLOCKS.register("soulwood_liana",
-            () -> new SoulwoodLianaBlock(BlockBehaviour.Properties.of()));
+            () -> new SoulwoodLianaBlock(BlockBehaviour.Properties.of().randomTicks().noCollission().instabreak().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY)));
     public static final DeferredHolder<Block, SoulwoodLianaBodyBlock> SOULWOOD_LIANA_BODY = BLOCKS.register("soulwood_liana_body",
-            () -> new SoulwoodLianaBodyBlock(BlockBehaviour.Properties.of()));
+            () -> new SoulwoodLianaBodyBlock(BlockBehaviour.Properties.of().randomTicks().noCollission().instabreak().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY)));
     public static final DeferredHolder<Block, Block> SOULWOOD_LOG = BLOCKS.register("soulwood_log",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)));
     public static final DeferredHolder<Block, Block> SOULWOOD_PLANKS = BLOCKS.register("soulwood_planks",

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "soul_forge:block/soulwood_log_top",
+    "side": "soul_forge:block/soulwood_log"
+  }
+}
