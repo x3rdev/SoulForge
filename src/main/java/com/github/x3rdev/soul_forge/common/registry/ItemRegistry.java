@@ -44,6 +44,8 @@ public class ItemRegistry {
             () -> new ResearcherGlasses(ArmorItem.Type.HELMET));
     public static final DeferredHolder<Item, Item> CURSED_SWORD = ITEMS.register("cursed_sword",
             CursedSwordItem::new);
+
+
     public static class ModItemTab {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);

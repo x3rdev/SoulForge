@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.entity.ai.moving_hitbox_attack;
+package com.github.x3rdev.soul_forge.common.entity.ai;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

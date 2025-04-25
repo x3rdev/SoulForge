@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.entity.ai.moving_hitbox_attack;
+package com.github.x3rdev.soul_forge.common.entity.ai;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -31,7 +31,6 @@ public record MovingHitboxAttackPath(Vec3[] points) {
     );
 
     public Vec3 getPointForTick(int tick) {
-        //TODO implement
         return points[tick];
     }
 }

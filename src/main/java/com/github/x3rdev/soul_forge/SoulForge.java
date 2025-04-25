@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
-import com.github.x3rdev.soul_forge.common.entity.ai.moving_hitbox_attack.MovingHitboxAttackRegistry;
+import com.github.x3rdev.soul_forge.common.entity.ai.MovingHitboxAttackRegistry;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
@@ -10,8 +10,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
-
-import javax.swing.text.html.parser.Entity;
 
 @Mod(value = SoulForge.MOD_ID)
 public class SoulForge {

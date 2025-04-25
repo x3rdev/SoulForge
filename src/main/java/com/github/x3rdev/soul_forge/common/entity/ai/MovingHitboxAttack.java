@@ -1,10 +1,8 @@
-package com.github.x3rdev.soul_forge.common.entity.ai.moving_hitbox_attack;
+package com.github.x3rdev.soul_forge.common.entity.ai;
 
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 
 public abstract class MovingHitboxAttack<E extends LivingEntity> extends ExtendedBehaviour<E> {
@@ -23,6 +21,6 @@ public abstract class MovingHitboxAttack<E extends LivingEntity> extends Extende
         return path;
     }
 
-    protected abstract AABB hurtBox(E entity);
+    protected abstract AABB hurtBox(E entity, long tick);
 
 }

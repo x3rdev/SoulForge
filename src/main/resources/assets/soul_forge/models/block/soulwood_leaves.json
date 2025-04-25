@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "soul_forge:block/soulwood_leaves"
+  }
+}

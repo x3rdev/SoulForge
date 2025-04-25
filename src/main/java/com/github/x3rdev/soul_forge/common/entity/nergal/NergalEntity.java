@@ -54,6 +54,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     private final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private final RawAnimation ATTACK1 = RawAnimation.begin().thenPlay("attack1");
 
+    private int ticksAttacking = 0;
+
     public NergalEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
@@ -83,6 +85,18 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
         super.swing(hand);
     }
 
+    public int getTicksAttacking() {
+        return ticksAttacking;
+    }
+
+    public void resetTicksAttacking() {
+        this.ticksAttacking = 0;
+    }
+
+    public void incrementTicksAttacking() {
+        ticksAttacking++;
+    }
+
     @Override
     protected Brain.Provider<?> brainProvider() {
         return new SmartBrainProvider<>(this);
@@ -100,7 +114,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public BrainActivityGroup<NergalEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
                 new LookAtTarget<>(),
-                new MoveToWalkTarget<>());
+                new NergalMoveToWalkTarget());
     }
 
     @Override
@@ -131,7 +145,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "c", state -> {
+        controllers.add(new AnimationController<>(this, "c", 3, state -> {
             if(state.isMoving()) {
                 return state.setAndContinue(WALK);
             }
