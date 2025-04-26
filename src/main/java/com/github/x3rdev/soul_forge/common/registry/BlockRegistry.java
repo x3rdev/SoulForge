@@ -4,6 +4,7 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.block.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.PushReaction;
@@ -49,6 +50,8 @@ public class BlockRegistry {
             () -> new SoulGemBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_BLOCK)));
     public static final DeferredHolder<Block, LeavesBlock> SOULWOOD_LEAVES = BLOCKS.register("soulwood_leaves",
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
+    public static final DeferredHolder<Block, SaplingBlock> SOULWOOD_SAPLING = BLOCKS.register("soulwood_sapling",
+            () -> new SaplingBlock(TreeGrower.ACACIA, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final DeferredHolder<Block, SoulwoodLianaBlock> SOULWOOD_LIANA = BLOCKS.register("soulwood_liana",
             () -> new SoulwoodLianaBlock(BlockBehaviour.Properties.of().randomTicks().noCollission().instabreak().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY)));
     public static final DeferredHolder<Block, SoulwoodLianaBodyBlock> SOULWOOD_LIANA_BODY = BLOCKS.register("soulwood_liana_body",
