@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class SoulwoodLianaBlock extends GrowingPlantHeadBlock {
 
     public static final MapCodec<SoulwoodLianaBlock> CODEC = simpleCodec(SoulwoodLianaBlock::new);
-    protected static final VoxelShape SHAPE = Block.box(4.0, 9.0, 4.0, 12.0, 16.0, 12.0);
+    public static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
 
     public SoulwoodLianaBlock(Properties properties) {
         super(properties, Direction.DOWN, SHAPE, false, 0.1F);

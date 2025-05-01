@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
@@ -42,15 +43,14 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     }
 
     @Override
-    protected void tick(ServerLevel level, NergalEntity entity, long gameTime) {
-        super.tick(level, entity, gameTime);
-        entity.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX,
-                hurtBox(entity, Math.min(getSwingPath(entity).points().length-1, entity.getTicksAttacking()+6)));
-        entity.incrementTicksAttacking();
-//        for (int i = 0; i < getSwingPath(entity).points().length; i++) {
-//            Vec3 pos = getSwingPath(entity).points()[i].add(entity.position());
-//            level.sendParticles(ParticleTypes.CRIT, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
-//        }
+    protected void tick(ServerLevel level, NergalEntity nergal, long gameTime) {
+        super.tick(level, nergal, gameTime);
+        AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking() + 6));
+        nergal.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX, hurtBox);
+        nergal.incrementTicksAttacking();
+        level.getEntities(nergal, hurtBox).forEach(entity -> {
+            entity.hurt(nergal.damageSources().mobAttack(nergal), 6);
+        });
     }
 
     @Override
@@ -74,6 +74,6 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     protected AABB hurtBox(NergalEntity entity, long tick) {
         Vec3 center = getSwingPath(entity).getPointForTick((int) tick)
                 .yRot(Mth.DEG_TO_RAD*(180-entity.yBodyRot));
-        return AABB.ofSize(center, 1, 1, 1);
+        return AABB.ofSize(center, 2.5, 2.5, 2.5);
     }
 }
