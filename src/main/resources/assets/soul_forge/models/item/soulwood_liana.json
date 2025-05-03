@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:block/soulwood_liana"
+    "layer0": "soul_forge:block/soulwood_liana"
   }
 }

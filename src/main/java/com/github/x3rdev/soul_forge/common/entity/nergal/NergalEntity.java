@@ -2,12 +2,7 @@ package com.github.x3rdev.soul_forge.common.entity.nergal;
 
 import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +17,6 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
@@ -52,7 +46,9 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     private final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private final RawAnimation ATTACK1 = RawAnimation.begin().thenPlay("attack1");
+    private final RawAnimation NERGAL_SWING = RawAnimation.begin().thenPlay("attack1");
+    private final RawAnimation NERGAL_SWIPE = RawAnimation.begin().thenPlay("attack2");
+
 
     private int ticksAttacking = 0;
 
@@ -71,7 +67,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 .add(Attributes.ATTACK_KNOCKBACK, 1.1F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
                 .add(Attributes.MAX_HEALTH, 70.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.05F)
+                .add(Attributes.MOVEMENT_SPEED, 0.25F)
                 .add(Attributes.FOLLOW_RANGE, 32F)
                 .build();
     }
@@ -115,7 +111,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public BrainActivityGroup<NergalEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
                 new LookAtTarget<>(),
-                new NergalMoveToWalkTarget());
+                new NergalMoveToWalkTarget()
+        );
     }
 
     @Override
@@ -137,9 +134,9 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
-                new FirstApplicableBehaviour<>(
-                    new NergalSwingAttack().cooldownFor(mob -> 100)
-//                    new SummonGhostsAttack().cooldownFor(entity -> 100)
+                new OneRandomBehaviour<>(
+                    new NergalSwingAttack().cooldownFor(mob -> 100),
+                    new SummonGhostsAttack().cooldownFor(entity -> 120)
                 )
         );
     }
@@ -151,7 +148,9 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 return state.setAndContinue(WALK);
             }
             return state.setAndContinue(IDLE);
-        }).triggerableAnim("attack1", ATTACK1));
+        })
+                .triggerableAnim("nergal_swing", NERGAL_SWING)
+                .triggerableAnim("nergal_swipe", NERGAL_SWIPE));
     }
 
     @Override

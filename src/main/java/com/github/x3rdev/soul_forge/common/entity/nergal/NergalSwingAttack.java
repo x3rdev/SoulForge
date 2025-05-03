@@ -38,14 +38,14 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     @Override
     protected void start(ServerLevel level, NergalEntity entity, long gameTime) {
         super.start(level, entity, gameTime);
-        entity.triggerAnim("c", "attack1");
+        entity.triggerAnim("c", "nergal_swing");
         entity.resetTicksAttacking();
     }
 
     @Override
     protected void tick(ServerLevel level, NergalEntity nergal, long gameTime) {
         super.tick(level, nergal, gameTime);
-        AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking() + 6));
+        AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking() + 4));
         nergal.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX, hurtBox);
         nergal.incrementTicksAttacking();
         level.getEntities(nergal, hurtBox).forEach(entity -> {
@@ -61,7 +61,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     @Override
     protected void stop(ServerLevel level, NergalEntity entity, long gameTime) {
         super.stop(level, entity, gameTime);
-        entity.stopTriggeredAnim("c", "attack1");
+        entity.stopTriggeredAnim("c", "nergal_swing");
         entity.resetTicksAttacking();
     }
 

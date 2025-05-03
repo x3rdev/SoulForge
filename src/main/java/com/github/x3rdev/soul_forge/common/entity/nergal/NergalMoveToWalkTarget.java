@@ -7,6 +7,6 @@ public class NergalMoveToWalkTarget extends MoveToWalkTarget<NergalEntity> {
 
     @Override
     protected boolean hasReachedTarget(NergalEntity entity, WalkTarget target) {
-        return target.getTarget().currentBlockPosition().distManhattan(entity.blockPosition()) <= 5;
+        return target.getTarget().currentBlockPosition().distManhattan(entity.blockPosition()) <= 6;
     }
 }

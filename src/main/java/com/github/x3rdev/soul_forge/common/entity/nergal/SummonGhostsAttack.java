@@ -1,8 +1,12 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
 import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
+import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.level.Level;
@@ -14,46 +18,52 @@ import java.util.List;
 
 public class SummonGhostsAttack extends ExtendedBehaviour<NergalEntity> {
 
-    int tickCount;
-
     public SummonGhostsAttack() {
         runFor(nergalEntity -> 100);
+        startCondition(nergalEntity -> {
+           List<Entity> entities = nergalEntity.level().getEntities(nergalEntity, nergalEntity.getBoundingBox().inflate(15));
+           return entities.stream().noneMatch(entity -> entity.getType().equals(EntityRegistry.GHOST.get()));
+        });
     }
 
     @Override
     protected boolean shouldKeepRunning(NergalEntity entity) {
         int ticksSincePlayerHit = entity.tickCount - entity.lastHurtByPlayerTime;
-        if (ticksSincePlayerHit == 0) {
-            return false;
-        }
-        return super.shouldKeepRunning(entity);
+        return ticksSincePlayerHit != 0;
     }
 
     @Override
     protected void start(NergalEntity entity) {
-        tickCount = 0;
+        entity.resetTicksAttacking();
+    }
+
+    @Override
+    protected boolean doStartCheck(ServerLevel level, NergalEntity entity, long gameTime) {
+        return super.doStartCheck(level, entity, gameTime);
     }
 
     @Override
     protected void tick(NergalEntity entity) {
-        if(tickCount == 50) {
-            summonGhosts(entity, entity.level(), 1);
+        entity.incrementTicksAttacking();
+        if(entity.getTicksAttacking() == 50) {
+            summonGhosts(entity, entity.level(), 8);
         }
-        tickCount++;
     }
 
     private void summonGhosts(NergalEntity entity, Level level, int count) {
+        float angle = Mth.TWO_PI/count;
         for (int i = 0; i < count; i++) {
-            Vec3 spawnPos = entity.position();
+            Vec3 spawnPos = entity.position().add(new Vec3(8,0,0).yRot(i*angle));
             GhostEntity ghostEntity = new GhostEntity(level);
-            for (int j = -2; j <= 6; j++) { // Search height
-                ghostEntity.setPos(spawnPos.add(0,j,0));
-                if(ghostEntity.checkSpawnObstruction(level)) {
-                    level.addFreshEntity(ghostEntity);
-                    break;
-                }
-            }
+            ghostEntity.setPos(spawnPos);
+            level.addFreshEntity(ghostEntity);
         }
+    }
+
+    @Override
+    protected void stop(ServerLevel level, NergalEntity entity, long gameTime) {
+        super.stop(level, entity, gameTime);
+        entity.resetTicksAttacking();
     }
 
     @Override
