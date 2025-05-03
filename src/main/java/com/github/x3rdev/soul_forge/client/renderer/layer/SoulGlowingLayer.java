@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.client.renderer.layer;
 
-import com.github.x3rdev.soul_forge.client.shader.RenderTypeRegistry;
+import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +17,6 @@ public class SoulGlowingLayer<T extends GeoAnimatable> extends AutoGlowingGeoLay
 
     @Override
     protected @Nullable RenderType getRenderType(T animatable, @Nullable MultiBufferSource bufferSource) {
-        return RenderTypeRegistry.soul(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
+        return ShaderRegistry.soul(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
     }
 }

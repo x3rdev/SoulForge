@@ -1,19 +1,22 @@
 package com.github.x3rdev.soul_forge.client.shader;
 
+import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.ClientSetup;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class RenderTypeRegistry {
+public class ShaderRegistry {
 
-    //TODO if shaders running, default to rendertype eyes
+    //TODO if shaders running, default to rendertype_entity something emissive
     public static RenderType soul(ResourceLocation location) {
         return Internal.soul(location);
+    }
+
+    public static ResourceLocation researcherGlassesPostEffect() {
+        return ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "shaders/post/researcher_glasses.json");
     }
 
     private static class Internal extends RenderType {

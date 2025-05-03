@@ -163,4 +163,9 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
         super.defineSynchedData(builder);
         builder.define(DEBUG_ATTACK_BOX, AABB.INFINITE);
     }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return super.getBoundingBoxForCulling().inflate(6);
+    }
 }

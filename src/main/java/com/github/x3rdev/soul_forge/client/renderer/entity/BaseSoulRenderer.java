@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
-import com.github.x3rdev.soul_forge.client.shader.RenderTypeRegistry;
+import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,7 +16,8 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
-public class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEntity> {
+public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEntity> {
+
     public BaseSoulRenderer(EntityRendererProvider.Context renderManager, GeoModel<SoulEntity> model) {
         super(renderManager, model);
     }
@@ -34,7 +35,7 @@ public class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEntity> {
 
     @Override
     public RenderType getRenderType(SoulEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderTypeRegistry.soul(texture);
+        return ShaderRegistry.soul(texture);
     }
 
     @Override
