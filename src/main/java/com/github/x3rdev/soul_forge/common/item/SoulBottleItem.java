@@ -19,7 +19,7 @@ public class SoulBottleItem extends Item {
 
     public SoulBottleItem(int capacity) {
         super(new Properties()
-                .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), null)
+                .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), "")
                 .component(DataComponentRegistry.STORED_SOUL_COUNT.get(), 0)
         );
         this.capacity = capacity;
@@ -48,7 +48,7 @@ public class SoulBottleItem extends Item {
         if (getSoulType(stack) != null) {
             int soulCount = getSoulCount(stack);
             String soulType = formatSoulTypeName(getSoulType(stack));
-            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", soulCount + " " + soulType).withColor(getSoulType(stack).color()));
+            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", soulCount + soulType).withColor(getSoulType(stack).color()));
         } else {
             tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", "0").withColor(0x28292e));
         }
@@ -102,10 +102,13 @@ public class SoulBottleItem extends Item {
         String[] words = input.split("\\s");
         StringBuilder result = new StringBuilder();
         for (String word : words) {
-            result.append(Character.toTitleCase(word.charAt(0)))
-                    .append(word.substring(1))
-                    .append(" ");
+            if(!word.isBlank()) {
+                result.append(word).append(" ");
+            }
         }
-        return result.toString().trim();
+        if(!result.isEmpty()) {
+            result.insert(0, " ");
+        }
+        return result.toString().stripTrailing();
     }
 }
