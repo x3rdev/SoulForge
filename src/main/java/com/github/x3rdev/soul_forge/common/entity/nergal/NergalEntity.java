@@ -67,7 +67,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
         return Monster.createMobAttributes()
                 .add(Attributes.ARMOR, 12F)
                 .add(Attributes.ATTACK_DAMAGE, 30.0F)
-                .add(Attributes.ATTACK_KNOCKBACK, 1.1F)
+                .add(Attributes.ATTACK_KNOCKBACK, 5F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
                 .add(Attributes.MAX_HEALTH, 70.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
@@ -139,8 +139,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
                 new OneRandomBehaviour<>(
-                    new NergalSwingAttack().cooldownFor(mob -> 100),
-                    new SummonGhostsAttack().cooldownFor(entity -> 120)
+                    new NergalSwingAttack().cooldownFor(mob -> 20),
+                    new SummonGhostsAttack().cooldownFor(entity -> 200)
                 )
         );
     }

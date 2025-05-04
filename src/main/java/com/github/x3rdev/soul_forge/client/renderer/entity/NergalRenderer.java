@@ -33,12 +33,7 @@ public class NergalRenderer extends GeoEntityRenderer<NergalEntity> {
     public void renderFinal(PoseStack poseStack, NergalEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
         super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, colour);
         if(renderDebugHitbox.get()) {
-            LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.LINES), animatable.getEntityData().get(NergalEntity.DEBUG_ATTACK_BOX),
-                    (1 + Mth.cos(animatable.tickCount / 20F)) / 2,
-                    (1 + Mth.sin(animatable.tickCount / 20F - 10)) / 2,
-                    (1 + Mth.sin(animatable.tickCount / 20F + 40)) / 2,
-                    1
-            );
+            LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.LINES), animatable.getEntityData().get(NergalEntity.DEBUG_ATTACK_BOX), 1, 1, 1, 1);
         }
     }
 }

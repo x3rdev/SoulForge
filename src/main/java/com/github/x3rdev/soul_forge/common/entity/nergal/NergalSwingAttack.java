@@ -4,11 +4,13 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.ai.MovingHitboxAttack;
 import com.github.x3rdev.soul_forge.common.entity.ai.MovingHitboxAttackPath;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
+import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
@@ -44,12 +46,14 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     @Override
     protected void tick(ServerLevel level, NergalEntity nergal, long gameTime) {
         super.tick(level, nergal, gameTime);
+        nergal.incrementTicksAttacking();
+
         AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking() + 4));
         nergal.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX, hurtBox);
-        nergal.incrementTicksAttacking();
-        level.getEntities(nergal, hurtBox).forEach(entity -> {
-            entity.hurt(nergal.damageSources().mobAttack(nergal), 6);
-        });
+        if(nergal.getTicksAttacking() > 19 && nergal.getTicksAttacking() < 32) {
+            level.getEntities(nergal, hurtBox.move(nergal.position()), EntitySelector.NO_SPECTATORS.and(entity -> !entity.getType().equals(EntityRegistry.GHOST.get())))
+                    .forEach(nergal::doHurtTarget);
+        }
     }
 
     @Override
