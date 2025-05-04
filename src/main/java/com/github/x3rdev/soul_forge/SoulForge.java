@@ -1,7 +1,6 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
-import com.github.x3rdev.soul_forge.common.item.ResearcherGlassesItem;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
@@ -34,10 +33,11 @@ public class SoulForge {
         StructureRegistry.STRUCTURES.register(modEventBus);
 
 
-        modEventBus.addListener(CommonSetup::attributeSetup);
+        modEventBus.addListener(CommonSetup::createEntityAttributes);
         neoEventBus.addListener(CommonSetup::onDeath);
         modEventBus.addListener(PacketRegistry::registerPayloadHandlers);
         modEventBus.addListener(DatapackRegistry::registerDatapackRegistries);
+        modEventBus.addListener(CommonSetup::registerSpawnPlacements);
 
     }
 }

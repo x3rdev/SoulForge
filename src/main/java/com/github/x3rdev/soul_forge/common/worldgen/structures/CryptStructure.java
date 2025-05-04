@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.structures;
+package com.github.x3rdev.soul_forge.common.worldgen.structures;
 
 import com.github.x3rdev.soul_forge.common.registry.StructureRegistry;
 import com.mojang.serialization.Codec;

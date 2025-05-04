@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
@@ -65,6 +66,7 @@ public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<G
                 .add(Attributes.ATTACK_KNOCKBACK, 1.0F)
                 .add(Attributes.MAX_HEALTH, 8.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.FOLLOW_RANGE, 35F)
                 .build();
     }
 
@@ -82,6 +84,7 @@ public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<G
     public List<? extends ExtendedSensor<? extends GhostEntity>> getSensors() {
         return List.of(
                 new NearbyPlayersSensor<>(),
+                new NearbyLivingEntitySensor<GhostEntity>().setPredicate((target, entity) -> target instanceof Player),
                 new HurtBySensor<>()
         );
     }
@@ -98,9 +101,7 @@ public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<G
     public BrainActivityGroup<? extends GhostEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(
-                        new TargetOrRetaliate<>().attackablePredicate(livingEntity -> {
-                            return !livingEntity.getType().equals(this.getType());
-                        }),
+                        new TargetOrRetaliate<>(),
                         new SetPlayerLookTarget<>(),
                         new SetRandomLookTarget<>()),
                 new OneRandomBehaviour<>(

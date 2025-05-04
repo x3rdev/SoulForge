@@ -2,31 +2,40 @@ package com.github.x3rdev.soul_forge.common;
 
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
-import com.github.x3rdev.soul_forge.common.entity.ai.MovingHitboxAttackPath;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 
 public class CommonSetup {
 
     @SubscribeEvent
-    public static void attributeSetup(EntityAttributeCreationEvent event) {
+    public static void createEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
         event.put(EntityRegistry.GHOST.get(), GhostEntity.createAttributes());
         event.put(EntityRegistry.NERGAL.get(), NergalEntity.createAttributes());
+    }
+
+    @SubscribeEvent
+    public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        event.register(
+                EntityRegistry.GHOST.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Mob::checkMobSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     @SubscribeEvent

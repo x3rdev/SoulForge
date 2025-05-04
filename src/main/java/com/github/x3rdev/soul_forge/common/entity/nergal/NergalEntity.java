@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
+import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
 import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
@@ -29,6 +31,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliat
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -68,7 +71,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
                 .add(Attributes.MAX_HEALTH, 70.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F)
-                .add(Attributes.FOLLOW_RANGE, 32F)
+                .add(Attributes.FOLLOW_RANGE, 64F)
                 .build();
     }
 
@@ -102,7 +105,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     @Override
     public List<? extends ExtendedSensor<NergalEntity>> getSensors() {
         return List.of(
-                new NearbyLivingEntitySensor<>(),
+                new NearbyPlayersSensor<>(),
+                new NearbyLivingEntitySensor<NergalEntity>().setPredicate((target, entity) -> target instanceof Player),
                 new HurtBySensor<>()
         );
     }
