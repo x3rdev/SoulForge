@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -33,22 +34,18 @@ public class StatueBlock extends Block implements EntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
+    private static Direction getNeighbourDirection(DoubleBlockHalf half) {
+        return half == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN;
+    }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide && player.isCreative()) {
-            DoubleBlockHalf half = state.getValue(HALF);
-            if (half == DoubleBlockHalf.LOWER) {
-                BlockPos blockpos = pos.above();
-                BlockState blockstate = level.getBlockState(blockpos);
-                if (blockstate.is(this) && blockstate.getValue(HALF) == DoubleBlockHalf.UPPER) {
-                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                    level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
-                }
-            }
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        BlockPos otherHalfPos = pos.relative(getNeighbourDirection(state.getValue(HALF)));
+        BlockState otherHalfState = level.getBlockState(otherHalfPos);
+        if(otherHalfState.is(this)) {
+            level.setBlock(otherHalfPos, Blocks.AIR.defaultBlockState(), 35);
         }
-
-        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable

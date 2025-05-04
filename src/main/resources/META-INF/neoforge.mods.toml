@@ -32,4 +32,10 @@ modId="smartbrainlib"
 mandatory=true
 versionRange="${sbl_version_range}"
 ordering="NONE"
-side="SERVER"
+side="BOTH"
+[[dependencies.${mod_id}]]
+modId="patchouli"
+mandatory=true
+versionRange="${patchouli_version_range}"
+ordering="NONE"
+side="BOTH"

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,20 +34,18 @@ public class ObeliskBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(NETHER_STAR, false).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
+    private static Direction getNeighbourDirection(DoubleBlockHalf half) {
+        return half == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN;
+    }
+
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        if (!level.isClientSide && player.isCreative()) {
-            DoubleBlockHalf half = state.getValue(HALF);
-            if (half.equals(DoubleBlockHalf.UPPER)) {
-                BlockPos blockpos = pos.below();
-                BlockState blockstate = level.getBlockState(blockpos);
-                if (blockstate.is(this) && blockstate.getValue(HALF).equals(DoubleBlockHalf.LOWER)) {
-                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                    level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
-                }
-            }
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        BlockPos otherHalfPos = pos.relative(getNeighbourDirection(state.getValue(HALF)));
+        BlockState otherHalfState = level.getBlockState(otherHalfPos);
+        if(otherHalfState.is(this)) {
+            level.setBlock(otherHalfPos, Blocks.AIR.defaultBlockState(), 35);
         }
-        super.playerDestroy(level, player, pos, state, blockEntity, tool);
     }
 
     @Nullable

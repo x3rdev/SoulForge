@@ -81,8 +81,8 @@ dependencies {
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:19.19.0.219"
-    compileOnly "vazkii.patchouli:Patchouli:1.21-${patchouli_version}-NEOFORGE:api"
-    runtimeOnly "vazkii.patchouli:Patchouli:1.21-${patchouli_version}-NEOFORGE"
+    compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"
+    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {

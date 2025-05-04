@@ -36,8 +36,6 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> ECTOPLASM = ITEMS.register("ectoplasm",
             () -> new Item(new Item.Properties()));
-    public static final DeferredHolder<Item, Item> NECRONOMICON = ITEMS.register("necronomicon",
-            () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> MURKY_LENS = ITEMS.register("murky_lens",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> RESEARCHER_GLASSES = ITEMS.register("researcher_glasses",
@@ -50,7 +48,7 @@ public class ItemRegistry {
 
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);
 
-        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOLARIS_ITEM_TAB = CREATIVE_MODE_TABS.register("main", () -> CreativeModeTab.builder()
+        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOUL_FORGE_ITEM_TAB = CREATIVE_MODE_TABS.register("main", () -> CreativeModeTab.builder()
                 .icon(Items.NAME_TAG::getDefaultInstance)
                 .title(Component.translatable("itemGroup." + SoulForge.MOD_ID))
                 .displayItems((displayParameters, output) -> {

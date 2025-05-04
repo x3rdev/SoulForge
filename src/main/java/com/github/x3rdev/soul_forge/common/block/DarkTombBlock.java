@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -27,24 +29,22 @@ public class DarkTombBlock extends Block implements EntityBlock {
     public static final BooleanProperty OPEN = BooleanProperty.create("tomb_open");
 
     public DarkTombBlock(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.pushReaction(PushReaction.BLOCK));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
+    private static Direction getNeighbourDirection(DoubleBlockHalf half, Direction direction) {
+        return half == DoubleBlockHalf.LOWER ? direction.getOpposite() : direction;
+    }
+
     @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        if (!level.isClientSide && player.isCreative()) {
-            DoubleBlockHalf half = state.getValue(HALF);
-            if (half.equals(DoubleBlockHalf.UPPER)) {
-                BlockPos blockpos = pos.relative(state.getValue(FACING));
-                BlockState blockstate = level.getBlockState(blockpos);
-                if (blockstate.is(this) && blockstate.getValue(HALF).equals(DoubleBlockHalf.LOWER)) {
-                    level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                    level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
-                }
-            }
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        BlockPos otherHalfPos = pos.relative(getNeighbourDirection(state.getValue(HALF), state.getValue(FACING)));
+        BlockState otherHalfState = level.getBlockState(otherHalfPos);
+        if(otherHalfState.is(this)) {
+            level.setBlock(otherHalfPos, Blocks.AIR.defaultBlockState(), 35);
         }
-        super.playerDestroy(level, player, pos, state, blockEntity, tool);
     }
 
     @Nullable
@@ -53,8 +53,11 @@ public class DarkTombBlock extends Block implements EntityBlock {
         BlockPos blockpos = pContext.getClickedPos();
         Level level = pContext.getLevel();
         Direction direction = pContext.getHorizontalDirection().getOpposite();
-        if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.relative(direction.getOpposite())).canBeReplaced(pContext)) {
-            return this.defaultBlockState().setValue(FACING, direction).setValue(OPEN, false).setValue(HALF, DoubleBlockHalf.LOWER);
+        if (level.getBlockState(blockpos.relative(direction.getOpposite())).canBeReplaced(pContext)) {
+            return this.defaultBlockState()
+                    .setValue(FACING, direction)
+                    .setValue(OPEN, false)
+                    .setValue(HALF, DoubleBlockHalf.LOWER);
         } else {
             return null;
         }
@@ -67,13 +70,12 @@ public class DarkTombBlock extends Block implements EntityBlock {
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return pState.getValue(HALF).equals(DoubleBlockHalf.UPPER) ? pLevel.getBlockState(pPos.relative(pState.getValue(FACING))).equals(pState.setValue(HALF, DoubleBlockHalf.LOWER)) : super.canSurvive(pState, pLevel, pPos);
+        if(pState.getValue(HALF).equals(DoubleBlockHalf.UPPER)) {
+            return pLevel.getBlockState(pPos.relative(pState.getValue(FACING))).equals(pState.setValue(HALF, DoubleBlockHalf.LOWER));
+        }
+        return super.canSurvive(pState, pLevel, pPos);
     }
 
-    @Override
-    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos) {
-        return !pState.canSurvive(pLevel, pPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pDirection, pNeighborState, pLevel, pPos, pNeighborPos);
-    }
 
     @Override
     public BlockState rotate(BlockState pState, Rotation pRotation) {
