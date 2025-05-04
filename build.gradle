@@ -69,6 +69,7 @@ repositories {
         url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
     }
     maven { url 'https://www.cursemaven.com' }
+    maven { url 'https://maven.blamejared.com' }
 }
 
 configurations {
@@ -80,6 +81,8 @@ dependencies {
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
     localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:19.19.0.219"
+    compileOnly "vazkii.patchouli:Patchouli:1.21-${patchouli_version}-NEOFORGE:api"
+    runtimeOnly "vazkii.patchouli:Patchouli:1.21-${patchouli_version}-NEOFORGE"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -96,7 +99,8 @@ tasks.withType(ProcessResources).configureEach {
             mod_authors            : mod_authors,
             mod_description        : mod_description,
             geckolib_version_range : geckolib_version_range,
-            sbl_version_range : sbl_version_range
+            sbl_version_range : sbl_version_range,
+            patchouli_version_range : patchouli_version_range
     ]
     inputs.properties replaceProperties
 

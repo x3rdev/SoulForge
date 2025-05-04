@@ -6,6 +6,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -23,5 +24,8 @@ public class DataComponentRegistry {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> WISP_UUID = DATA_COMPONENTS.registerComponentType("wisp_uuid",
             builder -> builder.persistent(UUIDUtil.CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> OBSERVATION_ID = DATA_COMPONENTS.registerComponentType("observation_id",
+            builder -> builder.persistent(ResourceLocation.CODEC).cacheEncoding());
 }
 

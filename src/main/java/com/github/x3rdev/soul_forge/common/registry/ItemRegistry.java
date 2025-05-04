@@ -41,7 +41,7 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> MURKY_LENS = ITEMS.register("murky_lens",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> RESEARCHER_GLASSES = ITEMS.register("researcher_glasses",
-            () -> new ResearcherGlasses(ArmorItem.Type.HELMET));
+            () -> new ResearcherGlassesItem(ArmorItem.Type.HELMET));
     public static final DeferredHolder<Item, Item> CURSED_SWORD = ITEMS.register("cursed_sword",
             CursedSwordItem::new);
 

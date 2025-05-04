@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
-import com.github.x3rdev.soul_forge.common.entity.ai.MovingHitboxAttackRegistry;
+import com.github.x3rdev.soul_forge.common.item.ResearcherGlassesItem;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
@@ -19,6 +19,7 @@ public class SoulForge {
 
     public SoulForge(ModContainer modContainer) {
         IEventBus modEventBus = modContainer.getEventBus();
+        IEventBus neoEventBus = NeoForge.EVENT_BUS;
 
         BlockEntityRegistry.BLOCK_ENTITIES.register(modEventBus);
         BlockItemRegistry.BLOCK_ITEMS.register(modEventBus);
@@ -34,8 +35,9 @@ public class SoulForge {
 
 
         modEventBus.addListener(CommonSetup::attributeSetup);
-        NeoForge.EVENT_BUS.addListener(CommonSetup::onDeath);
+        neoEventBus.addListener(CommonSetup::onDeath);
         modEventBus.addListener(PacketRegistry::registerPayloadHandlers);
-        modEventBus.addListener(MovingHitboxAttackRegistry::registerDatapackRegistries);
+        modEventBus.addListener(DatapackRegistry::registerDatapackRegistries);
+
     }
 }
