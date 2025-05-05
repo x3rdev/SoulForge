@@ -1,14 +1,14 @@
-// 1.21.1	2025-04-25T21:14:07.0124274	Loot Tables
+// 1.21.1	2025-05-04T16:16:50.3318185	Loot Tables
 f494cf1d21b0fe1009a293c6230c092efcd1e307 data/soul_forge/loot_table/blocks/chiseled_soul_bricks.json
 337b31ce9dbbdb531c075b94d3358a20e4f83dcb data/soul_forge/loot_table/blocks/cracked_soul_bricks.json
 5ad8c0aa597bd4da4f573057a30cb9fdff0302fb data/soul_forge/loot_table/blocks/dark_tomb.json
 16bff7de2498701d14372ac82e61ed24e7b66d21 data/soul_forge/loot_table/blocks/obelisk.json
-0d35713fd6c01bf480bd754182763f2919e18851 data/soul_forge/loot_table/blocks/soulwood_leaves.json
+21558e69d3b3fb0da40503ffb65da64b086fd87f data/soul_forge/loot_table/blocks/soulwood_leaves.json
 e30ce4d443cea3d0f2c1e07ee5550d841f57d638 data/soul_forge/loot_table/blocks/soulwood_liana.json
 9c73bcedd9af19545443a8af4c523e951fc84a4d data/soul_forge/loot_table/blocks/soulwood_liana_body.json
 28499b2da82cca244109c18adda9f8cc2951142c data/soul_forge/loot_table/blocks/soulwood_log.json
 a0fa99e7817aa4ff35570d25fe4bc2c740b581ef data/soul_forge/loot_table/blocks/soulwood_planks.json
-49cc06759b21fdde61d788c2c6872516f8d1a44b data/soul_forge/loot_table/blocks/soulwood_sapling.json
+ccc356e5139a4f7884fc18d488e72e5a245d854c data/soul_forge/loot_table/blocks/soulwood_sapling.json
 4eb8b38cbe73dd86111aaf22031b6346023bf8b2 data/soul_forge/loot_table/blocks/soul_bricks.json
 799903d39b8608ee91c0265a986f8463fea6c4be data/soul_forge/loot_table/blocks/soul_brick_column.json
 23cb2f69e38de758d5d1240a29e3570f7c0b96da data/soul_forge/loot_table/blocks/soul_brick_door.json

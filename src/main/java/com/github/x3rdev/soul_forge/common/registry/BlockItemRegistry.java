@@ -46,6 +46,8 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOUL_GEM_BLOCK.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_LEAVES = BLOCK_ITEMS.register("soulwood_leaves",
             () -> new BlockItem(BlockRegistry.SOULWOOD_LEAVES.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, BlockItem> SOULWOOD_SAPLING = BLOCK_ITEMS.register("soulwood_sapling",
+            () -> new BlockItem(BlockRegistry.SOULWOOD_SAPLING.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_LIANA = BLOCK_ITEMS.register("soulwood_liana",
             () -> new BlockItem(BlockRegistry.SOULWOOD_LIANA.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_LOG = BLOCK_ITEMS.register("soulwood_log",

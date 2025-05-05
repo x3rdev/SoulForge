@@ -19,7 +19,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 
-public class BiomeModifierRegistry {
+public class BiomeModifierBootstrap {
 
     public static final ResourceKey<BiomeModifier> SPAWN_GHOST = registerKey("spawn_ghost");
 
@@ -35,7 +35,7 @@ public class BiomeModifierRegistry {
 
         context.register(SOUL_CRYSTAL_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(PlacedFeatureRegistry.SOUL_CRYSTAL_ORE_PLACED_KEY)),
+                HolderSet.direct(placedFeatures.getOrThrow(PlacedFeatureBootstrap.SOUL_CRYSTAL_ORE)),
                 GenerationStep.Decoration.UNDERGROUND_ORES
         ));
     }

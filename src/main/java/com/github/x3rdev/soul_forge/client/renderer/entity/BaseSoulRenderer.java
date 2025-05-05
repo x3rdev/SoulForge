@@ -18,7 +18,7 @@ import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
 public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEntity> {
 
-    public BaseSoulRenderer(EntityRendererProvider.Context renderManager, GeoModel<SoulEntity> model) {
+    protected BaseSoulRenderer(EntityRendererProvider.Context renderManager, GeoModel<SoulEntity> model) {
         super(renderManager, model);
     }
 

@@ -26,12 +26,13 @@ public class SoulForge {
         DataComponentRegistry.DATA_COMPONENTS.register(modEventBus);
         EntityDataRegistry.ENTITY_DATA.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
+        FoliagePlacerTypeRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
-
+        TrunkPlacerTypeRegistry.TRUNK_PLACER_TYPES.register(modEventBus);
 
         modEventBus.addListener(CommonSetup::createEntityAttributes);
         neoEventBus.addListener(CommonSetup::onDeath);

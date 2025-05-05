@@ -1,9 +1,9 @@
 package com.github.x3rdev.soul_forge.common.datagen;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.worldgen.BiomeModifierRegistry;
-import com.github.x3rdev.soul_forge.common.worldgen.ConfiguredFeatureRegistry;
-import com.github.x3rdev.soul_forge.common.worldgen.PlacedFeatureRegistry;
+import com.github.x3rdev.soul_forge.common.worldgen.BiomeModifierBootstrap;
+import com.github.x3rdev.soul_forge.common.worldgen.ConfiguredFeatureBootstrap;
+import com.github.x3rdev.soul_forge.common.worldgen.PlacedFeatureBootstrap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -17,9 +17,9 @@ import java.util.concurrent.CompletableFuture;
 public class SoulForgeDatapackProvider extends DatapackBuiltinEntriesProvider {
 
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierRegistry::bootstrap)
-            .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatureRegistry::bootstrap)
-            .add(Registries.PLACED_FEATURE, PlacedFeatureRegistry::bootstrap);
+            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierBootstrap::bootstrap)
+            .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatureBootstrap::bootstrap)
+            .add(Registries.PLACED_FEATURE, PlacedFeatureBootstrap::bootstrap);
 
     public SoulForgeDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(SoulForge.MOD_ID));

@@ -1,12 +1,12 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
-import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
 import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +21,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
@@ -47,10 +46,10 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private final RawAnimation NERGAL_SWING = RawAnimation.begin().thenPlay("attack1");
-    private final RawAnimation NERGAL_SWIPE = RawAnimation.begin().thenPlay("attack2");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation NERGAL_SWING = RawAnimation.begin().thenPlay("attack1");
+    private static final RawAnimation NERGAL_SWIPE = RawAnimation.begin().thenPlay("attack2");
 
 
     private int ticksAttacking = 0;
@@ -64,7 +63,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     }
 
     public static AttributeSupplier createAttributes() {
-        return Monster.createMobAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.ARMOR, 12F)
                 .add(Attributes.ATTACK_DAMAGE, 30.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 5F)
@@ -78,11 +77,6 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     @Override
     protected void customServerAiStep() {
         tickBrain(this);
-    }
-
-    @Override
-    public void swing(InteractionHand hand) {
-        super.swing(hand);
     }
 
     public int getTicksAttacking() {

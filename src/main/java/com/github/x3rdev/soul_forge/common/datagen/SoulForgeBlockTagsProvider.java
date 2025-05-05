@@ -22,5 +22,6 @@ public class SoulForgeBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.STAIRS).add(BlockRegistry.SOUL_BRICK_STAIRS.get());
         tag(BlockTags.SLABS).add(BlockRegistry.SOUL_BRICK_SLAB.get());
         tag(BlockTags.WALLS).add(BlockRegistry.SOUL_BRICK_WALL.get());
+        tag(BlockTags.LOGS).add(BlockRegistry.SOULWOOD_LEAVES.get());
     }
 }
