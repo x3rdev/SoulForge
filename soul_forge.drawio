@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0" version="27.0.2">
   <diagram name="Page-1" id="7Zxg5EmYX3JTQmx1fJec">
-    <mxGraphModel dx="1042" dy="660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="947" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -36,6 +36,9 @@
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-9" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Research&lt;/h1&gt;&lt;p&gt;1: get necronomicon&lt;/p&gt;&lt;p&gt;2: necronomicon will tell you to make research table&lt;/p&gt;&lt;p&gt;3. research table lets you unlock more pages in book&lt;/p&gt;&lt;p&gt;4. research may not be linear&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="10" width="460" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="wy_YtldbyQxqtTmz-SZR-12" value="&lt;div&gt;Internal system options:&lt;/div&gt;&lt;div&gt;&lt;ul&gt;&lt;li&gt;Define everything in one file&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Pros: easy to implement in code&lt;/li&gt;&lt;li&gt;Cons: bad readability, bad extensibility&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Define parent&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Pros: best extensibility&lt;/li&gt;&lt;li&gt;Cons: implementation might have poor performance, but also it might not matter&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;Define child&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Pros: easy implementation&lt;/li&gt;&lt;li&gt;Cons: extensibility is slightly worse than define parent&lt;/li&gt;&lt;/ul&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="470" width="380" height="230" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
