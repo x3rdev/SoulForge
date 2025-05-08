@@ -4,35 +4,38 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="wy_YtldbyQxqtTmz-SZR-1" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="360" y="40" width="80" height="80" as="geometry" />
+        <mxCell id="wy_YtldbyQxqtTmz-SZR-1" value="Research table" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="360" y="160" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-2" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="wy_YtldbyQxqtTmz-SZR-1" target="wy_YtldbyQxqtTmz-SZR-5">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="300" y="200" as="sourcePoint" />
-            <mxPoint x="280" y="160" as="targetPoint" />
+            <mxPoint x="300" y="320" as="sourcePoint" />
+            <mxPoint x="280" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-3" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="440" y="120" as="sourcePoint" />
-            <mxPoint x="520" y="200" as="targetPoint" />
+            <mxPoint x="440" y="240" as="sourcePoint" />
+            <mxPoint x="520" y="320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-4" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="400" y="120" as="sourcePoint" />
-            <mxPoint x="400" y="200" as="targetPoint" />
+            <mxPoint x="400" y="240" as="sourcePoint" />
+            <mxPoint x="400" y="320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-5" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="240" y="200" width="80" height="80" as="geometry" />
+          <mxGeometry x="240" y="320" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-6" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="360" y="200" width="80" height="80" as="geometry" />
+          <mxGeometry x="360" y="320" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="wy_YtldbyQxqtTmz-SZR-7" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="480" y="200" width="80" height="80" as="geometry" />
+          <mxGeometry x="480" y="320" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="wy_YtldbyQxqtTmz-SZR-9" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Research&lt;/h1&gt;&lt;p&gt;1: get necronomicon&lt;/p&gt;&lt;p&gt;2: necronomicon will tell you to make research table&lt;/p&gt;&lt;p&gt;3. research table lets you unlock more pages in book&lt;/p&gt;&lt;p&gt;4. research may not be linear&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" width="460" height="150" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
