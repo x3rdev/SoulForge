@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.block;
 
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
+import com.github.x3rdev.soul_forge.common.registry.FoliagePlacerTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.TrunkPlacerTypeRegistry;
 import com.github.x3rdev.soul_forge.common.worldgen.ConfiguredFeatureBootstrap;
 import com.google.common.collect.Lists;
@@ -10,8 +11,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.BiasedToBottomInt;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
@@ -42,7 +45,7 @@ public class SoulwoodSaplingBlock extends SaplingBlock {
                 BlockStateProvider.simple(BlockRegistry.SOULWOOD_LOG.get()),
                 new SoulwoodTrunkPlacer(6, 3, 4),
                 BlockStateProvider.simple(BlockRegistry.SOULWOOD_LEAVES.get()),
-                new BushFoliagePlacer(ConstantInt.of(1), ConstantInt.of(0), 1),
+                new AcaciaFoliagePlacer(UniformInt.of(3, 4), ConstantInt.of(0)),
                 Optional.empty(),
                 new TwoLayersFeatureSize(1, 0, 1)
         );
@@ -85,12 +88,13 @@ public class SoulwoodSaplingBlock extends SaplingBlock {
                 initialDegree += (360/horizontalAngles.length) - random.nextInt(-20, 20);
             }
             for (int horizontalAngle : horizontalAngles) {
+                float branchHeightCoefficient = random.nextFloat()*2+3;
                 for (int j = 0; j < 18; j++) {
-                    Vec3 precisePose = pos.above(baseHeight).getCenter().add(new Vec3(j/3F, branchHeightFunction(j/3F), 0).yRot(Mth.DEG_TO_RAD * horizontalAngle));
+                    Vec3 precisePose = pos.above(baseHeight).getCenter().add(new Vec3(j/3F, branchHeightFunction(j/3F, branchHeightCoefficient), 0).yRot(Mth.DEG_TO_RAD * horizontalAngle));
                     BlockPos branchPos = BlockPos.containing(precisePose).below(1);
                     placeLog(level, blockSetter, random, branchPos, config);
-                    if(j > 8 && j < 17) {
-                        list.add(new FoliagePlacer.FoliageAttachment(branchPos.above(), 1, false));
+                    if(j > 10 && j < 17) {
+                        list.add(new FoliagePlacer.FoliageAttachment(branchPos.above(1), 0, false));
                     }
                 }
             }
@@ -98,8 +102,8 @@ public class SoulwoodSaplingBlock extends SaplingBlock {
             return list;
         }
 
-        private static float branchHeightFunction(float x) {
-            return (float) (-(1F/5)*Math.pow(x, 1/1.2F)*(x-11.5));
+        private static float branchHeightFunction(float x, float a) {
+            return (float) (-(1F/a)*Math.pow(x, 1/1.2F)*(x-11.5));
         }
 
     }
@@ -116,17 +120,26 @@ public class SoulwoodSaplingBlock extends SaplingBlock {
 
         @Override
         protected FoliagePlacerType<?> type() {
-            return null;
+            return FoliagePlacerTypeRegistry.SOULWOOD.get();
         }
 
         @Override
         protected void createFoliage(LevelSimulatedReader level, FoliageSetter blockSetter, RandomSource random, TreeConfiguration config, int maxFreeTreeHeight, FoliageAttachment attachment, int foliageHeight, int foliageRadius, int offset) {
-
+            int rad = 2;
+            for (int i = -rad; i <= rad; i++) {
+                for (int j = -rad; j <= rad; j++) {
+                    for (int k = -rad; k <= rad; k++) {
+                        if(i*i+j*j+k*k <= rad*rad) {
+                            tryPlaceLeaf(level, blockSetter, random, config, attachment.pos().offset(i,j,k));
+                        }
+                    }
+                }
+            }
         }
 
         @Override
         public int foliageHeight(RandomSource random, int height, TreeConfiguration config) {
-            return 0;
+            return height;
         }
 
         @Override

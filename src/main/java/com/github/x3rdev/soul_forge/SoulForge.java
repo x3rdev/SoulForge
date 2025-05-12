@@ -30,6 +30,8 @@ public class SoulForge {
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
+        RecipeSerializerRegistry.RECIPE_SERIALIZERS.register(modEventBus);
+        RecipeTypeRegistry.RECIPE_TYPES.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
         TrunkPlacerTypeRegistry.TRUNK_PLACER_TYPES.register(modEventBus);
