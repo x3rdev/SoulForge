@@ -34,7 +34,9 @@ public class SummonGhostsAttack extends ExtendedBehaviour<NergalEntity> {
 
     @Override
     protected void start(NergalEntity entity) {
+        entity.triggerAnim("c", "nergal_summon");
         entity.resetTicksAttacking();
+
     }
 
     @Override
@@ -45,6 +47,8 @@ public class SummonGhostsAttack extends ExtendedBehaviour<NergalEntity> {
     @Override
     protected void tick(NergalEntity entity) {
         entity.incrementTicksAttacking();
+        entity.setDeltaMovement(0,0,0);
+
         if(entity.getTicksAttacking() == 50) {
             summonGhosts(entity, entity.level(), 8);
         }

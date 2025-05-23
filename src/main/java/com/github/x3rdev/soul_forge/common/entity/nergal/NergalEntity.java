@@ -50,7 +50,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation NERGAL_SWING = RawAnimation.begin().thenPlay("attack1");
     private static final RawAnimation NERGAL_SWIPE = RawAnimation.begin().thenPlay("attack2");
-
+    private static final RawAnimation NERGAL_SUMMON = RawAnimation.begin().thenPlay("summon");
 
     private int ticksAttacking = 0;
 
@@ -148,7 +148,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
             return state.setAndContinue(IDLE);
         })
                 .triggerableAnim("nergal_swing", NERGAL_SWING)
-                .triggerableAnim("nergal_swipe", NERGAL_SWIPE));
+                .triggerableAnim("nergal_swipe", NERGAL_SWIPE)
+                .triggerableAnim("nergal_summon", NERGAL_SUMMON));
     }
 
     @Override

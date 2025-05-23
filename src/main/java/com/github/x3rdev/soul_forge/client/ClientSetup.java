@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.client;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle.MyParticleProvider;
 import com.github.x3rdev.soul_forge.client.renderer.block.DarkTombRenderer;
+import com.github.x3rdev.soul_forge.client.renderer.block.PedestalRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.StatueRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
@@ -45,8 +46,9 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.GHOST.get(), GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NERGAL.get(), NergalRenderer::new);
 
-        event.registerBlockEntityRenderer(BlockEntityRegistry.DARK_TOMB.get(), pContext -> new DarkTombRenderer());
-        event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), pContext -> new StatueRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.DARK_TOMB.get(), context -> new DarkTombRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), context -> new StatueRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.PEDESTAL.get(), context -> new PedestalRenderer());
     }
 
     @SubscribeEvent

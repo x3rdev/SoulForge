@@ -47,6 +47,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     protected void tick(ServerLevel level, NergalEntity nergal, long gameTime) {
         super.tick(level, nergal, gameTime);
         nergal.incrementTicksAttacking();
+        nergal.setDeltaMovement(0,0,0);
 
         AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking() + 4));
         nergal.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX, hurtBox);

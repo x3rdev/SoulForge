@@ -60,4 +60,6 @@ public class BlockRegistry {
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)));
     public static final DeferredHolder<Block, Block> SOULWOOD_PLANKS = BLOCKS.register("soulwood_planks",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
+    public static final DeferredHolder<Block, PedestalBlock> PEDESTAL = BLOCKS.register("pedestal",
+            () -> new PedestalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
 }
