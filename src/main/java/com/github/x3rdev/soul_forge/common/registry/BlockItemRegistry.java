@@ -54,4 +54,6 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOULWOOD_LOG.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_PLANKS = BLOCK_ITEMS.register("soulwood_planks",
             () -> new BlockItem(BlockRegistry.SOULWOOD_PLANKS.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, BlockItem> PEDESTAL = BLOCK_ITEMS.register("pedestal",
+            () -> new BlockItem(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
 }

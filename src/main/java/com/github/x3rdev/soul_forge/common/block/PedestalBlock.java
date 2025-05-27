@@ -3,9 +3,13 @@ package com.github.x3rdev.soul_forge.common.block;
 import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -15,6 +19,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -34,13 +39,44 @@ public class PedestalBlock extends Block implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         PedestalBlockEntity blockEntity = level.getBlockEntity(pos, BlockEntityRegistry.PEDESTAL.get()).orElseThrow();
+        if(!blockEntity.getTheItem().isEmpty()) {
+            this.getItemFromPedestal(blockEntity, state, level, pos, player, hitResult);
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         PedestalBlockEntity blockEntity = level.getBlockEntity(pos, BlockEntityRegistry.PEDESTAL.get()).orElseThrow();
+//        if(!blockEntity.getTheItem().isEmpty()) {
+//            this.getItemFromPedestal(blockEntity, state, level, pos, player, hitResult);
+//            return ItemInteractionResult.sidedSuccess(level.isClientSide());
+//        }
+        if (!stack.isEmpty()){
+            blockEntity.setTheItem(stack.copyWithCount(1));
+            if (!player.hasInfiniteMaterials()) {
+                stack.consume(1, player);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+    }
+
+    private void getItemFromPedestal(PedestalBlockEntity blockEntity, BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        blockEntity.removeTheItem();
+        if (!level.isClientSide()) {
+            BlockPos blockpos = pos;
+            ItemStack itemstack = blockEntity.getTheItem();
+            if (!itemstack.isEmpty()) {
+                Vec3 vec3 = Vec3.atLowerCornerWithOffset(blockpos, 0.5, 1.01, 0.5).offsetRandom(level.random, 0.7F);
+                ItemStack itemstack1 = itemstack.copy();
+                ItemEntity itementity = new ItemEntity(level, vec3.x(), vec3.y(), vec3.z(), itemstack1);
+                itementity.setDefaultPickUpDelay();
+                level.addFreshEntity(itementity);
+                level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
+            }
+        }
     }
 
     @Override

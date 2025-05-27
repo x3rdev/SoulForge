@@ -3,85 +3,84 @@ package com.github.x3rdev.soul_forge.common.block_entity;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.ticks.ContainerSingleItem;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, Container {
+public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
 
-    private final NonNullList<ItemStack> items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private ItemStack item;
 
     public PedestalBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.PEDESTAL.get(), pos, blockState);
-    }
-
-    private void interactEmptyHand(ServerPlayer player) {
-
-    }
-
-    private void spawnErrorParticles() {
-
+        this.item = ItemStack.EMPTY;
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
+        if(tag.get("item") != null) {
+            this.item = ItemStack.parse(registries, tag.get("item")).orElseThrow();
+        }
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
+        if(!item.isEmpty()) {
+            tag.put("item", item.save(registries));
+        }
     }
 
     @Override
-    public int getContainerSize() {
-        return 1;
+    public ItemStack getTheItem() {
+        return this.item;
     }
 
     @Override
-    public boolean isEmpty() {
-        return items.stream().allMatch(ItemStack::isEmpty);
+    public void setTheItem(ItemStack item) {
+        this.item = item;
+        this.setChanged();
     }
 
     @Override
-    public ItemStack getItem(int slot) {
-        return items.get(slot);
+    public ItemStack removeTheItem() {
+        ItemStack returnStack = ContainerSingleItem.super.removeTheItem();
+        this.item = ItemStack.EMPTY;
+        this.setChanged();
+        return returnStack;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public ItemStack removeItem(int slot, int amount) {
-        items.get(slot)
-        return null;
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int slot) {
-        return null;
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return false;
-    }
-
-    @Override
-    public void clearContent() {
-
+        return Container.stillValidBlockEntity(this, player);
     }
 
     // client code start
@@ -95,4 +94,5 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
+
 }

@@ -48,7 +48,7 @@ public class ClientSetup {
 
         event.registerBlockEntityRenderer(BlockEntityRegistry.DARK_TOMB.get(), context -> new DarkTombRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), context -> new StatueRenderer());
-        event.registerBlockEntityRenderer(BlockEntityRegistry.PEDESTAL.get(), context -> new PedestalRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.PEDESTAL.get(), PedestalRenderer::new);
     }
 
     @SubscribeEvent
