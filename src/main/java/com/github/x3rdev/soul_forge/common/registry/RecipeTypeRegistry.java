@@ -11,7 +11,7 @@ public class RecipeTypeRegistry {
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, SoulForge.MOD_ID);
 
-    public static final DeferredHolder<RecipeType<?>, RecipeType<RitualRecipe>> RITUAL_RECIPE_TYPE = RECIPE_TYPES.register("ritual",
+    public static final DeferredHolder<RecipeType<?>, RecipeType<RitualRecipe>> RITUAL = RECIPE_TYPES.register("ritual",
             resourceLocation -> new RecipeType<>() {
                 @Override
                 public String toString() {

@@ -31,8 +31,8 @@ public class PedestalRenderer extends GeoBlockRenderer<PedestalBlockEntity> {
     @Override
     public void renderFinal(PoseStack poseStack, PedestalBlockEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
         poseStack.pushPose();
-        poseStack.translate(0.5,1+0.125*Mth.sin((float) (RenderUtil.getCurrentTick()*0.1F)),0.5);
-        poseStack.scale(1.25F, 1.25F, 1.25F);
+        poseStack.translate(0.5,1.25+0.125*Mth.sin((float) (RenderUtil.getCurrentTick()*0.1F)),0.5);
+        poseStack.scale(1.1F, 1.1F, 1.1F);
         poseStack.mulPose(Axis.YP.rotationDegrees((float) RenderUtil.getCurrentTick()));
         itemRenderer.renderStatic(animatable.getTheItem(), ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource, animatable.getLevel(), animatable.hashCode());
         poseStack.popPose();

@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "soul_forge:item/pedestal"
-  }
+  "parent": "soul_forge:block/gecko_block"
 }

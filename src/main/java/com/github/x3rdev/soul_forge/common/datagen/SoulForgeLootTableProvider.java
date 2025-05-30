@@ -60,6 +60,7 @@ public class SoulForgeLootTableProvider extends LootTableProvider {
             dropOther(BlockRegistry.SOULWOOD_LIANA_BODY.get(), BlockRegistry.SOULWOOD_LIANA.get());
             dropSelf(BlockRegistry.SOULWOOD_LOG.get());
             dropSelf(BlockRegistry.SOULWOOD_PLANKS.get());
+            dropSelf(BlockRegistry.PEDESTAL.get());
         }
     }
 }

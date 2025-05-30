@@ -31,7 +31,7 @@ public class BiomeModifierBootstrap {
 
         context.register(SPAWN_GHOST, new BiomeModifiers.AddSpawnsBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
-                List.of(new MobSpawnSettings.SpawnerData(EntityRegistry.GHOST.get(), 15, 4, 8))));
+                List.of(new MobSpawnSettings.SpawnerData(EntityRegistry.GHOST.get(), 8, 2, 5))));
 
         context.register(SOUL_CRYSTAL_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),

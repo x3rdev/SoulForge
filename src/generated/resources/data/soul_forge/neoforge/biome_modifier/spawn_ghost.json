@@ -3,8 +3,8 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "soul_forge:ghost",
-    "maxCount": 8,
-    "minCount": 4,
-    "weight": 15
+    "maxCount": 5,
+    "minCount": 2,
+    "weight": 8
   }
 }

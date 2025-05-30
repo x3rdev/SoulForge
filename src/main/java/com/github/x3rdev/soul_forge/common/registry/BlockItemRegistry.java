@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.item.GeckoBlockItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -55,5 +56,5 @@ public class BlockItemRegistry {
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_PLANKS = BLOCK_ITEMS.register("soulwood_planks",
             () -> new BlockItem(BlockRegistry.SOULWOOD_PLANKS.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> PEDESTAL = BLOCK_ITEMS.register("pedestal",
-            () -> new BlockItem(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
+            () -> new GeckoBlockItem(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
 }

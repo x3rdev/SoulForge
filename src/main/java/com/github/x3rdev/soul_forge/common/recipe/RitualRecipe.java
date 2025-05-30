@@ -79,7 +79,7 @@ public class RitualRecipe implements Recipe<RitualInput> {
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeTypeRegistry.RITUAL_RECIPE_TYPE.get();
+        return RecipeTypeRegistry.RITUAL.get();
     }
 
     public Ingredient getInputPrimary() {
