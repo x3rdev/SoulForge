@@ -20,7 +20,6 @@ public class RitualRecipe implements Recipe<RitualInput> {
     private final Ingredient inputCatalystSouth;
     private final Ingredient inputCatalystSouthWest;
     private final Ingredient inputCatalystWest;
-
     private final Ingredient inputCatalystNorthWest;
 
     private final ItemStack result;
@@ -45,7 +44,6 @@ public class RitualRecipe implements Recipe<RitualInput> {
 
     @Override
     public boolean matches(RitualInput input, Level level) {
-
         return inputPrimary.test(input.primary()) &&
                 inputCatalystNorth.test(input.catalystNorth()) &&
                 inputCatalystNorthEast.test(input.catalystNorthEast()) &&
@@ -80,6 +78,11 @@ public class RitualRecipe implements Recipe<RitualInput> {
     @Override
     public RecipeType<?> getType() {
         return RecipeTypeRegistry.RITUAL.get();
+    }
+
+    @Override
+    public String getGroup() {
+        return Recipe.super.getGroup();
     }
 
     public Ingredient getInputPrimary() {

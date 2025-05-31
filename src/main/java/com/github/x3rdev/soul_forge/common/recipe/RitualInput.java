@@ -14,7 +14,6 @@ public record RitualInput(
 
     @Override
     public ItemStack getItem(int index) {
-        if(index < 0 || index > size()) throw new IllegalArgumentException("No item for index: " + index);
         switch (index) {
             case 0 -> {
                 return primary;
@@ -43,14 +42,12 @@ public record RitualInput(
             case 8 -> {
                 return catalystNorthWest;
             }
-            default -> {
-                return null;
-            }
         }
+        throw new IllegalArgumentException("No item for index: " + index);
     }
 
     @Override
     public int size() {
-        return 8;
+        return 9;
     }
 }

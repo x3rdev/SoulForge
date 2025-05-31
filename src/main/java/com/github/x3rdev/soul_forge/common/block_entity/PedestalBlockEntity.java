@@ -14,6 +14,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +45,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             Vec3i.ZERO.south(3),
             Vec3i.ZERO.south(2).west(2),
             Vec3i.ZERO.west(3),
-            Vec3i.ZERO.north(2).south(2)
+            Vec3i.ZERO.north(2).west(2)
     };
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -53,16 +56,19 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         this.item = ItemStack.EMPTY;
     }
 
-    public void tryStartRitual() {
+    public void tryStartRitual(ItemStack necronomiconStack, ServerPlayer player) {
         if(isRitualSetupValid()) {
+            System.out.println("found setup");
             RitualInput input = buildRitualInput();
             Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
             if(recipe.isPresent()) {
-
+                System.out.println("found recipe");
             } else {
                 // TODO: do smthn when recipe doesnt work
+                level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
             }
         } else {
+            level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
             spawnMissingPedestalParticles();
         }
     }
@@ -171,6 +177,12 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     @Override
     public boolean stillValid(Player player) {
         return Container.stillValidBlockEntity(this, player);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     // client code start

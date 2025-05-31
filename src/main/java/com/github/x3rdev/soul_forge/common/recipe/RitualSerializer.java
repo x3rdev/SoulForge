@@ -12,16 +12,16 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
 
     public static final MapCodec<RitualRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    Ingredient.CODEC.fieldOf("primary").forGetter(RitualRecipe::getInputPrimary),
-                    Ingredient.CODEC.fieldOf("catalyst_north").forGetter(RitualRecipe::getInputCatalystNorth),
-                    Ingredient.CODEC.fieldOf("catalyst_north_east").forGetter(RitualRecipe::getInputCatalystNorthEast),
-                    Ingredient.CODEC.fieldOf("catalyst_east").forGetter(RitualRecipe::getInputCatalystEast),
-                    Ingredient.CODEC.fieldOf("catalyst_south_east").forGetter(RitualRecipe::getInputCatalystSouthEast),
-                    Ingredient.CODEC.fieldOf("catalyst_south").forGetter(RitualRecipe::getInputCatalystSouth),
-                    Ingredient.CODEC.fieldOf("catalyst_south_west").forGetter(RitualRecipe::getInputCatalystSouthWest),
-                    Ingredient.CODEC.fieldOf("catalyst_west").forGetter(RitualRecipe::getInputCatalystWest),
-                    Ingredient.CODEC.fieldOf("catalyst_north_west").forGetter(RitualRecipe::getInputCatalystNorthWest),
-                    ItemStack.CODEC.fieldOf("result").forGetter(RitualRecipe::getResult)
+                    Ingredient.CODEC.fieldOf("primary").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorth),
+                    Ingredient.CODEC.fieldOf("catalyst_north").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorth),
+                    Ingredient.CODEC.fieldOf("catalyst_north_east").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorthEast),
+                    Ingredient.CODEC.fieldOf("catalyst_east").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystEast),
+                    Ingredient.CODEC.fieldOf("catalyst_south_east").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouthEast),
+                    Ingredient.CODEC.fieldOf("catalyst_south").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouth),
+                    Ingredient.CODEC.fieldOf("catalyst_south_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouthWest),
+                    Ingredient.CODEC.fieldOf("catalyst_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystWest),
+                    Ingredient.CODEC.fieldOf("catalyst_north_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorthWest),
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(RitualRecipe::getResult)
             ).apply(instance, RitualRecipe::new)
     );
 

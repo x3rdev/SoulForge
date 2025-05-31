@@ -1,0 +1,22 @@
+{
+  "type": "soul_forge:ritual",
+  "primary": {
+    "item": "minecraft:diamond"
+  },
+  "catalyst_north": {
+    "item": "soul_forge:soul_gem"
+  },
+  "catalyst_east": {
+    "item": "soul_forge:soul_gem"
+  },
+  "catalyst_south": {
+    "item": "soul_forge:soul_gem"
+  },
+  "catalyst_west": {
+    "item": "soul_forge:soul_gem"
+  },
+  "result": {
+    "id": "soul_forge:soul_crystal",
+    "count": 2
+  }
+}

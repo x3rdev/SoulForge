@@ -43,6 +43,8 @@ public class ItemRegistry {
             () -> new ResearcherGlassesItem(ArmorItem.Type.HELMET));
     public static final DeferredHolder<Item, Item> CURSED_SWORD = ITEMS.register("cursed_sword",
             CursedSwordItem::new);
+    public static final DeferredHolder<Item, Item> NECRONOMICON = ITEMS.register("necronomicon",
+            NecronomiconItem::new);
 
 
     public static class ModItemTab {
