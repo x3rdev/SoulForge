@@ -15,27 +15,27 @@ public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, SoulForge.MOD_ID);
 
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> SOUL = registerMob("soul",
-            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulTypes.SOUL),
+            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.SOUL),
             MobCategory.MISC,
             0.5F,
             1.0F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> UNDEAD_SOUL = registerMob("undead_soul",
-            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulTypes.UNDEAD_SOUL),
+            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.UNDEAD_SOUL),
             MobCategory.MISC,
             0.5F,
             1.0F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> NETHER_SOUL = registerMob("nether_soul",
-            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulTypes.NETHER_SOUL),
+            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.NETHER_SOUL),
             MobCategory.MISC,
             0.5F,
             1.0F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> ENDER_SOUL = registerMob("ender_soul",
-            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulTypes.ENDER_SOUL),
+            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.ENDER_SOUL),
             MobCategory.MISC,
             0.5F,
             1.0F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> DRAGON_SOUL = registerMob("dragon_soul",
-            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulTypes.DRAGON_SOUL),
+            (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.DRAGON_SOUL),
             MobCategory.MISC,
             0.75F,
             1.0F);

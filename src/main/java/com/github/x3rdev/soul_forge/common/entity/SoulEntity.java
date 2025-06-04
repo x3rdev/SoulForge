@@ -11,7 +11,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -59,12 +58,12 @@ public class SoulEntity extends Entity implements GeoEntity {
     }
 
     public SoulType getSoulType() {
-        for (SoulTypes soulType : SoulTypes.values()) {
+        for (SoulType soulType : SoulType.values()) {
             if (soulType.toString().equals(entityData.get(DATA_SOUL_TYPE))) {
                 return soulType;
             }
         }
-        return SoulTypes.SOUL;
+        return SoulType.SOUL;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class SoulEntity extends Entity implements GeoEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_SOUL_TYPE, SoulTypes.SOUL.toString());
+        builder.define(DATA_SOUL_TYPE, SoulType.SOUL.toString());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
-import com.github.x3rdev.soul_forge.common.entity.SoulTypes;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +18,7 @@ public class SoulBottleItem extends Item {
 
     public SoulBottleItem(int capacity) {
         super(new Properties()
-                .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), "")
+                .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), SoulType.SOUL)
                 .component(DataComponentRegistry.STORED_SOUL_COUNT.get(), 0)
         );
         this.capacity = capacity;
@@ -77,16 +76,14 @@ public class SoulBottleItem extends Item {
     }
 
     private void setSoulType(ItemStack stack, @Nullable SoulType soulType) {
-        stack.set(DataComponentRegistry.STORED_SOUL_TYPE, soulType.toString());
+        stack.set(DataComponentRegistry.STORED_SOUL_TYPE, soulType);
     }
 
     private @Nullable SoulType getSoulType(ItemStack stack) {
-        for (SoulTypes soulType : SoulTypes.values()) {
-            if (soulType.toString().equals(stack.get(DataComponentRegistry.STORED_SOUL_TYPE))) {
-                return soulType;
-            }
+        if(stack.get(DataComponentRegistry.STORED_SOUL_COUNT) == 0) {
+            return null;
         }
-        return null;
+        return stack.get(DataComponentRegistry.STORED_SOUL_TYPE);
     }
 
     private void setSoulCount(ItemStack stack, int count) {

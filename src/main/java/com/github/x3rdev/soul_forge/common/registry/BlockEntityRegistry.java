@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common.registry;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.block_entity.DarkTombBlockEntity;
 import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
+import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
 import com.github.x3rdev.soul_forge.common.block_entity.StatueBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,4 +20,6 @@ public class BlockEntityRegistry {
             () -> BlockEntityType.Builder.of(StatueBlockEntity::new, BlockRegistry.STATUE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PedestalBlockEntity>> PEDESTAL = BLOCK_ENTITIES.register("pedestal",
             () -> BlockEntityType.Builder.of(PedestalBlockEntity::new, BlockRegistry.PEDESTAL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SoulStorageBlockEntity>> SOUL_STORAGE = BLOCK_ENTITIES.register("soul_storage",
+            () -> BlockEntityType.Builder.of(SoulStorageBlockEntity::new, BlockRegistry.SOUL_STORAGE.get()).build(null));
 }

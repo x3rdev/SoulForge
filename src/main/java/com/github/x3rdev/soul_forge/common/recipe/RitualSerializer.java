@@ -1,12 +1,18 @@
 package com.github.x3rdev.soul_forge.common.recipe;
 
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
 
@@ -21,6 +27,7 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
                     Ingredient.CODEC.fieldOf("catalyst_south_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouthWest),
                     Ingredient.CODEC.fieldOf("catalyst_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystWest),
                     Ingredient.CODEC.fieldOf("catalyst_north_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorthWest),
+                    Codec.unboundedMap(SoulType.CODEC, Codec.INT).fieldOf("souls").forGetter(RitualRecipe::getInputSouls),
                     ItemStack.STRICT_CODEC.fieldOf("result").forGetter(RitualRecipe::getResult)
             ).apply(instance, RitualRecipe::new)
     );
@@ -37,6 +44,12 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
             Ingredient inputCatalystSouthWest = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient inputCatalystWest = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             Ingredient inputCatalystNorthWest = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            HashMap<SoulType, Integer> inputSouls = ByteBufCodecs.map(
+                    HashMap::new,
+                    SoulType.STREAM_CODEC,
+                    ByteBufCodecs.INT,
+                    SoulType.values().length
+            ).decode(buffer);
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             return new RitualRecipe(
                     inputPrimary,
@@ -48,6 +61,7 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
                     inputCatalystSouthWest,
                     inputCatalystWest,
                     inputCatalystNorthWest,
+                    inputSouls,
                     result
             );
         }
@@ -63,6 +77,12 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystSouthWest());
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystWest());
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystNorthWest());
+            ByteBufCodecs.map(
+                    HashMap::new,
+                    SoulType.STREAM_CODEC,
+                    ByteBufCodecs.INT,
+                    SoulType.values().length
+            ).encode(buffer, new HashMap<>(value.getInputSouls()));
             ItemStack.STREAM_CODEC.encode(buffer, value.getResult());
         }
     };

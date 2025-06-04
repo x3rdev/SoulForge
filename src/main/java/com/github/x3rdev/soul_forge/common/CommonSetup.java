@@ -85,27 +85,27 @@ public class CommonSetup {
 
 
     private static void dropUndeadSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.UNDEAD_SOUL.get(), level, SoulTypes.UNDEAD_SOUL);
+        SoulEntity soulEntity = new SoulEntity(EntityRegistry.UNDEAD_SOUL.get(), level, SoulType.UNDEAD_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropNetherSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.NETHER_SOUL.get(), level, SoulTypes.NETHER_SOUL);
+        SoulEntity soulEntity = new SoulEntity(EntityRegistry.NETHER_SOUL.get(), level, SoulType.NETHER_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropEnderSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.ENDER_SOUL.get(), level, SoulTypes.ENDER_SOUL);
+        SoulEntity soulEntity = new SoulEntity(EntityRegistry.ENDER_SOUL.get(), level, SoulType.ENDER_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropDragonSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.DRAGON_SOUL.get(), level, SoulTypes.DRAGON_SOUL);
+        SoulEntity soulEntity = new SoulEntity(EntityRegistry.DRAGON_SOUL.get(), level, SoulType.DRAGON_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropNormalSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.SOUL.get(), level, SoulTypes.SOUL);
+        SoulEntity soulEntity = new SoulEntity(EntityRegistry.SOUL.get(), level, SoulType.SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }

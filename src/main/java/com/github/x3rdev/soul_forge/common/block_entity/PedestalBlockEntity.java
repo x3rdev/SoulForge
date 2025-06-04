@@ -32,6 +32,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
@@ -93,7 +94,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 getItemOnOtherPedestal(otherPedestalOffsets[4]),
                 getItemOnOtherPedestal(otherPedestalOffsets[5]),
                 getItemOnOtherPedestal(otherPedestalOffsets[6]),
-                getItemOnOtherPedestal(otherPedestalOffsets[7])
+                getItemOnOtherPedestal(otherPedestalOffsets[7]),
+                Map.of()
         );
     }
 

@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
@@ -16,8 +17,8 @@ public class DataComponentRegistry {
 
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SoulForge.MOD_ID);
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> STORED_SOUL_TYPE = DATA_COMPONENTS.registerComponentType("stored_soul_type",
-            builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<SoulType>> STORED_SOUL_TYPE = DATA_COMPONENTS.registerComponentType("stored_soul_type",
+            builder -> builder.persistent(SoulType.CODEC).networkSynchronized(SoulType.STREAM_CODEC));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> STORED_SOUL_COUNT = DATA_COMPONENTS.registerComponentType("stored_soul_count",
             builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));

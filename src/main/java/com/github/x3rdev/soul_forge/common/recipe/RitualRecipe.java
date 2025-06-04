@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.recipe;
 
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.RecipeSerializerRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import net.minecraft.core.HolderLookup;
@@ -9,6 +10,9 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RitualRecipe implements Recipe<RitualInput> {
 
@@ -21,6 +25,7 @@ public class RitualRecipe implements Recipe<RitualInput> {
     private final Ingredient inputCatalystSouthWest;
     private final Ingredient inputCatalystWest;
     private final Ingredient inputCatalystNorthWest;
+    private final Map<SoulType, Integer> inputSouls;
 
     private final ItemStack result;
 
@@ -29,6 +34,7 @@ public class RitualRecipe implements Recipe<RitualInput> {
                         Ingredient inputCatalystEast, Ingredient inputCatalystSouthEast,
                         Ingredient inputCatalystSouth, Ingredient inputCatalystSouthWest,
                         Ingredient inputCatalystWest, Ingredient inputCatalystNorthWest,
+                        Map<SoulType, Integer> inputSouls,
                         ItemStack result) {
         this.inputPrimary = inputPrimary;
         this.inputCatalystNorth = inputCatalystNorth;
@@ -39,12 +45,14 @@ public class RitualRecipe implements Recipe<RitualInput> {
         this.inputCatalystSouthWest = inputCatalystSouthWest;
         this.inputCatalystWest = inputCatalystWest;
         this.inputCatalystNorthWest = inputCatalystNorthWest;
+        this.inputSouls = inputSouls;
         this.result = result;
     }
 
     @Override
     public boolean matches(RitualInput input, Level level) {
-        return inputPrimary.test(input.primary()) &&
+        return
+                inputPrimary.test(input.primary()) &&
                 inputCatalystNorth.test(input.catalystNorth()) &&
                 inputCatalystNorthEast.test(input.catalystNorthEast()) &&
                 inputCatalystEast.test(input.catalystEast()) &&
@@ -52,7 +60,8 @@ public class RitualRecipe implements Recipe<RitualInput> {
                 inputCatalystSouth.test(input.catalystSouth()) &&
                 inputCatalystSouthWest.test(input.catalystSouthWest()) &&
                 inputCatalystWest.test(input.catalystWest()) &&
-                inputCatalystNorthWest.test(input.catalystNorthWest());
+                inputCatalystNorthWest.test(input.catalystNorthWest()) &&
+                inputSouls.equals(input.souls());
     }
 
     @Override
@@ -78,11 +87,6 @@ public class RitualRecipe implements Recipe<RitualInput> {
     @Override
     public RecipeType<?> getType() {
         return RecipeTypeRegistry.RITUAL.get();
-    }
-
-    @Override
-    public String getGroup() {
-        return Recipe.super.getGroup();
     }
 
     public Ingredient getInputPrimary() {
@@ -119,6 +123,10 @@ public class RitualRecipe implements Recipe<RitualInput> {
 
     public Ingredient getInputCatalystNorthWest() {
         return inputCatalystNorthWest;
+    }
+
+    public Map<SoulType, Integer> getInputSouls() {
+        return inputSouls;
     }
 
     public ItemStack getResult() {
