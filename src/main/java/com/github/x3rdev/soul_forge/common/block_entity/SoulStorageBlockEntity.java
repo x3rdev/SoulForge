@@ -7,24 +7,26 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Set;
+
 public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntity {
 
-    private final RandomSource randomSource;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private SoulType soulType;
 
     public SoulStorageBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.SOUL_STORAGE.get(), pos, blockState);
-        this.randomSource = RandomSource.create(pos.asLong());
     }
 
     @Override
@@ -41,10 +43,6 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
         if(soulType != null) {
             SoulType.CODEC.encodeStart(NbtOps.INSTANCE, soulType);
         }
-    }
-
-    public RandomSource getRandomSource() {
-        return this.randomSource;
     }
 
     @Override
