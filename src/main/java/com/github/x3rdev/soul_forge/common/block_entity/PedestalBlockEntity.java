@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.block_entity;
 
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
@@ -21,6 +22,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.ContainerSingleItem;
@@ -32,6 +34,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -95,12 +98,27 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 getItemOnOtherPedestal(otherPedestalOffsets[5]),
                 getItemOnOtherPedestal(otherPedestalOffsets[6]),
                 getItemOnOtherPedestal(otherPedestalOffsets[7]),
-                Map.of()
+                getAvailableSouls()
         );
     }
 
     private ItemStack getItemOnOtherPedestal(Vec3i offset) {
-        return level.getBlockEntity(this.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow().getTheItem();
+        return this.level.getBlockEntity(this.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow().getTheItem();
+    }
+
+    private Map<SoulType, Integer> getAvailableSouls() {
+        Map<SoulType, Integer> availableSouls = new EnumMap<>(SoulType.class);
+        ChunkPos pos = new ChunkPos(getBlockPos());
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                this.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream().forEach(blockEntity -> {
+                    if(blockEntity instanceof SoulStorageBlockEntity soulStorageBlock) {
+                        availableSouls.merge(soulStorageBlock.getSoulType(), soulStorageBlock.getSoulCount(), Integer::sum);
+                    }
+                });
+            }
+        }
+        return availableSouls;
     }
 
     private void spawnMissingPedestalParticles() {

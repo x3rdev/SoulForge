@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RitualRecipe implements Recipe<RitualInput> {
-
     private final Ingredient inputPrimary;
     private final Ingredient inputCatalystNorth;
     private final Ingredient inputCatalystNorthEast;
@@ -61,7 +60,17 @@ public class RitualRecipe implements Recipe<RitualInput> {
                 inputCatalystSouthWest.test(input.catalystSouthWest()) &&
                 inputCatalystWest.test(input.catalystWest()) &&
                 inputCatalystNorthWest.test(input.catalystNorthWest()) &&
-                inputSouls.equals(input.souls());
+                inputHasSufficientSouls(input);
+    }
+
+    private boolean inputHasSufficientSouls(RitualInput input) {
+        for (Map.Entry<SoulType, Integer> entry : inputSouls.entrySet()) {
+            int inputSouls = input.souls().getOrDefault(entry.getKey(), 0);
+            if(inputSouls < entry.getValue()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
