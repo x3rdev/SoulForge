@@ -31,7 +31,7 @@ public class SoulBottleItem extends Item {
 
     @Override
     public int getBarWidth(ItemStack pStack) {
-        return Math.round(13F * (float) getSoulCount(pStack) / capacity);
+        return Math.round(13F * getSoulCount(pStack) / capacity);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SoulBottleItem extends Item {
     }
 
     private @Nullable SoulType getSoulType(ItemStack stack) {
-        if(stack.get(DataComponentRegistry.STORED_SOUL_COUNT) == 0) {
+        if(getSoulCount(stack) == 0) {
             return null;
         }
         return stack.get(DataComponentRegistry.STORED_SOUL_TYPE);

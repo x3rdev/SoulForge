@@ -1,9 +1,13 @@
 package com.github.x3rdev.soul_forge.client.renderer.block;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -27,19 +31,49 @@ public class SoulStorageRenderer extends GeoBlockRenderer<SoulStorageBlockEntity
     }
 
     @Override
+    public @Nullable RenderType getRenderType(SoulStorageBlockEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return ShaderRegistry.soul(texture);
+    }
+
+    @Override
+    public void defaultRender(PoseStack poseStack, SoulStorageBlockEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+        poseStack.pushPose();
+        poseStack.translate(0, crystalHeight(animatable, partialTick), 0);
+        super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
+        poseStack.popPose();
+    }
+
+    private double crystalHeight(SoulStorageBlockEntity animatable, float partialTick) {
+        int tick = animatable.getTick();
+        int timeUntilApex = 3 * 20;
+        int max = 5;
+        if(tick < timeUntilApex) {
+            return max * (-(Math.cos(Math.PI * ((tick + partialTick) / timeUntilApex)) - 1) / 2);
+        } else {
+            return max;
+        }
+    }
+
+    @Override
     public void renderFinal(PoseStack poseStack, SoulStorageBlockEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int color) {
         super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, color);
-        poseStack.pushPose();
+        renderBottleHighlight(poseStack, animatable, partialTick);
         VertexConsumer chainBuffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(CHAIN_LOCATION));
         Vec3[] chainDirections = chainDirections(animatable.getBlockPos(), 4);
         for (int i = 0; i < chainDirections.length; i++) {
             Vec3 vec3 = chainDirections[i];
-            renderChain(poseStack, animatable, chainBuffer, vec3, color, i);
+            renderChain(poseStack, animatable, chainBuffer, vec3, color, i, partialTick);
         }
-        poseStack.popPose();
     }
 
-    public static Vec3[] chainDirections(BlockPos pos, int chainCount) {
+    private void renderBottleHighlight(PoseStack poseStack, SoulStorageBlockEntity animatable, float partialTick) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if(player.getMainHandItem().is(ItemRegistry.NECRONOMICON)) {
+            Vec3 playerToBlock = player.getPosition(partialTick).vectorTo(animatable.getBlockPos().getCenter());
+        }
+    }
+
+    private static Vec3[] chainDirections(BlockPos pos, int chainCount) {
         Vec3[] chainDirections = new Vec3[chainCount];
         int hash = pos.hashCode();
         float start = Mth.PI * Mth.sin(hash+3F);
@@ -52,15 +86,14 @@ public class SoulStorageRenderer extends GeoBlockRenderer<SoulStorageBlockEntity
         return chainDirections;
     }
 
-    @SuppressWarnings("SuspiciousNameCombination")
-    private void renderChain(PoseStack poseStack, SoulStorageBlockEntity animatable, VertexConsumer buffer, Vec3 direction, int color, int chainIndex) {
+    private void renderChain(PoseStack poseStack, SoulStorageBlockEntity animatable, VertexConsumer buffer, Vec3 direction, int color, int chainIndex, float partialTick) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0, 0.5);
         PoseStack.Pose pose = poseStack.last();
         Vec3 t = direction.normalize();
         Vec3 n = t.cross(new Vec3(0, 1, 0)).normalize().scale(3F/32);
         Vec3 b = n.cross(t).normalize().scale(3F/32);
-        Vec3 v1 = new Vec3(0, -0.001F, 0);
+        Vec3 v1 = new Vec3(0, crystalHeight(animatable, partialTick)-0.001F, 0);
         Vec3 v2 = v1.add(t);
         int renderIterations = 0;
         while (renderIterations < maxIterations(animatable, chainIndex) && animatable.getLevel().isEmptyBlock(animatable.getBlockPos().offset(BlockPos.containing(v1)))) {
@@ -80,7 +113,7 @@ public class SoulStorageRenderer extends GeoBlockRenderer<SoulStorageBlockEntity
     }
 
     private int maxIterations(SoulStorageBlockEntity animatable, int chainIndex) {
-        double tick = animatable.getTick();
+        int tick = animatable.getTick();
         int ticksUntilExtended = 10 * 20;
         if(tick < ticksUntilExtended*(chainIndex+1)) {
             return (int) (tick-1.5F*chainIndex*chainIndex-10F);

@@ -24,8 +24,8 @@ void main() {
 
     vertexDistance = fog_distance(Position, FogShape);
     vertexColor = Color;
-    float unique = Color.length()-UV0.length()-UV1.length();
-    vertexColor.a -= 0.4*(sin(5000*(GameTime+unique))+1)*0.5;
+    float theta = 2000*(GameTime);
+    vertexColor.a = 0.4*(sin(theta)+1)*0.5+0.4;
     overlayColor = texelFetch(Sampler1, UV1, 0);
     texCoord0 = UV0;
 }

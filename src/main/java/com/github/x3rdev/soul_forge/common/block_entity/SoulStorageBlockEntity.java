@@ -64,8 +64,8 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
         }
     }
 
-    public double getTick() {
-        return this.level.getGameTime() - tickLoaded;
+    public int getTick() {
+        return (int) (this.level.getGameTime() - tickLoaded);
     }
 
     @Override
