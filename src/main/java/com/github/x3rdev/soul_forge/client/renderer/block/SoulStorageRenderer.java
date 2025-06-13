@@ -19,10 +19,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.specialty.DynamicGeoBlockRenderer;
 
-public class SoulStorageRenderer extends GeoBlockRenderer<SoulStorageBlockEntity> {
+public class SoulStorageRenderer extends DynamicGeoBlockRenderer<SoulStorageBlockEntity> {
 
     private static final ResourceLocation CHAIN_LOCATION = ResourceLocation.withDefaultNamespace("textures/block/chain.png");
 
@@ -31,16 +33,22 @@ public class SoulStorageRenderer extends GeoBlockRenderer<SoulStorageBlockEntity
     }
 
     @Override
-    public @Nullable RenderType getRenderType(SoulStorageBlockEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return ShaderRegistry.soul(texture);
+    public void renderRecursively(PoseStack poseStack, SoulStorageBlockEntity animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+        poseStack.pushPose();
+        if(bone.getName().equals("crystal")) {
+            poseStack.translate(0, crystalHeight(animatable, partialTick), 0);
+            poseStack.scale(1,1,1);
+        }
+        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+        poseStack.popPose();
     }
 
     @Override
-    public void defaultRender(PoseStack poseStack, SoulStorageBlockEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
-        poseStack.pushPose();
-        poseStack.translate(0, crystalHeight(animatable, partialTick), 0);
-        super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
-        poseStack.popPose();
+    protected @Nullable RenderType getRenderTypeOverrideForBone(GeoBone bone, SoulStorageBlockEntity animatable, ResourceLocation texturePath, MultiBufferSource bufferSource, float partialTick) {
+        if(bone.getName().equals("crystal")) {
+            return ShaderRegistry.soul(texturePath);
+        }
+        return super.getRenderTypeOverrideForBone(bone, animatable, texturePath, bufferSource, partialTick);
     }
 
     private double crystalHeight(SoulStorageBlockEntity animatable, float partialTick) {

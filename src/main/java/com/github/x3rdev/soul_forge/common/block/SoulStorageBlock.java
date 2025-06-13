@@ -13,9 +13,18 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Stream;
+
 public class SoulStorageBlock extends Block implements EntityBlock {
 
-    private static VoxelShape SHAPE;
+    private static final VoxelShape SHAPE = Stream.of(
+            Block.box(1, 0, 1, 15, 2, 15),
+            Block.box(3, 2, 3, 13, 8, 13),
+            Block.box(2, 8, 2, 14, 10, 14),
+            Block.box(5, 10, 7, 7, 12, 9),
+            Block.box(9, 10, 7, 11, 12, 9),
+            Block.box(5, 12, 7, 11, 14, 9)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElseThrow();;
 
     public SoulStorageBlock(Properties properties) {
         super(properties);
@@ -23,14 +32,6 @@ public class SoulStorageBlock extends Block implements EntityBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        if(SHAPE == null) {
-            SHAPE = Shapes.empty();
-            SHAPE = Shapes.join(SHAPE, Shapes.box(0.125, 0, 0.125, 0.875, 0.125, 0.875), BooleanOp.OR);
-            SHAPE = Shapes.join(SHAPE, Shapes.box(0.25, 0.125, 0.25, 0.75, 0.25, 0.75), BooleanOp.OR);
-            SHAPE = Shapes.join(SHAPE, Shapes.box(0.3125, 0.25, 0.3125, 0.6875, 0.75, 0.6875), BooleanOp.OR);
-            SHAPE = Shapes.join(SHAPE, Shapes.box(0.25, 0.75, 0.25, 0.75, 0.8125, 0.75), BooleanOp.OR);
-            SHAPE = Shapes.join(SHAPE, Shapes.box(0.125, 0.8125, 0.125, 0.875, 1, 0.875), BooleanOp.OR);
-        }
         return SHAPE;
     }
 
