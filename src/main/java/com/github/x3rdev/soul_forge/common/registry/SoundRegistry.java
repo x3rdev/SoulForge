@@ -12,6 +12,7 @@ public class SoundRegistry {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, SoulForge.MOD_ID);
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> NECRONOMICON_LAUGH = registerSound("necronomicon_laugh");
 
     public static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, name)));

@@ -1,20 +1,28 @@
 package com.github.x3rdev.soul_forge.common.block_entity;
 
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.github.x3rdev.soul_forge.common.item.NecronomiconItem;
 import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
+import com.ibm.icu.text.MessagePattern;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.BlockMarker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,6 +31,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.ContainerSingleItem;
@@ -72,8 +81,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
             }
         } else {
-            level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
             spawnMissingPedestalParticles();
+            NecronomiconItem.whisper(player, Component.literal("Your ritual setup is... unsatisfactory"));
         }
     }
 
@@ -111,7 +120,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         ChunkPos pos = new ChunkPos(getBlockPos());
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                this.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream().forEach(blockEntity -> {
+                this.level.getChunk(pos.x+i, pos.z+j).getBlockEntities().values().stream().forEach(blockEntity -> {
                     if(blockEntity instanceof SoulStorageBlockEntity soulStorageBlock) {
                         availableSouls.merge(soulStorageBlock.getSoulType(), soulStorageBlock.getSoulCount(), Integer::sum);
                     }
@@ -126,9 +135,9 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             BlockPos pos = this.getBlockPos().offset(offset);
             BlockState state = this.level.getBlockState(pos);
             if(!state.is(BlockRegistry.PEDESTAL.get())) {
-                this.level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, 0xFF0000),
+                ((ServerLevel) this.level).sendParticles(ParticleTypes.SMOKE,
                         pos.getCenter().x, pos.getCenter().y, pos.getCenter().z,
-                        0, 0, 0);
+                        10, 0, 0, 0, 0.05);
             }
         }
     }

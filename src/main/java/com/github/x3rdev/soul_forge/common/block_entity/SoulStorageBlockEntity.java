@@ -12,11 +12,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.Color;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final int maxCapacity;
 
     private SoulType soulType;
     private int soulCount;
@@ -24,16 +26,48 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
 
     public SoulStorageBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.SOUL_STORAGE.get(), pos, blockState);
-        this.soulType = null;
+        this.soulType = SoulType.EMPTY;
         this.soulCount = 0;
+        this.maxCapacity = 20;
+    }
+
+    public float getCrystalHeight(float partialTick) {
+        int tick = getTick();
+        int timeUntilApex = 3 * 20;
+        int min = 1;
+        int max = 3;
+        if(tick < timeUntilApex) {
+            return (float) (min + ((max-min) * (-(Math.cos(Math.PI * ((tick + partialTick) / timeUntilApex)) - 1) / 2)));
+        } else {
+            return max;
+        }
     }
 
     public SoulType getSoulType() {
         return soulType;
     }
 
+    public void setSoulType(SoulType soulType) {
+        this.soulType = soulType;
+    }
+
     public int getSoulCount() {
         return soulCount;
+    }
+
+    public void setSoulCount(int soulCount) {
+        if(soulCount == 0) {
+            setSoulType(SoulType.EMPTY);
+        }
+        this.soulCount = soulCount;
+    }
+
+    public int getMaxCapacity() {
+        return this.maxCapacity;
+    }
+
+    public int getContainedSoulColor() {
+        return SoulType.SOUL.color();
     }
 
     @Override

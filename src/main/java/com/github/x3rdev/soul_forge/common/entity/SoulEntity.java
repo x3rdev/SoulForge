@@ -35,7 +35,7 @@ public class SoulEntity extends Entity implements GeoEntity {
         if (!this.isNoGravity()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.0025D, 0.0D));
         }
-        if (!this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > (double) 1.0E-5F || (this.tickCount + this.getId()) % 4 == 0) {
+        if (!this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-5F || (this.tickCount + this.getId()) % 4 == 0) {
             this.move(MoverType.SELF, this.getDeltaMovement());
         }
         if(this.tickCount > 6000) {
@@ -44,14 +44,13 @@ public class SoulEntity extends Entity implements GeoEntity {
     }
 
     @Override
-    public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
-        ItemStack stack = pPlayer.getItemInHand(pHand);
+    public InteractionResult interact(Player player, InteractionHand pHand) {
+        ItemStack stack = player.getItemInHand(pHand);
         if (stack.getItem() instanceof SoulBottleItem soulBottleItem) {
-            boolean bottleFilled = soulBottleItem.tryFillBottle(stack, this, pPlayer);
+            boolean bottleFilled = soulBottleItem.tryFillBottle(stack, this, player);
             if (bottleFilled) {
                 this.remove(RemovalReason.DISCARDED);
-                pPlayer.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH);
-                return InteractionResult.sidedSuccess(pPlayer.level().isClientSide());
+                return InteractionResult.sidedSuccess(player.level().isClientSide());
             }
         }
         return InteractionResult.PASS;
@@ -63,7 +62,7 @@ public class SoulEntity extends Entity implements GeoEntity {
                 return soulType;
             }
         }
-        return SoulType.SOUL;
+        return SoulType.EMPTY;
     }
 
     @Override
@@ -73,7 +72,7 @@ public class SoulEntity extends Entity implements GeoEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_SOUL_TYPE, SoulType.SOUL.toString());
+        builder.define(DATA_SOUL_TYPE, SoulType.EMPTY.toString());
     }
 
     @Override

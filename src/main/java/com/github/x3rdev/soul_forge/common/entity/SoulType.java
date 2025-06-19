@@ -6,6 +6,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 public enum SoulType {
+    EMPTY("empty", 0, 0xFFFFFF),
     SOUL("soul", 1, 0x98caff),
     UNDEAD_SOUL("undead_soul", 1, 0xb9ff98),
     NETHER_SOUL("nether_soul", 1, 0xf98d1b),
@@ -37,6 +38,10 @@ public enum SoulType {
         return color;
     }
 
+    public boolean isEmpty() {
+        return this == EMPTY;
+    }
+
     @Override
     public String toString() {
         return name;
@@ -45,5 +50,4 @@ public enum SoulType {
     public static SoulType getSoulTypeForString(String name) {
         return SoulType.valueOf(name.toUpperCase());
     }
-
 }
