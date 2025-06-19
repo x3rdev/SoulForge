@@ -31,6 +31,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -63,21 +64,36 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private ItemStack item;
+    private boolean ritualActive;
+    private int ritualTicks;
 
     public PedestalBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.PEDESTAL.get(), pos, blockState);
         this.item = ItemStack.EMPTY;
+        this.ritualActive = false;
+        this.ritualTicks = 0;
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
+        if(blockEntity.isRitualActive()) {
+            blockEntity.incrementRitualTicks();
+        }
     }
 
     public void tryStartRitual(ItemStack necronomiconStack, ServerPlayer player) {
+        if(isRitualActive()) {
+            level.playSound(null, this.getBlockPos(), SoundEvents.VILLAGER_NO, SoundSource.BLOCKS);
+            return;
+        }
         if(isRitualSetupValid()) {
             System.out.println("found setup");
             RitualInput input = buildRitualInput();
             Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
             if(recipe.isPresent()) {
                 System.out.println("found recipe");
+                recipe.get().value().getResult();
+                startRitual();
             } else {
-                // TODO: do smthn when recipe doesnt work
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
             }
         } else {
@@ -140,6 +156,26 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                         10, 0, 0, 0, 0.05);
             }
         }
+    }
+
+    public boolean isRitualActive() {
+        return this.ritualActive;
+    }
+
+    public void startRitual() {
+        this.ritualActive = true;
+    }
+
+    public void stopRitual() {
+        this.ritualActive = false;
+    }
+
+    public int getRitualTicks() {
+        return this.ritualTicks;
+    }
+
+    public void incrementRitualTicks() {
+        ritualTicks++;
     }
 
     @Override

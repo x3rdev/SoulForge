@@ -7,8 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -73,8 +77,8 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        if(tag.get("soul") != null) {
-            this.soulType = SoulType.CODEC.parse(NbtOps.INSTANCE, tag.get("soul")).getOrThrow();
+        if(tag.get("soul_type") != null) {
+            this.soulType = SoulType.CODEC.parse(NbtOps.INSTANCE, tag.get("soul_type")).getOrThrow();
         }
         if(tag.get("soul_count") != null) {
             this.soulCount = Codec.INT.parse(NbtOps.INSTANCE, tag.get("soul_count")).getOrThrow();
@@ -84,10 +88,19 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        if(soulType != null) {
-            SoulType.CODEC.encodeStart(NbtOps.INSTANCE, soulType);
-        }
-        Codec.INT.encodeStart(NbtOps.INSTANCE, soulCount);
+        tag.put("soul_type", SoulType.CODEC.encodeStart(NbtOps.INSTANCE, soulType).getOrThrow());
+        tag.put("soul_count", Codec.INT.encodeStart(NbtOps.INSTANCE, soulCount).getOrThrow());
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveCustomOnly(registries);
     }
 
     @Override

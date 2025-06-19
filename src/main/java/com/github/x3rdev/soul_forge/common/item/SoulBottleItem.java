@@ -30,6 +30,7 @@ public class SoulBottleItem extends Item {
         super(new Properties()
                 .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), SoulType.EMPTY)
                 .component(DataComponentRegistry.STORED_SOUL_COUNT.get(), 0)
+                .stacksTo(1)
         );
         this.capacity = capacity;
     }
