@@ -7,17 +7,14 @@ import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
-import com.ibm.icu.text.MessagePattern;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.BlockMarker;
+import com.mojang.realmsclient.dto.Ops;
+import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ColorParticleOption;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -32,7 +29,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.ContainerSingleItem;
@@ -66,17 +62,23 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     private ItemStack item;
     private boolean ritualActive;
     private int ritualTicks;
+    private BlockPos ritualParentPos;
 
     public PedestalBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.PEDESTAL.get(), pos, blockState);
         this.item = ItemStack.EMPTY;
         this.ritualActive = false;
         this.ritualTicks = 0;
+        this.ritualParentPos = null;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if(blockEntity.isRitualActive()) {
             blockEntity.incrementRitualTicks();
+//            ((ServerLevel) level).sendParticles(ParticleTypes.ANGRY_VILLAGER, pos.getX(), pos.getY()+1F, pos.getZ(), 1, 0, 0, 0, 0);
+            if(blockEntity.getRitualTicks() > 200) {
+                blockEntity.stopRitual();
+            }
         }
     }
 
@@ -92,7 +94,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             if(recipe.isPresent()) {
                 System.out.println("found recipe");
                 recipe.get().value().getResult();
-                startRitual();
+                startRitual(null);
             } else {
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
             }
@@ -162,12 +164,22 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         return this.ritualActive;
     }
 
-    public void startRitual() {
+    public void startRitual(BlockPos ritualParentPos) {
         this.ritualActive = true;
+        this.ritualParentPos = ritualParentPos;
+        if(ritualParentPos == null) {
+            for (Vec3i offset : otherPedestalOffsets) {
+                level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+                        .startRitual(getBlockPos());
+            }
+        }
+        this.setChanged();
     }
 
     public void stopRitual() {
         this.ritualActive = false;
+        this.ritualTicks = 0;
+        this.setChanged();
     }
 
     public int getRitualTicks() {
@@ -176,6 +188,16 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
 
     public void incrementRitualTicks() {
         ritualTicks++;
+        this.setChanged();
+    }
+
+    public @Nullable BlockPos getRitualParentPos() {
+        return ritualParentPos;
+    }
+
+    public void setRitualParentPos(BlockPos ritualParentPos) {
+        this.ritualParentPos = ritualParentPos;
+        this.setChanged();
     }
 
     @Override
@@ -184,6 +206,15 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         if(tag.get("item") != null) {
             this.item = ItemStack.parse(registries, tag.get("item")).orElseThrow();
         }
+        if(tag.get("ritualActive") != null) {
+            this.ritualActive = tag.getBoolean("ritualActive");
+        }
+        if(tag.get("ritualTicks") != null) {
+            this.ritualTicks = tag.getInt("ritualTicks");
+        }
+        if(tag.get("ritualParentPos") != null) {
+            this.ritualParentPos = BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("ritualParentPos")).getOrThrow();
+        }
     }
 
     @Override
@@ -191,6 +222,11 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         super.saveAdditional(tag, registries);
         if(!item.isEmpty()) {
             tag.put("item", item.save(registries));
+        }
+        tag.putBoolean("ritualActive", ritualActive);
+        tag.putInt("ritualTicks", ritualTicks);
+        if(ritualParentPos != null) {
+            tag.put("ritualParentPos", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, ritualParentPos).getOrThrow());
         }
     }
 
