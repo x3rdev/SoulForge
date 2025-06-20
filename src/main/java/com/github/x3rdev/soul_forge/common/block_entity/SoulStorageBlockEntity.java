@@ -53,6 +53,7 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
 
     public void setSoulType(SoulType soulType) {
         this.soulType = soulType;
+        this.setChanged();
     }
 
     public int getSoulCount() {
@@ -64,6 +65,7 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
             setSoulType(SoulType.EMPTY);
         }
         this.soulCount = soulCount;
+        this.setChanged();
     }
 
     public int getMaxCapacity() {
@@ -101,6 +103,12 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return saveCustomOnly(registries);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
     }
 
     @Override

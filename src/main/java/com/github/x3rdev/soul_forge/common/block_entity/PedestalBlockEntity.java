@@ -46,9 +46,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
 
@@ -114,13 +112,25 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), buildRitualInput(), level);
             if(recipe.isPresent()) {
                 Vec3 pos = getBlockPos().getCenter().add(0, 1, 0);
-                ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, recipe.orElseThrow().value().getResult());
+                ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, recipe.get().value().getResult());
                 level.addFreshEntity(itemEntity);
                 this.removeTheItem();
                 for (Vec3i offset : otherPedestalOffsets) {
                     level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
                             .removeTheItem();
                 }
+                List<SoulStorageBlockEntity> surroundingStorages = getSurroundingStorages();
+                recipe.get().value().getInputSouls().forEach((soulType, integer) -> {
+                    int i = integer;
+                    while (i > 0) {
+                        for (SoulStorageBlockEntity blockEntity : surroundingStorages) {
+                            if (blockEntity.getSoulType().equals(soulType) && blockEntity.getSoulCount() > 0) {
+                                blockEntity.setSoulCount(blockEntity.getSoulCount()-1);
+                                i--;
+                            }
+                        }
+                    }
+                });
             } else {
                 SoulForge.LOGGER.warn("ritual ended with no valid recipe");
             }
@@ -178,17 +188,23 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
 
     private Map<SoulType, Integer> getAvailableSouls() {
         Map<SoulType, Integer> availableSouls = new EnumMap<>(SoulType.class);
+        getSurroundingStorages().forEach(blockEntity -> availableSouls.merge(blockEntity.getSoulType(), blockEntity.getSoulCount(), Integer::sum));
+        return availableSouls;
+    }
+
+    private List<SoulStorageBlockEntity> getSurroundingStorages() {
+        List<SoulStorageBlockEntity> list = new ArrayList<>();
         ChunkPos pos = new ChunkPos(getBlockPos());
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                this.level.getChunk(pos.x+i, pos.z+j).getBlockEntities().values().stream().forEach(blockEntity -> {
-                    if(blockEntity instanceof SoulStorageBlockEntity soulStorageBlock) {
-                        availableSouls.merge(soulStorageBlock.getSoulType(), soulStorageBlock.getSoulCount(), Integer::sum);
+                this.level.getChunk(pos.x+i, pos.z+j).getBlockEntities().values().forEach(blockEntity -> {
+                    if(blockEntity instanceof SoulStorageBlockEntity soulStorage) {
+                        list.add(soulStorage);
                     }
                 });
             }
         }
-        return availableSouls;
+        return list;
     }
 
     private void spawnMissingPedestalParticles() {
