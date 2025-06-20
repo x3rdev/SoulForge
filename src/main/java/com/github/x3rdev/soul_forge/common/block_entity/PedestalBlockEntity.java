@@ -87,13 +87,13 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     public static void serverTick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if(blockEntity.isRitualActive()) {
             blockEntity.incrementRitualTicks();
-            if(blockEntity.getRitualTicks() > RITUAL_DURATION-20) {
+            if(blockEntity.getRitualTicks() == RITUAL_DURATION-20) {
                 blockEntity.completeRitual();
             }
             if(blockEntity.getRitualTicks() > RITUAL_DURATION) {
                 blockEntity.stopRitual();
             }
-            if(blockEntity.isMasterPedestal() && blockEntity.getRitualTicks() <= RITUAL_DURATION-20) {
+            if(blockEntity.isMasterPedestal() && blockEntity.getRitualTicks() < RITUAL_DURATION-20 && blockEntity.getRitualTicks() % 3 == 0) {
                 Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), blockEntity.buildRitualInput(), level);
                 if (!recipe.isPresent()) {
                     level.playSound(null, blockEntity.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
@@ -150,6 +150,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 startRitual(null);
             } else {
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
+                NecronomiconItem.whisper(player, Component.literal("These offerings are... inadequate"));
             }
         } else {
             spawnMissingPedestalParticles();

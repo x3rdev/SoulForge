@@ -33,7 +33,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     public NergalSwingAttack() {
         super(NERGAL_SWING_PATH);
         this.startCondition(IS_VALID_PREDICATE);
-        this.runFor((nergal) -> 3*20 + 20);
+        this.runFor(nergal -> 3*20 + 20);
     }
 
     @Override
@@ -78,6 +78,6 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     protected AABB hurtBox(NergalEntity entity, long tick) {
         Vec3 center = getSwingPath(entity).getPointForTick((int) tick)
                 .yRot(Mth.DEG_TO_RAD*(180-entity.yBodyRot));
-        return AABB.ofSize(center, 2.5, 2.5, 2.5);
+        return AABB.ofSize(center, 3, 3, 3);
     }
 }
