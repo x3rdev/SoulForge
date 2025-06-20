@@ -4,5 +4,11 @@
     "sounds": [
       "soul_forge:necronomicon_laugh"
     ]
+  },
+  "ritual": {
+    "subtitle": "sounds.soul_forge.ritual",
+    "sounds": [
+      "soul_forge:ritual"
+    ]
   }
 }

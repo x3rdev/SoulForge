@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -40,15 +39,15 @@ public class PedestalBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? new BlockEntityTicker<T>() {
+        return level.isClientSide() ? new BlockEntityTicker<T>() {
             @Override
             public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
-                PedestalBlockEntity.tick(level, pos, state, (PedestalBlockEntity) blockEntity);
+                PedestalBlockEntity.clientTick(level, pos, state, (PedestalBlockEntity) blockEntity);
             }
         } : new BlockEntityTicker<T>() {
             @Override
             public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
-                PedestalBlockEntity.tick(level, pos, state, (PedestalBlockEntity) blockEntity);
+                PedestalBlockEntity.serverTick(level, pos, state, (PedestalBlockEntity) blockEntity);
             }
         };
     }

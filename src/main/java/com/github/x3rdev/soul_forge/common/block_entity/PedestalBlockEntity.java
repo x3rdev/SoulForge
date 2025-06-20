@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.block_entity;
 
+import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.item.NecronomiconItem;
 import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
@@ -7,14 +8,15 @@ import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
-import com.mojang.realmsclient.dto.Ops;
-import com.mojang.serialization.DynamicOps;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -24,13 +26,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -46,8 +52,8 @@ import java.util.Optional;
 
 public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
 
-    private final IItemHandler itemHandler = new InvWrapper(this);
-    private final Vec3i[] otherPedestalOffsets = new Vec3i[]{
+    public static final int RITUAL_DURATION = 300;
+    public static final Vec3i[] otherPedestalOffsets = new Vec3i[]{
             Vec3i.ZERO.north(3),
             Vec3i.ZERO.north(2).east(2),
             Vec3i.ZERO.east(3),
@@ -57,6 +63,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             Vec3i.ZERO.west(3),
             Vec3i.ZERO.north(2).west(2)
     };
+
+    private final IItemHandler itemHandler = new InvWrapper(this);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private ItemStack item;
@@ -72,11 +80,49 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         this.ritualParentPos = null;
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
+    public static void clientTick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if(blockEntity.isRitualActive()) {
             blockEntity.incrementRitualTicks();
-            if(blockEntity.getRitualTicks() > 300) {
+        }
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
+        if(blockEntity.isRitualActive()) {
+            blockEntity.incrementRitualTicks();
+            if(blockEntity.getRitualTicks() > RITUAL_DURATION-20) {
+                blockEntity.completeRitual();
+            }
+            if(blockEntity.getRitualTicks() > RITUAL_DURATION) {
                 blockEntity.stopRitual();
+            }
+            if(blockEntity.isMasterPedestal() && blockEntity.getRitualTicks() <= RITUAL_DURATION-20) {
+                Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), blockEntity.buildRitualInput(), level);
+                if (!recipe.isPresent()) {
+                    level.playSound(null, blockEntity.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
+                    blockEntity.stopRitual();
+                    for (Vec3i offset : otherPedestalOffsets) {
+                        level.getBlockEntity(blockEntity.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+                                .stopRitual();
+                    }
+                }
+            }
+        }
+    }
+
+    private void completeRitual() {
+        if(isMasterPedestal()) {
+            Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), buildRitualInput(), level);
+            if(recipe.isPresent()) {
+                Vec3 pos = getBlockPos().getCenter().add(0, 1, 0);
+                ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, recipe.orElseThrow().value().getResult());
+                level.addFreshEntity(itemEntity);
+                this.removeTheItem();
+                for (Vec3i offset : otherPedestalOffsets) {
+                    level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+                            .removeTheItem();
+                }
+            } else {
+                SoulForge.LOGGER.warn("ritual ended with no valid recipe");
             }
         }
     }
@@ -87,12 +133,10 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             return;
         }
         if(isRitualSetupValid()) {
-            System.out.println("found setup");
             RitualInput input = buildRitualInput();
             Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
             if(recipe.isPresent()) {
-                System.out.println("found recipe");
-                recipe.get().value().getResult();
+                recipe.get().value();
                 startRitual(null);
             } else {
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
@@ -167,6 +211,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         this.ritualActive = true;
         setRitualParentPos(ritualParentPos);
         if(ritualParentPos == null) {
+            level.playSound(null, getBlockPos(), SoundRegistry.RITUAL.get(), SoundSource.BLOCKS);
             for (Vec3i offset : otherPedestalOffsets) {
                 level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
                         .startRitual(getBlockPos());
@@ -189,6 +234,10 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         ritualTicks++;
     }
 
+    public boolean isMasterPedestal() {
+        return getRitualParentPos() == null;
+    }
+
     public @Nullable BlockPos getRitualParentPos() {
         return ritualParentPos;
     }
@@ -203,6 +252,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         super.loadAdditional(tag, registries);
         if(tag.get("item") != null) {
             this.item = ItemStack.parse(registries, tag.get("item")).orElseThrow();
+        } else {
+            this.item = ItemStack.EMPTY;
         }
         if(tag.get("ritualActive") != null) {
             this.ritualActive = tag.getBoolean("ritualActive");
@@ -245,10 +296,9 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
 
     @Override
     public ItemStack removeTheItem() {
-        ItemStack returnStack = ContainerSingleItem.super.removeTheItem();
-        this.item = ItemStack.EMPTY;
-        this.setChanged();
-        return returnStack;
+        ItemStack copy = getTheItem().copyAndClear();
+        setChanged();
+        return copy;
     }
 
     @Override
@@ -259,7 +309,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     //TODO make this method return false during ritual
     @Override
     public boolean canTakeItem(Container target, int slot, ItemStack stack) {
-        return ContainerSingleItem.super.canTakeItem(target, slot, stack);
+        return isRitualActive();
     }
 
     @Nullable
