@@ -26,10 +26,10 @@ public class SoulParticle extends TextureSheetParticle {
         return 240;
     }
 
-    public static class MyParticleProvider implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteSet;
 
-        public MyParticleProvider(SpriteSet spriteSet) {
+        public Provider(SpriteSet spriteSet) {
             this.spriteSet = spriteSet;
         }
 

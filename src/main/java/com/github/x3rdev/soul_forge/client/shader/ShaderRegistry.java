@@ -2,10 +2,17 @@ package com.github.x3rdev.soul_forge.client.shader;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.ClientSetup;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 
 public class ShaderRegistry {
@@ -18,6 +25,24 @@ public class ShaderRegistry {
     public static ResourceLocation researcherGlassesPostEffect() {
         return ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "shaders/post/researcher_glasses.json");
     }
+
+    public static final ParticleRenderType RITUAL_TRAIL = new ParticleRenderType() {
+        @Override
+        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
+            RenderSystem.depthMask(false);
+            RenderSystem.setShader(ClientSetup::getRitualTrailShader);
+            RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public String toString() {
+            return "RITUAL_TRAIL";
+        }
+    };
 
     private static class Internal extends RenderType {
 

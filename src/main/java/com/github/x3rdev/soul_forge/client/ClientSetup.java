@@ -1,7 +1,9 @@
 package com.github.x3rdev.soul_forge.client;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.client.particle.SoulParticle.MyParticleProvider;
+import com.github.x3rdev.soul_forge.client.particle.RitualTrailParticle;
+import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
+import com.github.x3rdev.soul_forge.client.particle.SoulParticle.Provider;
 import com.github.x3rdev.soul_forge.client.renderer.block.DarkTombRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.PedestalRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.SoulStorageRenderer;
@@ -28,6 +30,9 @@ public class ClientSetup {
 
     @Nullable
     private static ShaderInstance soulShader;
+    @Nullable
+    private static ShaderInstance ritualTrailShader;
+
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
@@ -49,7 +54,8 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerParticleProvider(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ParticleRegistry.SOUL_PARTICLE.get(), MyParticleProvider::new);
+        event.registerSpriteSet(ParticleRegistry.SOUL_PARTICLE.get(), SoulParticle.Provider::new);
+        event.registerSpriteSet(ParticleRegistry.RITUAL_TRAIL.get(), RitualTrailParticle.Provider::new);
     }
 
     @SubscribeEvent
@@ -59,6 +65,9 @@ public class ClientSetup {
             event.registerShader(new ShaderInstance(provider, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul"), DefaultVertexFormat.NEW_ENTITY), shaderInstance -> {
                 soulShader = shaderInstance;
             });
+            event.registerShader(new ShaderInstance(provider, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "ritual_trail"), DefaultVertexFormat.PARTICLE), shaderInstance -> {
+                ritualTrailShader = shaderInstance;
+            });
         } catch (IOException e) {
             SoulForge.LOGGER.warn("Failed to load shader", e);
         }
@@ -66,6 +75,10 @@ public class ClientSetup {
 
     public static ShaderInstance getSoulShader() {
         return Objects.requireNonNull(soulShader, "Attempted to get shader before they have finished loading.");
+    }
+
+    public static ShaderInstance getRitualTrailShader() {
+        return Objects.requireNonNull(ritualTrailShader, "Attempted to get shader before they have finished loading.");
     }
 
 

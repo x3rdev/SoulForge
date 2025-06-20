@@ -75,8 +75,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     public static void tick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if(blockEntity.isRitualActive()) {
             blockEntity.incrementRitualTicks();
-//            ((ServerLevel) level).sendParticles(ParticleTypes.ANGRY_VILLAGER, pos.getX(), pos.getY()+1F, pos.getZ(), 1, 0, 0, 0, 0);
-            if(blockEntity.getRitualTicks() > 200) {
+            if(blockEntity.getRitualTicks() > 300) {
                 blockEntity.stopRitual();
             }
         }
@@ -166,7 +165,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
 
     public void startRitual(BlockPos ritualParentPos) {
         this.ritualActive = true;
-        this.ritualParentPos = ritualParentPos;
+        setRitualParentPos(ritualParentPos);
         if(ritualParentPos == null) {
             for (Vec3i offset : otherPedestalOffsets) {
                 level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
@@ -188,7 +187,6 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
 
     public void incrementRitualTicks() {
         ritualTicks++;
-        this.setChanged();
     }
 
     public @Nullable BlockPos getRitualParentPos() {

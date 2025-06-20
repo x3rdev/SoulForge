@@ -40,7 +40,12 @@ public class PedestalBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : new BlockEntityTicker<T>() {
+        return level.isClientSide ? new BlockEntityTicker<T>() {
+            @Override
+            public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
+                PedestalBlockEntity.tick(level, pos, state, (PedestalBlockEntity) blockEntity);
+            }
+        } : new BlockEntityTicker<T>() {
             @Override
             public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
                 PedestalBlockEntity.tick(level, pos, state, (PedestalBlockEntity) blockEntity);
