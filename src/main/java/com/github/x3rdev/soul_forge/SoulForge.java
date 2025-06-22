@@ -30,6 +30,7 @@ public class SoulForge {
         FoliagePlacerTypeRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         ItemRegistry.ModItemTab.CREATIVE_MODE_TABS.register(modEventBus);
+        MenuTypeRegistry.MENUS.register(modEventBus);
         ParticleRegistry.PARTICLE_TYPES.register(modEventBus);
         RecipeSerializerRegistry.RECIPE_SERIALIZERS.register(modEventBus);
         RecipeTypeRegistry.RECIPE_TYPES.register(modEventBus);

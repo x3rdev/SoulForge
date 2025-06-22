@@ -3,14 +3,15 @@ package com.github.x3rdev.soul_forge.client;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.particle.RitualTrailParticle;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
-import com.github.x3rdev.soul_forge.client.particle.SoulParticle.Provider;
 import com.github.x3rdev.soul_forge.client.renderer.block.DarkTombRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.PedestalRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.SoulStorageRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.block.StatueRenderer;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
+import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
@@ -81,5 +83,9 @@ public class ClientSetup {
         return Objects.requireNonNull(ritualTrailShader, "Attempted to get shader before they have finished loading.");
     }
 
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(MenuTypeRegistry.RESEARCH_TABLE.get(), ResearchTableScreen::new);
+    }
 
 }

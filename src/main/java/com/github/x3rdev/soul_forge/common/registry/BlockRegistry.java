@@ -4,7 +4,6 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.block.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.PushReaction;
@@ -64,4 +63,6 @@ public class BlockRegistry {
             () -> new PedestalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredHolder<Block, SoulStorageBlock> SOUL_STORAGE = BLOCKS.register("soul_storage",
             () -> new SoulStorageBlock(BlockBehaviour.Properties.of()));
+    public static final DeferredHolder<Block, ResearchTableBlock> RESEARCH_TABLE = BLOCKS.register("research_table",
+            () -> new ResearchTableBlock(BlockBehaviour.Properties.of()));
 }
