@@ -49,7 +49,7 @@ public class SummonGhostsAttack extends ExtendedBehaviour<NergalEntity> {
         entity.incrementTicksAttacking();
         entity.setDeltaMovement(0,0,0);
 
-        if(entity.getTicksAttacking() == 50) {
+        if(entity.getTicksAttacking() == 13) {
             summonGhosts(entity, entity.level(), 8);
         }
     }

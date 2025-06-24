@@ -33,6 +33,8 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0x5063c0, 0x77a2fb, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> NERGAL_SPAWN_EGG = ITEMS.register("nergal_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.NERGAL, 0x6388d6, 0xd4edff, new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_CRYSTAL = ITEMS.register("soul_crystal",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> ECTOPLASM = ITEMS.register("ectoplasm",

@@ -20,18 +20,18 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
+public class NergalSwipeAttack extends MovingHitboxAttack<NergalEntity> {
 
-    public static final ResourceKey<MovingHitboxAttackPath> NERGAL_SWING_PATH = ResourceKey.create(DatapackRegistry.MOVING_HITBOX_ATTACK_PATH_KEY,
-            ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "nergal_swing"));
+    public static final ResourceKey<MovingHitboxAttackPath> NERGAL_SWIPE_PATH = ResourceKey.create(DatapackRegistry.MOVING_HITBOX_ATTACK_PATH_KEY,
+            ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "nergal_swipe"));
 
     public static final Predicate<NergalEntity> IS_VALID_PREDICATE = (nergal) -> {
         LivingEntity target = nergal.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElseThrow();
         return target.isAlive() && nergal.canAttack(target) && target.distanceTo(nergal) < 6*6;
     };
 
-    public NergalSwingAttack() {
-        super(NERGAL_SWING_PATH);
+    public NergalSwipeAttack() {
+        super(NERGAL_SWIPE_PATH);
         this.startCondition(IS_VALID_PREDICATE);
         this.runFor(nergal -> 3*20 + 20);
     }
@@ -39,7 +39,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     @Override
     protected void start(ServerLevel level, NergalEntity entity, long gameTime) {
         super.start(level, entity, gameTime);
-        entity.triggerAnim("c", "nergal_swing");
+        entity.triggerAnim("c", "nergal_swipe");
         entity.resetTicksAttacking();
     }
 
@@ -47,9 +47,9 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     protected void tick(ServerLevel level, NergalEntity nergal, long gameTime) {
         super.tick(level, nergal, gameTime);
         nergal.incrementTicksAttacking();
-        AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length-1, nergal.getTicksAttacking()+4));
+        AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking()));
         nergal.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX, hurtBox);
-        if(nergal.getTicksAttacking() > 19 && nergal.getTicksAttacking() < 32) {
+        if(nergal.getTicksAttacking() > 10 && nergal.getTicksAttacking() < 20) {
             level.getEntities(nergal, hurtBox.move(nergal.position()), EntitySelector.NO_SPECTATORS.and(entity -> !entity.getType().equals(EntityRegistry.GHOST.get())))
                     .forEach(nergal::doHurtTarget);
         }
@@ -63,7 +63,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
     @Override
     protected void stop(ServerLevel level, NergalEntity entity, long gameTime) {
         super.stop(level, entity, gameTime);
-        entity.stopTriggeredAnim("c", "nergal_swing");
+        entity.stopTriggeredAnim("c", "nergal_swipe");
         entity.resetTicksAttacking();
     }
 

@@ -133,7 +133,8 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
                 new OneRandomBehaviour<>(
-                    new NergalSwingAttack().cooldownFor(mob -> 20),
+                    new NergalSwingAttack().cooldownFor(mob -> 100),
+                    new NergalSwipeAttack().cooldownFor(mob -> 100),
                     new SummonGhostsAttack().cooldownFor(entity -> 200)
                 )
         );
@@ -141,7 +142,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "c", 3, state -> {
+        controllers.add(new AnimationController<>(this, "c", 2, state -> {
             if(state.isMoving()) {
                 return state.setAndContinue(WALK);
             }
@@ -150,6 +151,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 .triggerableAnim("nergal_swing", NERGAL_SWING)
                 .triggerableAnim("nergal_swipe", NERGAL_SWIPE)
                 .triggerableAnim("nergal_summon", NERGAL_SUMMON));
+
     }
 
     @Override
