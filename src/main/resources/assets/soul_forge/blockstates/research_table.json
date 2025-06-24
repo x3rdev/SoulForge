@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=north,table_part=left": {
+      "model": "soul_forge:block/research_table_left",
+      "y": 0
+    },
+    "facing=east,table_part=left": {
+      "model": "soul_forge:block/research_table_left",
+      "y": 90
+    },
+    "facing=south,table_part=left": {
+      "model": "soul_forge:block/research_table_left",
+      "y": 180
+    },
+    "facing=west,table_part=left": {
+      "model": "soul_forge:block/research_table_left",
+      "y": 270
+    },
+    "table_part=right": {
+      "model": "soul_forge:block/research_table_right"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+	"format_version": "1.21.6",
+	"textures": {
+		"particle": "soul_forge:block/soulwood_planks"
+	}
+}
