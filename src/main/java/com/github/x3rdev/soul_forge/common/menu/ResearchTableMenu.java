@@ -29,12 +29,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.container = new SimpleContainer(1);
         this.access = access;
         this.player = playerInventory.player;
-        this.addSlot(new Slot(container, 0, 1, 1) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return super.mayPlace(stack);
-            }
-        });
+        this.addSlot(new Slot(container, 0, 1, 1));
 //        for (int i = 0; i < 3; i++) {
 //            for (int j = 0; j < 9; j++) {
 //                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));

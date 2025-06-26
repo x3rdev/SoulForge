@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.client.screen.widget;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ public class ResearchNode extends MoveableWidget {
 
     public static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_node.png");
 
+    private final ResearchTableScreen screen;
     private final Research research;
     private final ItemStack stack;
     private final int minX;
@@ -22,14 +24,20 @@ public class ResearchNode extends MoveableWidget {
     private final int maxX;
     private final int maxY;
 
-    public ResearchNode(int x, int y, Research research, int minX, int minY, int maxX, int maxY) {
-        super(x-13, y-13, 26, 26, Component.literal("blah blah blah blah blah blah blah blah blah"));
+    public ResearchNode(ResearchTableScreen screen, int x, int y, Research research, int minX, int minY, int maxX, int maxY) {
+        super(x-13, y-13, 26, 26, Component.literal(research.title()));
+        this.screen = screen;
         this.research = research;
-        this.stack = research == null ? ItemRegistry.NECRONOMICON.get().getDefaultInstance() : research.icon();
+        this.stack = research.icon();
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
+    }
+
+    @Override
+    public void onClick(double mouseX, double mouseY, int button) {
+        super.onClick(mouseX, mouseY, button);
     }
 
     @Override

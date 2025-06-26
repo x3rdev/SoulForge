@@ -6,6 +6,7 @@ import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNode;
 import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNodeConnector;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -51,7 +53,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void addResearchTreeWidgets(ResearchTree tree, int lastX, int lastY, int offsetX, int offsetY) {
-        addRenderableWidget(new ResearchNode(offsetX, offsetY, tree.head,
+        addRenderableWidget(new ResearchNode(this, offsetX, offsetY, tree.head,
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
         addRenderableWidget(new ResearchNodeConnector(lastX, lastY, offsetX-lastX, offsetY-lastY,
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
@@ -112,6 +114,11 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             this.children = new ArrayList<>();
         }
 
+        private ResearchTree(Research head, List<ResearchTree> children) {
+            this.head = head;
+            this.children = new ArrayList<>(children);
+        }
+
         private int pixelBreadth() {
             if(children.isEmpty()) {
                 return ICON_SIZE;
@@ -152,7 +159,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                     });
             ResearchTree tree = new ResearchTree(null);
             fillChildren(tree, parentToResearchMap);
-            return tree;
+            return new ResearchTree(new Research(null, "Test", ItemRegistry.NECRONOMICON.get().getDefaultInstance()), tree.children);
         }
 
         private static void fillChildren(ResearchTree tree, Map<Optional<Research>, Set<Research>> parentToResearchMap) {
