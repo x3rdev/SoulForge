@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.client.screen;
+package com.github.x3rdev.soul_forge.client.screen.widget;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;

@@ -9,11 +9,12 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
-public record Research(Optional<ResourceKey<Research>> parent, ItemStack icon) {
+public record Research(Optional<ResourceKey<Research>> parent, String title, ItemStack icon) {
 
     public static final Codec<Research> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ResourceKey.codec(DatapackRegistry.RESEARCH_KEY).optionalFieldOf("parent").forGetter(Research::parent),
+                    Codec.STRING.fieldOf("title").forGetter(Research::title),
                     ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("icon").forGetter(Research::icon)
     ).apply(instance, Research::new));
 

@@ -1,0 +1,7 @@
+{
+  "parent": "soul_forge:new_beginnings",
+  "title": "New Beginnings",
+  "icon": {
+    "id": "soul_forge:soul_crystal"
+  }
+}

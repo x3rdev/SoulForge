@@ -1,13 +1,9 @@
-package com.github.x3rdev.soul_forge.client.screen;
+package com.github.x3rdev.soul_forge.client.screen.widget;
 
-import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.advancements.AdvancementWidget;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import org.joml.Matrix4f;
 import software.bernie.geckolib.util.Color;
 
 public class ResearchNodeConnector extends MoveableWidget {
@@ -42,11 +38,11 @@ public class ResearchNodeConnector extends MoveableWidget {
             guiGraphics.fill(-1, -1, dirX+2, 2, 0xFF000000);
         }
         if(dirY != 0) {
-            guiGraphics.fill(RenderType.gui(),0, 0, (dirX/2)+1, 1, 1, 0xFFFFFFFF);
-            guiGraphics.fill(RenderType.gui(),dirX/2, dirY, dirX+1, dirY+1, 1, 0xFFFFFFFF);
-            guiGraphics.fill(RenderType.gui(),dirX/2, 0, dirX/2+1, dirY+1, 1, 0xFFFFFFFF);
+            guiGraphics.fill(RenderType.gui(),0, 0, (dirX/2)+1, 1, 1, 0xFFbababa);
+            guiGraphics.fill(RenderType.gui(),dirX/2, dirY, dirX+1, dirY+1, 1, 0xFFbababa);
+            guiGraphics.fill(RenderType.gui(),dirX/2, 0, dirX/2+1, dirY+1, 1, 0xFFbababa);
         } else {
-            guiGraphics.fill(RenderType.gui(),0, 0, dirX+1, 1, 1, 0xFFFFFFFF);
+            guiGraphics.fill(RenderType.gui(),0, 0, dirX+1, 1, 1, 0xFFbababa);
         }
         guiGraphics.disableScissor();
         guiGraphics.pose().popPose();

@@ -1,6 +1,9 @@
 package com.github.x3rdev.soul_forge.client.screen;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.screen.widget.MoveableWidget;
+import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNode;
+import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNodeConnector;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
@@ -21,15 +24,15 @@ import java.util.*;
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
 
     public static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table.png");
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/soulwood_planks.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/block/soulwood_planks.png");
     public static final int DRAGGABLE_WINDOW_WIDTH = 160;
     public static final int DRAGGABLE_WINDOW_HEIGHT = 142;
     public static final int ICON_SIZE = 26;
     public static final int PADDING = ICON_SIZE/2;
     private double anchorX;
     private double anchorY;
-    private int backgroundWidth;
-    private int backgroundHeight;
+    private int treeDepth;
+    private int treeBreadth;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -42,12 +45,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         this.anchorX = PADDING+PADDING;
         this.anchorY = DRAGGABLE_WINDOW_HEIGHT/2F;
         ResearchTree researchTree = ResearchTree.buildTree();
-        addWidgetsFromTree(researchTree, 0,0,0, 0);
-        backgroundWidth = researchTree.pixelDepth();
-        backgroundHeight = researchTree.pixelBreadth();
+        addResearchTreeWidgets(researchTree, 0,0,0, 0);
+        treeDepth = researchTree.pixelDepth();
+        treeBreadth = researchTree.pixelBreadth();
     }
 
-    private void addWidgetsFromTree(ResearchTree tree, int lastX, int lastY, int offsetX, int offsetY) {
+    private void addResearchTreeWidgets(ResearchTree tree, int lastX, int lastY, int offsetX, int offsetY) {
         addRenderableWidget(new ResearchNode(offsetX, offsetY, tree.head,
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
         addRenderableWidget(new ResearchNodeConnector(lastX, lastY, offsetX-lastX, offsetY-lastY,
@@ -55,7 +58,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         int treeYOffset = (-tree.pixelBreadth()/2);
         for (ResearchTree childTree : tree.children) {
             treeYOffset += childTree.pixelBreadth()/2;
-            addWidgetsFromTree(childTree, offsetX, offsetY, offsetX + ICON_SIZE + PADDING, offsetY + treeYOffset);
+            addResearchTreeWidgets(childTree, offsetX, offsetY, offsetX + ICON_SIZE + PADDING, offsetY + treeYOffset);
             treeYOffset += childTree.pixelBreadth()/2 + PADDING;
         }
     }
@@ -64,9 +67,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(mouseX-dragX > leftPos+8 && mouseX-dragX < leftPos+8+DRAGGABLE_WINDOW_WIDTH && mouseY-dragY > topPos+16 && mouseY-dragY < topPos+16+DRAGGABLE_WINDOW_HEIGHT) {
             anchorX += dragX;
-            anchorX = Math.clamp(anchorX, -backgroundWidth/2F-2-PADDING, ICON_SIZE/2+PADDING);
+            //Still dubious about if this works
+            float xScroll = Math.min(ICON_SIZE/2F+PADDING, DRAGGABLE_WINDOW_WIDTH-(treeDepth));
+            anchorX = Math.clamp(anchorX, xScroll, ICON_SIZE/2F+PADDING);
             anchorY += dragY;
-            anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT-(backgroundHeight/2F)-PADDING, backgroundHeight/2F+PADDING);
+            float yScroll = -Math.min(0, DRAGGABLE_WINDOW_HEIGHT-(treeBreadth+PADDING));
+            anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT/2F-yScroll, DRAGGABLE_WINDOW_HEIGHT/2F+yScroll);
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
@@ -88,7 +94,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
+        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xbababa, false);
     }
 
     @Override
@@ -126,7 +132,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                 for (ResearchTree child : children) {
                     max = Math.max(max, child.pixelDepth());
                 }
-                return PADDING+max;
+                return ICON_SIZE+PADDING+max;
             }
 
         }
