@@ -2,21 +2,19 @@ package com.github.x3rdev.soul_forge.common.block_entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
-import com.github.x3rdev.soul_forge.common.item.NecronomiconItem;
+import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -26,10 +24,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ChunkPos;
@@ -150,11 +146,11 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 startRitual(null);
             } else {
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
-                NecronomiconItem.whisper(player, Component.literal("These offerings are... inadequate"));
+                Necronomicon.whisper(player, Component.literal("These offerings are... inadequate"));
             }
         } else {
             spawnMissingPedestalParticles();
-            NecronomiconItem.whisper(player, Component.literal("Your ritual setup is... unsatisfactory"));
+            Necronomicon.whisper(player, Component.literal("Your ritual setup is... unsatisfactory"));
         }
     }
 

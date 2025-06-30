@@ -3,7 +3,7 @@ package com.github.x3rdev.soul_forge.common;
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
-import com.github.x3rdev.soul_forge.common.item.SoulScytheItem;
+import com.github.x3rdev.soul_forge.common.item.SoulScythe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.tags.TagKey;
@@ -56,7 +56,7 @@ public class CommonSetup {
         if(!level.isClientSide()) {
             if(event.getSource().getEntity() instanceof Player player) {
                 ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-                if(stack.getItem() instanceof SoulScytheItem) {
+                if(stack.getItem() instanceof SoulScythe) {
                     if(isTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
                         dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
                         return;

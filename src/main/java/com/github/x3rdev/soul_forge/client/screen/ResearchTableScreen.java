@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
@@ -20,12 +21,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
 
     public static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table.png");
+    public static final ResourceLocation MINIGAME_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_minigame.png");
     public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/block/soulwood_planks.png");
     public static final int DRAGGABLE_WINDOW_WIDTH = 160;
     public static final int DRAGGABLE_WINDOW_HEIGHT = 142;
@@ -35,6 +38,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private double anchorY;
     private int treeDepth;
     private int treeBreadth;
+    private @Nullable Research research;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -48,14 +52,14 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         this.anchorY = DRAGGABLE_WINDOW_HEIGHT/2F;
         ResearchTree researchTree = ResearchTree.buildTree();
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
-        treeDepth = researchTree.pixelDepth();
-        treeBreadth = researchTree.pixelBreadth();
+        this.treeDepth = researchTree.pixelDepth();
+        this.treeBreadth = researchTree.pixelBreadth();
     }
 
     private void addResearchTreeWidgets(ResearchTree tree, int lastX, int lastY, int offsetX, int offsetY) {
-        addRenderableWidget(new ResearchNode(this, offsetX, offsetY, tree.head,
+        addRenderableWidget(new ResearchNode(offsetX, offsetY, this, tree.head,
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
-        addRenderableWidget(new ResearchNodeConnector(lastX, lastY, offsetX-lastX, offsetY-lastY,
+        addRenderableWidget(new ResearchNodeConnector(lastX, lastY, this, offsetX-lastX, offsetY-lastY,
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
         int treeYOffset = (-tree.pixelBreadth()/2);
         for (ResearchTree childTree : tree.children) {
@@ -82,27 +86,71 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().scale(0.5F,0.5F,1);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
-        for (Renderable renderable : renderables) {
-            if (renderable instanceof MoveableWidget widget) {
-                widget.setX(leftPos + 8 + widget.getAnchorX() + Mth.floor(anchorX));
-                widget.setY(topPos + 16 + widget.getAnchorY() + Mth.floor(anchorY));
+        if(!isMinigameActive()) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().scale(0.5F, 0.5F, 1);
+            boolean renderShadow = false;
+            for (Renderable renderable : renderables) {
+                if (renderable instanceof MoveableWidget widget) {
+                    widget.setX(leftPos + 8 + widget.getAnchorX() + Mth.floor(anchorX));
+                    widget.setY(topPos + 16 + widget.getAnchorY() + Mth.floor(anchorY));
+                    if(widget.isHovered()) renderShadow = true;
+                }
+            }
+            guiGraphics.pose().popPose();
+            if(renderShadow) renderShadow(guiGraphics);
+        } else {
+            for (int i = 1; i < 28; i++) {
+                ItemStack stack = menu.getItems().get(i);
+                if(stack.getItem() instanceof Rune runeItem) {
+                    for (int j = 0; j < runeItem.getShape().length; j++) {
+                        for (int k = 0; k < runeItem.getShape()[j].length(); k++) {
+                            char c = runeItem.getShape()[j].charAt(k);
+                            if(c == 'x') {
+                                int x = leftPos+8+18*((i-1)%9+k);
+                                int y = topPos+17+18*((i-1)/9+j);
+                                guiGraphics.fill(RenderType.guiOverlay(), x, y, x+16, y+16, 220, runeItem.getColor().getColor());
+                            }
+                        }
+                    }
+                }
             }
         }
-        guiGraphics.pose().popPose();
+        guiGraphics.blit(LOCATION, leftPos-21, topPos, 176, 0, 20, 20);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    private void renderShadow(GuiGraphics guiGraphics){
+        guiGraphics.fill(RenderType.gui(),
+                leftPos+8, topPos+16,
+                leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT,
+                160,
+                0x66000000);
     }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xbababa, false);
+        if(isMinigameActive()) {
+            guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
+        }
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
-        guiGraphics.blit(BACKGROUND, leftPos+8, topPos+16, 0, -Mth.floor(anchorX), -Mth.floor(anchorY), DRAGGABLE_WINDOW_WIDTH, DRAGGABLE_WINDOW_HEIGHT, 16, 16);
+        guiGraphics.blit(isMinigameActive() ? MINIGAME_LOCATION : LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        if(!isMinigameActive()) {
+            guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + 16, 0, -Mth.floor(anchorX), -Mth.floor(anchorY), DRAGGABLE_WINDOW_WIDTH, DRAGGABLE_WINDOW_HEIGHT, 16, 16);
+        }
+    }
+
+    public boolean isMinigameActive() {
+        return research != null;
+    }
+
+    public void setActiveResearch(Research research) {
+        this.research = research;
+        this.menu.setActiveResearch(research);
     }
 
     private static final class ResearchTree implements Comparable<ResearchTree> {
@@ -176,7 +224,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         public int compareTo(@NotNull ResearchTableScreen.ResearchTree o) {
             int childCount = this.children.size()-o.children.size();
             if(childCount == 0) {
-                return this.head.icon().getItem().toString().compareTo(o.head.icon().getItem().toString());
+                return this.head.iconStack().getItem().toString().compareTo(o.head.iconStack().getItem().toString());
             }
             return childCount;
         }

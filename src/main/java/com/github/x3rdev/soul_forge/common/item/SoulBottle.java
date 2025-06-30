@@ -1,6 +1,5 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
@@ -22,11 +21,11 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.Optional;
 
-public class SoulBottleItem extends Item {
+public class SoulBottle extends Item {
 
     private final int capacity;
 
-    public SoulBottleItem(int capacity) {
+    public SoulBottle(int capacity) {
         super(new Properties()
                 .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), SoulType.EMPTY)
                 .component(DataComponentRegistry.STORED_SOUL_COUNT.get(), 0)

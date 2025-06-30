@@ -16,11 +16,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class ResearcherGlassesItem extends ArmorItem implements GeoItem {
+public class ResearcherGlasses extends ArmorItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public ResearcherGlassesItem(Type pType) {
+    public ResearcherGlasses(Type pType) {
         super(ArmorMaterials.GOLD, pType, new Properties());
     }
 

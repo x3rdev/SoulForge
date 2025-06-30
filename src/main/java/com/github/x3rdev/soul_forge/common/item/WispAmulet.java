@@ -12,10 +12,10 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class WispAmuletItem extends Item {
+public class WispAmulet extends Item {
     private static final String WISP_UUID_KEY = "wisp_uuid";
 
-    public WispAmuletItem() {
+    public WispAmulet() {
         super(new Properties().component(DataComponentRegistry.WISP_UUID, null));
     }
 

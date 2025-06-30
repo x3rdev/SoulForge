@@ -3,8 +3,7 @@ package com.github.x3rdev.soul_forge.client.renderer.block;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
-import com.github.x3rdev.soul_forge.common.item.SoulBottleItem;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
+import com.github.x3rdev.soul_forge.common.item.SoulBottle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -16,7 +15,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -52,7 +50,7 @@ public class SoulStorageRenderer extends DynamicGeoBlockRenderer<SoulStorageBloc
 
     private boolean overrideCrystalColor(SoulStorageBlockEntity animatable, float partialTick) {
         Player player = Minecraft.getInstance().player;
-        if(player.getMainHandItem().getItem() instanceof SoulBottleItem) {
+        if(player.getMainHandItem().getItem() instanceof SoulBottle) {
             Vec3 lookVec = player.getLookAngle().normalize();
             AABB box = AABB.ofSize(animatable.getBlockPos().getCenter().add(0, animatable.getCrystalHeight(partialTick), 0), 1.5, 1.5, 1.5);
             return box.clip(player.getEyePosition(partialTick), player.getEyePosition(partialTick).add(lookVec.scale(10))).isPresent();

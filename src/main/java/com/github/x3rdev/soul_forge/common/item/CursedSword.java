@@ -13,10 +13,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class CursedSwordItem extends SwordItem implements GeoItem {
+public class CursedSword extends SwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public CursedSwordItem() {
+    public CursedSword() {
         super(Tiers.NETHERITE, new Properties());
     }
 

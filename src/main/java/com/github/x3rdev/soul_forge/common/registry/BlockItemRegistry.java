@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.item.GeckoBlockItem;
+import com.github.x3rdev.soul_forge.common.item.GeckoBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -56,9 +56,9 @@ public class BlockItemRegistry {
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_PLANKS = BLOCK_ITEMS.register("soulwood_planks",
             () -> new BlockItem(BlockRegistry.SOULWOOD_PLANKS.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> PEDESTAL = BLOCK_ITEMS.register("pedestal",
-            () -> new GeckoBlockItem(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
+            () -> new GeckoBlock(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOUL_STORAGE = BLOCK_ITEMS.register("soul_storage",
-            () -> new GeckoBlockItem(BlockRegistry.SOUL_STORAGE.get(), new Item.Properties()));
+            () -> new GeckoBlock(BlockRegistry.SOUL_STORAGE.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> RESEARCH_TABLE = BLOCK_ITEMS.register("research_table",
             () -> new BlockItem(BlockRegistry.RESEARCH_TABLE.get(), new Item.Properties()));
 }

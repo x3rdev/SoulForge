@@ -1,12 +1,13 @@
 package com.github.x3rdev.soul_forge.common.block;
 
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -79,13 +80,30 @@ public class ResearchTableBlock extends Block {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        } else {
-            player.openMenu(state.getMenuProvider(level, pos));
-            return InteractionResult.CONSUME;
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(stack.is(ItemRegistry.NECRONOMICON.get())) {
+            if(!level.isClientSide()) {
+                player.openMenu(
+                        getMenuProvider(level, pos, hand),
+                        byteBuf -> {
+                            byteBuf.writeBlockPos(pos);
+                            byteBuf.writeEnum(hand);
+                        }
+                );
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
+        if(level.isClientSide()) {
+            player.displayClientMessage(Component.literal("Interact with a Necronomicon to use the research table"), true);
+        }
+        return ItemInteractionResult.FAIL;
+    }
+
+    private MenuProvider getMenuProvider(Level level, BlockPos pos, InteractionHand hand) {
+        return new SimpleMenuProvider(
+                (containerId, playerInventory, player1) -> new ResearchTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos), hand),
+                getName()
+        );
     }
 
     @Override
@@ -138,15 +156,6 @@ public class ResearchTableBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, PART);
-    }
-
-    @Nullable
-    @Override
-    protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider(
-                (containerId, playerInventory, player) -> new ResearchTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos)),
-                getName()
-        );
     }
 
     public enum TablePart implements StringRepresentable {

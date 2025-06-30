@@ -6,16 +6,9 @@ import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,9 +24,9 @@ import vazkii.patchouli.api.PatchouliAPI;
 import java.util.List;
 import java.util.Optional;
 
-public class NecronomiconItem extends Item {
+public class Necronomicon extends Item {
 
-    public NecronomiconItem() {
+    public Necronomicon() {
         super(new Properties().stacksTo(1));
     }
 

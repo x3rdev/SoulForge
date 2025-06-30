@@ -1,11 +1,10 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
-import com.github.x3rdev.soul_forge.common.item.SoulBottleItem;
+import com.github.x3rdev.soul_forge.common.item.SoulBottle;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +45,7 @@ public class SoulEntity extends Entity implements GeoEntity {
     @Override
     public InteractionResult interact(Player player, InteractionHand pHand) {
         ItemStack stack = player.getItemInHand(pHand);
-        if (stack.getItem() instanceof SoulBottleItem soulBottleItem) {
+        if (stack.getItem() instanceof SoulBottle soulBottleItem) {
             boolean bottleFilled = soulBottleItem.tryFillBottle(stack, this, player);
             if (bottleFilled) {
                 this.remove(RemovalReason.DISCARDED);

@@ -16,10 +16,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class SoulSteelArmorItem extends ArmorItem implements GeoItem {
+public class SoulSteelArmor extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SoulSteelArmorItem(Type pType) {
+    public SoulSteelArmor(Type pType) {
         super(ArmorMaterials.GOLD, pType, new Properties());
     }
 

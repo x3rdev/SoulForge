@@ -2,7 +2,7 @@ package com.github.x3rdev.soul_forge.client.renderer.item;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
-import com.github.x3rdev.soul_forge.common.item.ResearcherGlassesItem;
+import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +15,7 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
-public class ResearcherGlassesRenderer extends GeoArmorRenderer<ResearcherGlassesItem> {
+public class ResearcherGlassesRenderer extends GeoArmorRenderer<ResearcherGlasses> {
 
     public ResearcherGlassesRenderer() {
         super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "armor/researcher_glasses")));
@@ -29,7 +29,7 @@ public class ResearcherGlassesRenderer extends GeoArmorRenderer<ResearcherGlasse
             Player player = minecraft.player;
             if(player != null) {
                 ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD); //TODO curios compat?
-                if(stack.getItem() instanceof ResearcherGlassesItem) {
+                if(stack.getItem() instanceof ResearcherGlasses) {
                     if(!isGlassesEffectLoaded()) {
                         Minecraft.getInstance().gameRenderer.loadEffect(ShaderRegistry.researcherGlassesPostEffect());
                     }
