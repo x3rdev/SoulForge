@@ -1,4 +1,4 @@
-<mxfile host="drawio-plugin" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" modified="2025-06-22T06:51:53.648Z" etag="NtftoqNPNrlo2UwPpXtU" version="22.1.22" type="embed" pages="2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0" version="27.2.0" pages="3">
   <diagram name="Page-1" id="7Zxg5EmYX3JTQmx1fJec">
     <mxGraphModel dx="1041" dy="451" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -584,6 +584,26 @@
         </mxCell>
         <mxCell id="_1sroTqieoaRKtdJq657-150" value="Big crystal jar" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-148" y="1266" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="hCAANHsNtiLVzlhhjByh" name="Page-3">
+    <mxGraphModel dx="1042" dy="632" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PPJ7Ha8_xqi0nwsH8r60-1" value="Ectoplasm" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=data:image/png,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAABbElEQVQ4jaWTv0vDQBTHv1c6uIkdLAZEoUR0coktlgwuFofaRRAyOdjBQagOToL/QjYnZwO6lUxOBW9p0t2SkqEUrqRDQje351AubW1iFb/wuDvuvc97734wIsJ/lJ1dVOo8kfb2pLOlgEqd0+GVjmph0alUs6jdNJIhRITjy3d6cImckIhoOko5IVHx9JmICN8tI0HVAnB/x1GqWbB9wI2ASp3DjQDbTz+DGGD7wHg0QDR00O9Og64vrPToWUC1AJw8GPFGvzsPTFMWmDja/iSo3DCxtTuZ750bCIWGUPR+BsiM0lG0AoxHA+R1DQAQ8A7SbiEDAO2mwT5eLOQUFZ9eEJce8A5yiopo6CyvQEo50rEieshDQ/f1EaHQsLZRxM7BLQGA55pzlbDZp1yqWRQNHZQbJkLRQ05RIVoc8pwAxNVIEEv6CzKb1Pb+WQxZXd+MW/RckyUClgGlPNdkC0/zt6ZqN0REyS38RV+4af3xYz/SmwAAAABJRU5ErkJggg==;" vertex="1" parent="1">
+          <mxGeometry x="200" y="120" width="76" height="76" as="geometry" />
+        </mxCell>
+        <mxCell id="PPJ7Ha8_xqi0nwsH8r60-2" value="Obtained from ghosts" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="60" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PPJ7Ha8_xqi0nwsH8r60-3" value="&lt;div&gt;graveyard&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="340" y="20" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="PPJ7Ha8_xqi0nwsH8r60-4" value="Simple structure that has ghost spawner" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="430" y="20" width="180" height="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
