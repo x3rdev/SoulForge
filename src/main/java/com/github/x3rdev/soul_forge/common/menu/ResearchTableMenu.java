@@ -14,12 +14,14 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.ticks.ContainerSingleItem;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class ResearchTableMenu extends AbstractContainerMenu {
 
     protected final Container container;
+    protected final Container researchRequirementsContainer;
     private final ContainerLevelAccess access;
     private final Player player;
     private @Nullable Research research;
@@ -38,6 +40,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public ResearchTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access, InteractionHand hand) {
         super(MenuTypeRegistry.RESEARCH_TABLE.get(), containerId);
         this.container = new SimpleContainer(28);
+        this.researchRequirementsContainer = new SimpleContainer(1);
         this.access = access;
         this.player = playerInventory.player;
         this.addSlot(new Slot(container, 0, -19, 2){
@@ -51,16 +54,20 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 return false;
             }
         });
-        container.setItem(0, player.getItemInHand(hand).copy());
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 9; j++) {
-                this.addSlot(new MinigameSlot(container, j + i * 9 + 1, 8 + j * 18, 17 + i * 18) {
-                    @Override
-                    public boolean mayPlace(ItemStack stack) {
-                        return super.mayPlace(stack) && stack.getItem() instanceof Rune;
-                    }
-                });
+        container.setItem(0, player.getItemInHand(hand).copyAndClear());
+        this.addSlot(new Slot(researchRequirementsContainer, 0, 10, 10) {
+            @Override
+            public boolean mayPickup(Player player) {
+                return false;
             }
+
+            @Override
+            public boolean isHighlightable() {
+                return false;
+            }
+        });
+        for (int i = 0; i < 3; i++) {
+            this.addSlot(new MinigameSlot(container, i+1, 62+i*18, 36));
         }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -73,7 +80,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean isMinigameActive() {
+    public boolean isResearchSelected() {
         return research != null;
     }
 
@@ -82,6 +89,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             PacketDistributor.sendToServer(new UpdateResearchPayload(research, this.containerId));
         }
         this.research = research;
+        this.researchRequirementsContainer.setItem(0, research.unlockItemStack());
     }
 
 
@@ -93,6 +101,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
+        this.access.execute((level, pos) -> this.clearContainer(player, this.container));
     }
 
     @Override
@@ -108,7 +117,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
         @Override
         public boolean isActive() {
-            return isMinigameActive();
+            return isResearchSelected();
         }
 
     }
@@ -122,11 +131,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         @Override
         public boolean isActive() {
             return super.isActive();
-        }
-
-        @Override
-        public boolean mayPlace(ItemStack stack) {
-            return false;
         }
 
     }

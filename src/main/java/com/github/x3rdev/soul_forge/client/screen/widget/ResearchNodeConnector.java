@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import software.bernie.geckolib.util.Color;
 
 public class ResearchNodeConnector extends MoveableWidget {
 
@@ -29,34 +28,33 @@ public class ResearchNodeConnector extends MoveableWidget {
     }
 
     @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if(!screen.isMinigameActive()) {
-            guiGraphics.pose().pushPose();
-            guiGraphics.enableScissor(minX, minY, maxX, maxY);
-            guiGraphics.pose().translate(getX(), getY(), 0);
-            if (dirY != 0) {
-                guiGraphics.fill(-1, -1, (dirX / 2) + 2, 2, 0xFF000000);
-                guiGraphics.fill(dirX / 2 - 1, dirY - 1, dirX + 2, dirY + 2, 0xFF000000);
-                guiGraphics.fill(dirX / 2 - 1, -1, dirX / 2 + 2, dirY + 2, 0xFF000000);
-            } else {
-                guiGraphics.fill(-1, -1, dirX + 2, 2, 0xFF000000);
-            }
-            if (dirY != 0) {
-                guiGraphics.fill(RenderType.gui(), 0, 0, (dirX / 2) + 1, 1, 1, 0xFFbababa);
-                guiGraphics.fill(RenderType.gui(), dirX / 2, dirY, dirX + 1, dirY + 1, 1, 0xFFbababa);
-                guiGraphics.fill(RenderType.gui(), dirX / 2, 0, dirX / 2 + 1, dirY + 1, 1, 0xFFbababa);
-            } else {
-                guiGraphics.fill(RenderType.gui(), 0, 0, dirX + 1, 1, 1, 0xFFbababa);
-            }
-            guiGraphics.disableScissor();
-            guiGraphics.pose().popPose();
-        }
+    public boolean isActive() {
+        return super.isActive() && screen.researchTreeActive();
     }
 
-
-
-    private void drawPixel(GuiGraphics guiGraphics, int x, int y, float alpha) {
-        guiGraphics.fill(RenderType.gui(), x, y, x+1, y+1, Color.ofARGB(alpha, 0, 1, 1).getColor());
+    @Override
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        if(screen.researchTreeActive()) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.enableScissor(minX, minY, maxX, maxY);
+        guiGraphics.pose().translate(getX(), getY(), 0);
+        if (dirY != 0) {
+            guiGraphics.fill(-1, -1, (dirX / 2) + 2, 2, 0xFF000000);
+            guiGraphics.fill(dirX / 2 - 1, dirY - 1, dirX + 2, dirY + 2, 0xFF000000);
+            guiGraphics.fill(dirX / 2 - 1, -1, dirX / 2 + 2, dirY + 2, 0xFF000000);
+        } else {
+            guiGraphics.fill(-1, -1, dirX + 2, 2, 0xFF000000);
+        }
+        if (dirY != 0) {
+            guiGraphics.fill(RenderType.gui(), 0, 0, (dirX / 2) + 1, 1, 1, 0xFFbababa);
+            guiGraphics.fill(RenderType.gui(), dirX / 2, dirY, dirX + 1, dirY + 1, 1, 0xFFbababa);
+            guiGraphics.fill(RenderType.gui(), dirX / 2, 0, dirX / 2 + 1, dirY + 1, 1, 0xFFbababa);
+        } else {
+            guiGraphics.fill(RenderType.gui(), 0, 0, dirX + 1, 1, 1, 0xFFbababa);
+        }
+        guiGraphics.disableScissor();
+        guiGraphics.pose().popPose();
+        }
     }
 
     @Override

@@ -3,5 +3,8 @@
   "title": "New Beginnings",
   "icon_item_stack": {
     "id": "soul_forge:soul_crystal"
+  },
+  "unlock_item_stack": {
+    "id": "minecraft:diamond"
   }
 }

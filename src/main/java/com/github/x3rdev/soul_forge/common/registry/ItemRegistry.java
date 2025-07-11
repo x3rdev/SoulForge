@@ -47,7 +47,6 @@ public class ItemRegistry {
             CursedSword::new);
     public static final DeferredHolder<Item, Necronomicon> NECRONOMICON = ITEMS.register("necronomicon",
             Necronomicon::new);
-    public static final DeferredHolder<Item, ObservationScroll>;
 
 
     public static class ModItemTab {
