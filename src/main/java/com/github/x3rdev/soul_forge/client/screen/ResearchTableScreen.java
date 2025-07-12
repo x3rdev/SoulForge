@@ -50,7 +50,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         super.init();
         this.anchorX = PADDING+PADDING;
         this.anchorY = DRAGGABLE_WINDOW_HEIGHT/2F;
-        ResearchTree researchTree = ResearchTree.buildTree();
+        ResearchTree researchTree = ResearchTree.buildScreenTree();
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
@@ -73,7 +73,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(mouseX-dragX > leftPos+8 && mouseX-dragX < leftPos+8+DRAGGABLE_WINDOW_WIDTH && mouseY-dragY > topPos+16 && mouseY-dragY < topPos+16+DRAGGABLE_WINDOW_HEIGHT) {
             anchorX += dragX;
-            //Still dubious about if this works
             float xScroll = Math.min(ICON_SIZE/2F+PADDING, DRAGGABLE_WINDOW_WIDTH-(treeDepth));
             anchorX = Math.clamp(anchorX, xScroll, ICON_SIZE/2F+PADDING);
             anchorY += dragY;
@@ -87,7 +86,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.pose().pushPose();
-        if(researchTreeActive()) {
+        if(treeScreenActive()) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().scale(0.5F, 0.5F, 1);
             boolean shouldRenderBlur = false;
@@ -101,7 +100,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             guiGraphics.pose().popPose();
             if (shouldRenderBlur) renderBlur(guiGraphics);
         }
-        if(researchUnlockActive()){
+        if(unlockScreenActive()){
 
         }
         guiGraphics.blit(TREE_SCREEN_LOCATION, leftPos - 21, topPos, 176, 0, 20, 20);
@@ -124,20 +123,20 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        if(researchTreeActive()) {
+        if(treeScreenActive()) {
             guiGraphics.blit(TREE_SCREEN_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
             guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + 16, 0, -Mth.floor(anchorX), -Mth.floor(anchorY), DRAGGABLE_WINDOW_WIDTH, DRAGGABLE_WINDOW_HEIGHT, 16, 16);
         }
-        if(researchUnlockActive()){
+        if(unlockScreenActive()){
             guiGraphics.blit(UNLOCK_SCREEN_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         }
     }
 
-    public boolean researchTreeActive() {
+    public boolean treeScreenActive() {
         return getActiveResearch().isEmpty(); //If we have not selected a research, do default stuff
     }
 
-    public boolean researchUnlockActive() {
+    public boolean unlockScreenActive() {
         return getActiveResearch().isPresent(); //If we have selected a research, we should render new bg and do new behavior
     }
 
@@ -152,16 +151,16 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     private static final class ResearchTree implements Comparable<ResearchTree> {
         private final Research head;
-        private final List<ResearchTree> children;
+        private final TreeSet<ResearchTree> children;
 
         private ResearchTree(Research head) {
             this.head = head;
-            this.children = new ArrayList<>();
+            this.children = new TreeSet<>();
         }
 
-        private ResearchTree(Research head, List<ResearchTree> children) {
+        private ResearchTree(Research head, Set<ResearchTree> children) {
             this.head = head;
-            this.children = new ArrayList<>(children);
+            this.children = new TreeSet<>(children);
         }
 
         private int pixelBreadth() {
@@ -189,7 +188,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
         }
 
-        public static ResearchTree buildTree() {
+        public static ResearchTree buildScreenTree() {
             // Creates a map of every research node to each of its children
             Map<Research, Set<Research>> parentToResearchMap = new HashMap<>();
             RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
@@ -214,7 +213,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             tree.children.forEach(researchTree -> {
                 fillChildren(researchTree, parentToResearchMap);
             });
-            tree.children.sort(ResearchTree::compareTo);
+//            tree.children.sort(ResearchTree::compareTo);
         }
 
         @Override
@@ -224,6 +223,19 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                 return this.head.iconItemStack().getItem().toString().compareTo(o.head.iconItemStack().getItem().toString());
             }
             return childCount;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof ResearchTree otherTree) {
+                return this.head.equals(otherTree.head) && this.children.equals(otherTree.children);
+            }
+            return super.equals(obj);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.head, this.children);
         }
     }
 }

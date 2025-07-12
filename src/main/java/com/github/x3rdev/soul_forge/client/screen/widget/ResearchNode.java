@@ -55,12 +55,12 @@ public class ResearchNode extends MoveableWidget {
 
     @Override
     public boolean isActive() {
-        return super.isActive() && screen.researchTreeActive();
+        return super.isActive() && screen.treeScreenActive();
     }
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if(screen.researchTreeActive()) {
+        if(screen.treeScreenActive()) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(getX(), getY(), 2);
             Font font = Minecraft.getInstance().font;

@@ -25,7 +25,10 @@ public record Research(ResourceKey<Research> parent, String title, ItemStack ico
                     ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("icon_item_stack").forGetter(Research::iconItemStack),
                     ItemStack.OPTIONAL_CODEC.fieldOf("unlock_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::unlockItemStack),
                     Codec.BOOL.fieldOf("fake").orElse(false).forGetter(Research::fake)
-    ).apply(instance, Research::new));
+    ).apply(instance, (researchResourceKey, s, stack, stack2, aBoolean) -> {
+                System.out.println(instance);
+                return new Research(researchResourceKey, s, stack, stack2, aBoolean);
+            }));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Research> STREAM_CODEC = StreamCodec.composite(
             ResourceKey.streamCodec(DatapackRegistry.RESEARCH_KEY),
@@ -53,5 +56,15 @@ public record Research(ResourceKey<Research> parent, String title, ItemStack ico
             return getEmptyResearch();
         }
         return access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow().get(parent).orElseThrow().value();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }

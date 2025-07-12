@@ -29,12 +29,12 @@ public class ResearchNodeConnector extends MoveableWidget {
 
     @Override
     public boolean isActive() {
-        return super.isActive() && screen.researchTreeActive();
+        return super.isActive() && screen.treeScreenActive();
     }
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if(screen.researchTreeActive()) {
+        if(screen.treeScreenActive()) {
         guiGraphics.pose().pushPose();
         guiGraphics.enableScissor(minX, minY, maxX, maxY);
         guiGraphics.pose().translate(getX(), getY(), 0);
