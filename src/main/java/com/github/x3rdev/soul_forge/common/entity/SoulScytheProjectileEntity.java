@@ -88,11 +88,6 @@ public class SoulScytheProjectileEntity extends Projectile {
     }
 
     @Override
-    public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
-        super.shootFromRotation(pShooter, pX, pY, pZ, pVelocity, pInaccuracy);
-    }
-
-    @Override
     public boolean isPickable() {
         return false;
     }

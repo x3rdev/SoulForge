@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
@@ -26,7 +27,7 @@ public class DataComponentRegistry {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> WISP_UUID = DATA_COMPONENTS.registerComponentType("wisp_uuid",
             builder -> builder.persistent(UUIDUtil.CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> OBSERVATION_ID = DATA_COMPONENTS.registerComponentType("observation_id",
-            builder -> builder.persistent(ResourceLocation.CODEC).cacheEncoding());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Necronomicon.NecronomiconData>> NECRONOMICON_DATA = DATA_COMPONENTS.registerComponentType("necronomicon_data",
+            builder -> builder.persistent(Necronomicon.NecronomiconData.CODEC).networkSynchronized(Necronomicon.NecronomiconData.STREAM_CODEC));
 }
 

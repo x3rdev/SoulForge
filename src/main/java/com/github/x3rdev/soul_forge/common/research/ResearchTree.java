@@ -1,0 +1,113 @@
+package com.github.x3rdev.soul_forge.common.research;
+
+import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
+import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderOwner;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+
+public final class ResearchTree implements Comparable<ResearchTree> {
+    private final Holder.Reference<Research> head;
+    private final SortedSet<ResearchTree> children;
+
+    private static ResearchTree instance;
+
+    private ResearchTree(Holder.Reference<Research> head) {
+        this.head = head;
+        this.children = new TreeSet<>();
+    }
+
+    private ResearchTree(Holder.Reference<Research> head, SortedSet<ResearchTree> children) {
+        this.head = head;
+        this.children = new TreeSet<>(children);
+    }
+
+    public static ResearchTree getResearchTree() {
+        if(instance == null) {
+            instance = buildTree();
+        }
+        return instance;
+    }
+
+    private static ResearchTree buildTree() {
+        // Creates a map of every research node to each of its children
+        Map<Holder.Reference<Research>, Set<Holder.Reference<Research>>> parentToResearchMap = new HashMap<>();
+        RegistryAccess access = Minecraft.getInstance().level.registryAccess();
+        List<Holder.Reference<Research>> sortedResearch = access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
+                .listElements()
+                .filter(researchReference -> !researchReference.value().inactive())
+                .sorted(Comparator.comparingInt(Holder.Reference::hashCode))
+                .toList();
+
+        sortedResearch.forEach(research -> {
+            Holder.Reference<Research> parent = access.holder(research.value().getParent(access).key()).orElseThrow();
+            parentToResearchMap.putIfAbsent(parent, new HashSet<>());
+            parentToResearchMap.get(parent).add(research);
+        });
+        ResearchTree tree = new ResearchTree(Research.getEmptyResearch(access));
+        fillChildren(tree, parentToResearchMap);
+        return new ResearchTree(
+                Research.getHeadResearch(access),
+                tree.children
+        );
+    }
+
+    public int pixelBreadth() {
+        if(children.isEmpty()) {
+            return ResearchTableScreen.ICON_SIZE;
+        } else {
+            int size = ResearchTableScreen.PADDING*(children.size()-1);
+            for (ResearchTree child : children) {
+                size += child.pixelBreadth();
+            }
+            return size;
+        }
+    }
+
+    public int pixelDepth() {
+        if(children.isEmpty()) {
+            return ResearchTableScreen.ICON_SIZE;
+        } else {
+            int max = -1;
+            for (ResearchTree child : children) {
+                max = Math.max(max, child.pixelDepth());
+            }
+            return ResearchTableScreen.ICON_SIZE+ResearchTableScreen.PADDING+max;
+        }
+
+    }
+
+    private static void fillChildren(ResearchTree tree, Map<Holder.Reference<Research>, Set<Holder.Reference<Research>>> parentToResearchMap) {
+        parentToResearchMap.getOrDefault(tree.head, Set.of()).forEach(research -> {
+            tree.children.add(new ResearchTree(research));
+        });
+        tree.children.forEach(researchTree -> {
+            fillChildren(researchTree, parentToResearchMap);
+        });
+    }
+
+    public Holder.Reference<Research> getHead() {
+        return head;
+    }
+
+    public ImmutableSet<ResearchTree> getChildren() {
+        return ImmutableSet.copyOf(children);
+    }
+
+    @Override
+    public int compareTo(@NotNull ResearchTree o) {
+        int childCount = this.children.size()-o.children.size();
+        if(childCount == 0) {
+            return this.head.value().iconItemStack().getItem().toString().compareTo(o.head.value().iconItemStack().getItem().toString());
+        }
+        return childCount;
+    }
+}

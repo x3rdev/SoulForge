@@ -4,26 +4,23 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.screen.widget.MoveableWidget;
 import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNode;
 import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNodeConnector;
+import com.github.x3rdev.soul_forge.client.screen.widget.SubmitButton;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
-import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import net.minecraft.client.Minecraft;
+import com.github.x3rdev.soul_forge.common.research.ResearchTree;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Optional;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
 
@@ -38,7 +35,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private double anchorY;
     private int treeDepth;
     private int treeBreadth;
-    private @Nullable Research research;
+    private @Nullable Holder.Reference<Research> activeResearch;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -50,19 +47,24 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         super.init();
         this.anchorX = PADDING+PADDING;
         this.anchorY = DRAGGABLE_WINDOW_HEIGHT/2F;
-        ResearchTree researchTree = ResearchTree.buildScreenTree();
+        ResearchTree researchTree = ResearchTree.getResearchTree();
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
+        addRenderableWidget(new SubmitButton(leftPos+imageWidth/2-17, topPos+60, this));
+    }
+
+    public ItemStack getNecronomicon() {
+        return getMenu().getItems().getFirst();
     }
 
     private void addResearchTreeWidgets(ResearchTree tree, int lastX, int lastY, int offsetX, int offsetY) {
-        addRenderableWidget(new ResearchNode(offsetX, offsetY, this, tree.head,
+        addRenderableWidget(new ResearchNode(offsetX, offsetY, this, tree.getHead(),
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
-        addRenderableWidget(new ResearchNodeConnector(lastX, lastY, this, offsetX-lastX, offsetY-lastY,
+        addRenderableWidget(new ResearchNodeConnector(lastX, lastY, this, tree.getHead(), offsetX-lastX, offsetY-lastY,
                 leftPos+8, topPos+16, leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT));
         int treeYOffset = (-tree.pixelBreadth()/2);
-        for (ResearchTree childTree : tree.children) {
+        for (ResearchTree childTree : tree.getChildren()) {
             treeYOffset += childTree.pixelBreadth()/2;
             addResearchTreeWidgets(childTree, offsetX, offsetY, offsetX + ICON_SIZE + PADDING, offsetY + treeYOffset);
             treeYOffset += childTree.pixelBreadth()/2 + PADDING;
@@ -94,14 +96,17 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                 if (renderable instanceof MoveableWidget widget) {
                     widget.setX(leftPos + 8 + widget.getAnchorX() + Mth.floor(anchorX));
                     widget.setY(topPos + 16 + widget.getAnchorY() + Mth.floor(anchorY));
-                    if (widget.isHovered()) shouldRenderBlur = true;
+                    if (widget.isActive() && widget.isHovered()) shouldRenderBlur = true;
                 }
             }
             guiGraphics.pose().popPose();
             if (shouldRenderBlur) renderBlur(guiGraphics);
         }
-        if(unlockScreenActive()){
-
+        if(unlockScreenActive()) {
+            ItemStack unlockStack = activeResearch.value().unlockItemStack();
+            guiGraphics.renderFakeItem(unlockStack, leftPos+14, topPos+35);
+            guiGraphics.drawString(this.font, unlockStack.getHoverName(), leftPos+41, topPos+41, 0xbababa, false);
+            guiGraphics.drawString(this.font, Component.literal(unlockStack.getCount() + "x"), leftPos+155, topPos+41, 0xbababa, false);
         }
         guiGraphics.blit(TREE_SCREEN_LOCATION, leftPos - 21, topPos, 176, 0, 20, 20);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
@@ -140,102 +145,14 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         return getActiveResearch().isPresent(); //If we have selected a research, we should render new bg and do new behavior
     }
 
-    public Optional<Research> getActiveResearch() {
-        return Optional.ofNullable(research);
+    public Optional<Holder.Reference<Research>> getActiveResearch() {
+        return Optional.ofNullable(activeResearch);
     }
 
-    public void setActiveResearch(Research research) {
-        this.research = research;
+    public void setActiveResearch(Holder.Reference<Research> research) {
+        this.activeResearch = research;
         this.menu.setActiveResearch(research);
     }
 
-    private static final class ResearchTree implements Comparable<ResearchTree> {
-        private final Research head;
-        private final TreeSet<ResearchTree> children;
 
-        private ResearchTree(Research head) {
-            this.head = head;
-            this.children = new TreeSet<>();
-        }
-
-        private ResearchTree(Research head, Set<ResearchTree> children) {
-            this.head = head;
-            this.children = new TreeSet<>(children);
-        }
-
-        private int pixelBreadth() {
-            if(children.isEmpty()) {
-                return ICON_SIZE;
-            } else {
-                int size = PADDING*(children.size()-1);
-                for (ResearchTree child : children) {
-                    size += child.pixelBreadth();
-                }
-                return size;
-            }
-        }
-
-        private int pixelDepth() {
-            if(children.isEmpty()) {
-                return ICON_SIZE;
-            } else {
-                int max = -1;
-                for (ResearchTree child : children) {
-                    max = Math.max(max, child.pixelDepth());
-                }
-                return ICON_SIZE+PADDING+max;
-            }
-
-        }
-
-        public static ResearchTree buildScreenTree() {
-            // Creates a map of every research node to each of its children
-            Map<Research, Set<Research>> parentToResearchMap = new HashMap<>();
-            RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-            List<Research> sortedResearch = registryAccess.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow().listElements().sorted(Comparator.comparingInt(Holder.Reference::hashCode)).map(Holder.Reference::value).toList();
-
-            sortedResearch.forEach(research -> {
-                parentToResearchMap.putIfAbsent(research.getParent(registryAccess), new HashSet<>());
-                parentToResearchMap.get(research.getParent(registryAccess)).add(research);
-            });
-            ResearchTree tree = new ResearchTree(Research.getEmptyResearch());
-            fillChildren(tree, parentToResearchMap);
-            return new ResearchTree(
-                    new Research(Research.EMPTY, "Research", ItemRegistry.NECRONOMICON.get().getDefaultInstance(), ItemStack.EMPTY, true),
-                    tree.children
-            );
-        }
-
-        private static void fillChildren(ResearchTree tree, Map<Research, Set<Research>> parentToResearchMap) {
-            parentToResearchMap.getOrDefault(tree.head, Set.of()).forEach(research -> {
-                tree.children.add(new ResearchTree(research));
-            });
-            tree.children.forEach(researchTree -> {
-                fillChildren(researchTree, parentToResearchMap);
-            });
-//            tree.children.sort(ResearchTree::compareTo);
-        }
-
-        @Override
-        public int compareTo(@NotNull ResearchTableScreen.ResearchTree o) {
-            int childCount = this.children.size()-o.children.size();
-            if(childCount == 0) {
-                return this.head.iconItemStack().getItem().toString().compareTo(o.head.iconItemStack().getItem().toString());
-            }
-            return childCount;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if(obj instanceof ResearchTree otherTree) {
-                return this.head.equals(otherTree.head) && this.children.equals(otherTree.children);
-            }
-            return super.equals(obj);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.head, this.children);
-        }
-    }
 }

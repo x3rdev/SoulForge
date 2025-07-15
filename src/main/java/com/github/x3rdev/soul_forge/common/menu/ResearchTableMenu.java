@@ -1,10 +1,14 @@
 package com.github.x3rdev.soul_forge.common.menu;
 
+import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
+import com.github.x3rdev.soul_forge.common.research.ResearchTree;
+import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -14,17 +18,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.ticks.ContainerSingleItem;
+import net.neoforged.neoforge.common.extensions.IPlayerExtension;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class ResearchTableMenu extends AbstractContainerMenu {
 
-    protected final Container container;
-    protected final Container researchRequirementsContainer;
+    public final Player player;
+    private final Container container;
     private final ContainerLevelAccess access;
-    private final Player player;
-    private @Nullable Research research;
+    private @Nullable Holder.Reference<Research> research;
 
     //Client
     public ResearchTableMenu(int containerId, Inventory playerInventory, FriendlyByteBuf byteBuf) {
@@ -40,7 +43,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public ResearchTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access, InteractionHand hand) {
         super(MenuTypeRegistry.RESEARCH_TABLE.get(), containerId);
         this.container = new SimpleContainer(28);
-        this.researchRequirementsContainer = new SimpleContainer(1);
         this.access = access;
         this.player = playerInventory.player;
         this.addSlot(new Slot(container, 0, -19, 2){
@@ -55,20 +57,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             }
         });
         container.setItem(0, player.getItemInHand(hand).copyAndClear());
-        this.addSlot(new Slot(researchRequirementsContainer, 0, 10, 10) {
-            @Override
-            public boolean mayPickup(Player player) {
-                return false;
-            }
-
-            @Override
-            public boolean isHighlightable() {
-                return false;
-            }
-        });
-        for (int i = 0; i < 3; i++) {
-            this.addSlot(new MinigameSlot(container, i+1, 62+i*18, 36));
-        }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 this.addSlot(new ResearchTableSlot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -80,16 +68,39 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
     }
 
+    public void submitResearch() {
+        if(player.level().isClientSide()) throw new IllegalCallerException("SubmitResearch called on client");
+        if(research == null) throw new IllegalArgumentException("Sent SubmitResearch packet while not in research unlock screen");
+        ItemStack unlockStack = research.value().unlockItemStack();
+        int count = unlockStack.getCount();
+        Inventory inventory = player.getInventory();
+        if(inventory.countItem(unlockStack.getItem()) >= count) {
+            for (int i = 0; i < count; i++) {
+                for (int j = 0; j < inventory.getContainerSize(); j++) {
+                    ItemStack itemstack = inventory.getItem(j);
+                    if (itemstack.getItem().equals(unlockStack.getItem())) {
+                        itemstack.shrink(1);
+                    }
+                }
+            }
+            Necronomicon.unlockResearch(player, getNecronomicon(), research);
+            player.closeContainer();
+        }
+    }
+
     public boolean isResearchSelected() {
         return research != null;
     }
 
-    public void setActiveResearch(Research research) {
+    public ItemStack getNecronomicon() {
+        return getItems().getFirst();
+    }
+
+    public void setActiveResearch(Holder.Reference<Research> research) {
         if(this.player.level().isClientSide()) {
-            PacketDistributor.sendToServer(new UpdateResearchPayload(research, this.containerId));
+            PacketDistributor.sendToServer(new UpdateResearchPayload(research.key(), this.containerId));
         }
         this.research = research;
-        this.researchRequirementsContainer.setItem(0, research.unlockItemStack());
     }
 
 
@@ -118,19 +129,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         @Override
         public boolean isActive() {
             return isResearchSelected();
-        }
-
-    }
-
-    public class MinigameSlot extends ResearchTableSlot {
-
-        public MinigameSlot(Container container, int slot, int x, int y) {
-            super(container, slot, x, y);
-        }
-
-        @Override
-        public boolean isActive() {
-            return super.isActive();
         }
 
     }
