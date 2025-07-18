@@ -2,14 +2,10 @@ package com.github.x3rdev.soul_forge.common.research;
 
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderOwner;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -104,10 +100,19 @@ public final class ResearchTree implements Comparable<ResearchTree> {
 
     @Override
     public int compareTo(@NotNull ResearchTree o) {
-        int childCount = this.children.size()-o.children.size();
-        if(childCount == 0) {
-            return this.head.value().iconItemStack().getItem().toString().compareTo(o.head.value().iconItemStack().getItem().toString());
+        return this.head.getKey().compareTo(o.head.getKey());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ResearchTree other) {
+            return this.head.equals(other.head) && this.children.equals(other.children);
         }
-        return childCount;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, children);
     }
 }
