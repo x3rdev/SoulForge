@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "soul_forge:item/soul_gem"
+    "layer0": "soul_forge:item/empowered_soul_crystal"
   }
 }

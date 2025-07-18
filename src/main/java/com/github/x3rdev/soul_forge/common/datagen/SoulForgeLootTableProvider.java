@@ -53,7 +53,7 @@ public class SoulForgeLootTableProvider extends LootTableProvider {
             dropSelf(BlockRegistry.STATUE.get());
             dropSelf(BlockRegistry.SOUL_CHANDELIER.get());
             add(BlockRegistry.SOUL_CRYSTAL_ORE.get(), createOreDrop(BlockRegistry.SOUL_CRYSTAL_ORE.get(), ItemRegistry.SOUL_CRYSTAL.get()));
-            dropSelf(BlockRegistry.SOUL_GEM_BLOCK.get());
+            dropSelf(BlockRegistry.SOUL_CRYSTAL_BLOCK.get());
             add(BlockRegistry.SOULWOOD_LEAVES.get(), createLeavesDrops(BlockRegistry.SOULWOOD_LEAVES.get(), BlockRegistry.SOULWOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
             dropSelf(BlockRegistry.SOULWOOD_SAPLING.get());
             dropSelf(BlockRegistry.SOULWOOD_LIANA.get());
@@ -62,6 +62,7 @@ public class SoulForgeLootTableProvider extends LootTableProvider {
             dropSelf(BlockRegistry.SOULWOOD_PLANKS.get());
             dropSelf(BlockRegistry.PEDESTAL.get());
             dropSelf(BlockRegistry.SOUL_STORAGE.get());
+            dropSelf(BlockRegistry.RESEARCH_TABLE.get());
         }
     }
 }

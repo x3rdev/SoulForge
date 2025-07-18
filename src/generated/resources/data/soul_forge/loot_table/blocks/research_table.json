@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "soul_forge:soul_gem_block"
+          "name": "soul_forge:research_table"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "soul_forge:blocks/soul_gem_block"
+  "random_sequence": "soul_forge:blocks/research_table"
 }

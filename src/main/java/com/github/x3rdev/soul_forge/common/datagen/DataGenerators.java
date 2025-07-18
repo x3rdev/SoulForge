@@ -25,5 +25,6 @@ public final class DataGenerators {
         generator.addProvider(event.includeServer(), new SoulForgeDatapackProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new SoulForgeEntityTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new SoulForgeLootTableProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new SoulForgeRecipeProvider(packOutput, lookupProvider));
     }
 }

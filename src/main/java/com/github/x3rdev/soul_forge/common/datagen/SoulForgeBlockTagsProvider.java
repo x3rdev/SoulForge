@@ -23,5 +23,7 @@ public class SoulForgeBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.SLABS).add(BlockRegistry.SOUL_BRICK_SLAB.get());
         tag(BlockTags.WALLS).add(BlockRegistry.SOUL_BRICK_WALL.get());
         tag(BlockTags.LOGS).add(BlockRegistry.SOULWOOD_LOG.get());
+
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_CRYSTAL_ORE.get());
     }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "soul_forge:soulwood_planks"
+    },
+    "b": {
+      "item": "soul_forge:soul_crystal"
+    }
+  },
+  "pattern": [
+    "aba",
+    "a a"
+  ],
+  "result": {
+    "count": 1,
+    "id": "soul_forge:research_table"
+  }
+}

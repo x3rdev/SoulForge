@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "soul_forge:soul_storage"
+          "name": "soul_forge:soul_crystal_block"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "soul_forge:blocks/soul_storage"
+  "random_sequence": "soul_forge:blocks/soul_crystal_block"
 }
