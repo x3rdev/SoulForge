@@ -40,7 +40,7 @@ public final class ResearchTree implements Comparable<ResearchTree> {
         List<Holder.Reference<Research>> sortedResearch = access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
                 .listElements()
                 .filter(researchReference -> !researchReference.value().inactive())
-                .sorted(Comparator.comparingInt(Holder.Reference::hashCode))
+//                .sorted(Comparator.comparingInt(Holder.Reference::hashCode))
                 .toList();
 
         sortedResearch.forEach(research -> {
@@ -85,9 +85,9 @@ public final class ResearchTree implements Comparable<ResearchTree> {
         parentToResearchMap.getOrDefault(tree.head, Set.of()).forEach(research -> {
             tree.children.add(new ResearchTree(research));
         });
-        tree.children.forEach(researchTree -> {
+        for (ResearchTree researchTree : tree.children) {
             fillChildren(researchTree, parentToResearchMap);
-        });
+        }
     }
 
     public Holder.Reference<Research> getHead() {

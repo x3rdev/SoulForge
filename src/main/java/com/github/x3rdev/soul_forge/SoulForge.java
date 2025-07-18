@@ -18,6 +18,7 @@ public class SoulForge {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public SoulForge(ModContainer modContainer) {
+        SoulForge.LOGGER.info("Initializing soul_forge");
         IEventBus modEventBus = modContainer.getEventBus();
         IEventBus neoEventBus = NeoForge.EVENT_BUS;
 

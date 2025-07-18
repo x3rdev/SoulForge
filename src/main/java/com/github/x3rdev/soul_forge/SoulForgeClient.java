@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.NeoForge;
 public class SoulForgeClient {
 
     public SoulForgeClient(ModContainer modContainer) {
+        SoulForge.LOGGER.info("Initializing soul_forge (client)");
         IEventBus modEventBus = modContainer.getEventBus();
         IEventBus neoEventBus = NeoForge.EVENT_BUS;
 

@@ -53,33 +53,32 @@ public class CommonSetup {
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         Level level = event.getEntity().level();
-        if(!level.isClientSide()) {
-            if(event.getSource().getEntity() instanceof Player player) {
+        if(!level.isClientSide() && event.getSource().getEntity() instanceof Player player) {
                 ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
                 if(stack.getItem() instanceof SoulScythe) {
-                    if(isTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
+                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
                         dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
                         return;
                     }
-                    if(isTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_NETHER_SOUL)) {
+                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_NETHER_SOUL)) {
                         dropNetherSoul(level, event.getEntity().position().add(0, 1.25F, 0));
                         return;
                     }
-                    if(isTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_ENDER_SOUL)) {
+                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_ENDER_SOUL)) {
                         dropEnderSoul(level, event.getEntity().position().add(0, 1.25F, 0));
                         return;
                     }
-                    if(isTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_DRAGON_SOUL)) {
+                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_DRAGON_SOUL)) {
                         dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
                         return;
                     }
                     dropNormalSoul(level, event.getEntity().position().add(0, 1.25F, 0));
                 }
             }
-        }
+
     }
 
-    private static boolean isTypeInTag(LivingEntity entity, TagKey<EntityType<?>> tagKey) {
+    private static boolean isEntityTypeInTag(LivingEntity entity, TagKey<EntityType<?>> tagKey) {
         return entity.getType().is(tagKey);
     }
 

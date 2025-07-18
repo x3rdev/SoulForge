@@ -52,7 +52,6 @@ public record Research(ResourceKey<Research> parent, String title, ItemStack ico
 
 
     public Holder.Reference<Research> getParent(RegistryAccess access) {
-
         return access.holder(parent).orElse(getEmptyResearch(access));
     }
 

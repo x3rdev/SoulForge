@@ -32,6 +32,7 @@ public final class Scheduler {
                     return runnables;
                 });
     }
+
     @SubscribeEvent
     public static void serverTick(ServerTickEvent.Post event) {
         int ticks = ServerLifecycleHooks.getCurrentServer().getTickCount();
