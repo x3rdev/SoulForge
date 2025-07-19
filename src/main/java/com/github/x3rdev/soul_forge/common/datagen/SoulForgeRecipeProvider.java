@@ -28,7 +28,7 @@ public class SoulForgeRecipeProvider extends RecipeProvider {
                 .pattern("a a")
                 .define('a', BlockItemRegistry.SOULWOOD_PLANKS.get())
                 .define('b', ItemRegistry.SOUL_CRYSTAL.get())
-                .unlockedBy("has_soul_gem", has(ItemRegistry.SOUL_CRYSTAL.get()))
+                .unlockedBy("has_soul_crystal", has(ItemRegistry.SOUL_CRYSTAL.get()))
                 .save(recipeOutput);
     }
 }

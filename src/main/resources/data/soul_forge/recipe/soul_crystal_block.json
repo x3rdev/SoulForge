@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "G": {
-      "item": "soul_forge:soul_gem"
+      "item": "soul_forge:soul_crystal"
     }
   },
   "pattern": [
@@ -13,6 +13,6 @@
   ],
   "result": {
       "count": 1,
-      "id": "soul_forge:soul_gem_block"
+      "id": "soul_forge:soul_crystal_block"
    }
 }

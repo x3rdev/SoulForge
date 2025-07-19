@@ -1,0 +1,26 @@
+{
+  "type": "soul_forge:ritual",
+  "primary": {
+    "item": "minecraft:diamond"
+  },
+  "catalyst_north": {
+    "item": "soul_forge:soul_crystal"
+  },
+  "catalyst_east": {
+    "item": "soul_forge:soul_crystal"
+  },
+  "catalyst_south": {
+    "item": "soul_forge:soul_crystal"
+  },
+  "catalyst_west": {
+    "item": "soul_forge:soul_crystal"
+  },
+  "souls": {
+    "soul": 1,
+    "nether_soul": 2
+  },
+  "result": {
+    "id": "soul_forge:empowered_soul_crystal",
+    "count": 2
+  }
+}

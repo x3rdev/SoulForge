@@ -1,26 +1,13 @@
 {
-  "type": "soul_forge:ritual",
-  "primary": {
-    "item": "minecraft:diamond"
-  },
-  "catalyst_north": {
-    "item": "soul_forge:soul_gem"
-  },
-  "catalyst_east": {
-    "item": "soul_forge:soul_gem"
-  },
-  "catalyst_south": {
-    "item": "soul_forge:soul_gem"
-  },
-  "catalyst_west": {
-    "item": "soul_forge:soul_gem"
-  },
-  "souls": {
-    "soul": 1,
-    "nether_soul": 2
-  },
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "soul_forge:soul_crystal_block"
+    }
+  ],
   "result": {
-    "id": "soul_forge:soul_crystal",
-    "count": 2
+     "count": 4,
+     "id": "soul_forge:soul_crystal"
   }
 }

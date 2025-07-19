@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_soul_gem": {
+    "has_soul_crystal": {
       "conditions": {
         "items": [
           {
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_soul_gem"
+      "has_soul_crystal"
     ]
   ],
   "rewards": {
