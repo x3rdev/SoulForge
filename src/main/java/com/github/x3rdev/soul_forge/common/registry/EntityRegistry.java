@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common.registry;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
+import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSpawnEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -60,6 +61,12 @@ public class EntityRegistry {
             MobCategory.MONSTER,
             2.5F,
             4F);
+    public static final DeferredHolder<EntityType<?>, EntityType<NergalSpawnEntity>> NERGAL_SPAWN = ENTITIES.register("nergal_spawn",
+            () -> EntityType.Builder.<NergalSpawnEntity>of(NergalSpawnEntity::new, MobCategory.MISC)
+                    .sized(4F, 0.5F)
+                    .noSave()
+                    .noSummon()
+                    .build("nergal_spawn"));
 
 
     public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> entity, MobCategory mobCategory, float width, float height) {

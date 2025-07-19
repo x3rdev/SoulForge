@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
+import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
 import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,6 +22,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.StrafeTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
@@ -69,7 +71,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 .add(Attributes.ATTACK_KNOCKBACK, 5F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5F)
                 .add(Attributes.MAX_HEALTH, 70.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.MOVEMENT_SPEED, 0.22F)
                 .add(Attributes.FOLLOW_RANGE, 64F)
                 .build();
     }
@@ -100,7 +102,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public List<? extends ExtendedSensor<NergalEntity>> getSensors() {
         return List.of(
                 new NearbyPlayersSensor<>(),
-                new NearbyLivingEntitySensor<NergalEntity>().setPredicate((target, entity) -> target instanceof Player),
+                new NearbyLivingEntitySensor<>(),
                 new HurtBySensor<>()
         );
     }
@@ -118,7 +120,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(
                         new TargetOrRetaliate<>().attackablePredicate(livingEntity -> {
-                            return !livingEntity.getType().equals(this.getType());
+                            return !livingEntity.getType().equals(this.getType()) && !livingEntity.getType().equals(EntityRegistry.GHOST.get());
                         }),
                         new SetPlayerLookTarget<>(),
                         new SetRandomLookTarget<>()),
@@ -133,16 +135,16 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
                 new OneRandomBehaviour<>(
-                    new NergalSwingAttack().cooldownFor(mob -> 100),
-                    new NergalSwipeAttack().cooldownFor(mob -> 100),
-                    new SummonGhostsAttack().cooldownFor(entity -> 200)
+                    new NergalSwingAttack().cooldownFor(mob -> 80),
+                    new NergalSwipeAttack().cooldownFor(mob -> 80),
+                    new SummonGhostsAttack().cooldownFor(entity -> 160)
                 )
         );
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "c", 2, state -> {
+        controllers.add(new AnimationController<>(this, "c", 1, state -> {
             if(state.isMoving()) {
                 return state.setAndContinue(WALK);
             }

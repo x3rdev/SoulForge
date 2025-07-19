@@ -1,11 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalMoveToWalkTarget;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSwingAttack;
-import com.github.x3rdev.soul_forge.common.entity.nergal.SummonGhostsAttack;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -15,7 +10,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;

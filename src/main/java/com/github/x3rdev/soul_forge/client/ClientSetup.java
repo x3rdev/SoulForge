@@ -41,6 +41,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.WISP.get(), WispRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(), GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NERGAL.get(), NergalRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.NERGAL_SPAWN.get(), NergalSpawnRenderer::new);
 
         event.registerBlockEntityRenderer(BlockEntityRegistry.DARK_TOMB.get(), context -> new DarkTombRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), context -> new StatueRenderer());

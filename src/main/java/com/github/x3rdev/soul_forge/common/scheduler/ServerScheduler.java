@@ -14,11 +14,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = SoulForge.MOD_ID)
-public final class Scheduler {
+public final class ServerScheduler {
 
     static final ConcurrentMap<Integer, List<Runnable>> SERVER_SCHEDULE = new ConcurrentHashMap<>();
 
-    private Scheduler() {
+    private ServerScheduler() {
 
     }
 
@@ -34,7 +34,7 @@ public final class Scheduler {
     }
 
     @SubscribeEvent
-    public static void serverTick(ServerTickEvent.Post event) {
+    private static void serverTick(ServerTickEvent.Post event) {
         int ticks = ServerLifecycleHooks.getCurrentServer().getTickCount();
         List<Runnable> tasks = SERVER_SCHEDULE.get(ticks);
         if(tasks != null) {

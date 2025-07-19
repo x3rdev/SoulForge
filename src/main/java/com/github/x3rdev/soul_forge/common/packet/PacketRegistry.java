@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.packet;
 
+import com.github.x3rdev.soul_forge.common.packet.handler.ClientPayloadHandler;
 import com.github.x3rdev.soul_forge.common.packet.handler.ServerPayloadHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -27,6 +28,14 @@ public class PacketRegistry {
                 new DirectionalPayloadHandler<>(
                         (payload, context) -> {},
                         ServerPayloadHandler::handleSubmitResearch
+                )
+        );
+        registrar.playToClient(
+                SendParticlePayload.TYPE,
+                SendParticlePayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        ClientPayloadHandler::handleSendParticle,
+                        (payload, context) -> {}
                 )
         );
     }

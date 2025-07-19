@@ -48,6 +48,8 @@ public class ItemRegistry {
             CursedSword::new);
     public static final DeferredHolder<Item, Necronomicon> NECRONOMICON = ITEMS.register("necronomicon",
             Necronomicon::new);
+    public static final DeferredHolder<Item, ScrollOfShadows> SCROLL_OF_SHADOWS = ITEMS.register("scroll_of_shadows",
+            ScrollOfShadows::new);
 
 
     public static class ModItemTab {
