@@ -26,8 +26,10 @@ public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEnti
     public void actuallyRender(PoseStack poseStack, SoulEntity animatable, BakedGeoModel model, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         poseStack.pushPose();
         poseStack.scale(1.5F, 1.5F, 1.5F);
-        poseStack.translate(0, 0.15*Mth.sin((float) (Blaze3D.getTime())+animatable.hashCode())+0.5, 0);
-        poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        if(!animatable.isFake()) {
+            poseStack.translate(0, 0.15 * Mth.sin((float) (Blaze3D.getTime()) + animatable.hashCode()) + 0.5, 0);
+            poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        }
         poseStack.translate(0, -0.5, 0);
         super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
         poseStack.popPose();

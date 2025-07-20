@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
 import com.github.x3rdev.soul_forge.common.item.SoulBottle;
+import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,11 +22,17 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class SoulEntity extends Entity implements GeoEntity {
     private static final EntityDataAccessor<String> DATA_SOUL_TYPE = SynchedEntityData.defineId(SoulEntity.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final boolean fake;
 
-    public SoulEntity(EntityType<?> pEntityType, Level pLevel, SoulType soulType) {
+    public SoulEntity(EntityType<?> pEntityType, Level pLevel, SoulType soulType, boolean fake) {
         super(pEntityType, pLevel);
         this.entityData.set(DATA_SOUL_TYPE, soulType.toString());
         this.noPhysics = false;
+        this.fake = fake;
+    }
+
+    public SoulEntity(EntityType<?> pEntityType, Level pLevel, SoulType soulType) {
+        this(pEntityType, pLevel, soulType, false);
     }
 
     @Override
@@ -62,6 +69,10 @@ public class SoulEntity extends Entity implements GeoEntity {
             }
         }
         return SoulType.EMPTY;
+    }
+
+    public boolean isFake() {
+        return fake;
     }
 
     @Override

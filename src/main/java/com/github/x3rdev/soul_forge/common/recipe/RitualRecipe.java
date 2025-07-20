@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common.recipe;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.RecipeSerializerRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -66,6 +67,21 @@ public record RitualRecipe(
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return true;
+    }
+
+    @Override
+    public Ingredient centerInput() {
+        return centerInput;
+    }
+
+    @Override
+    public List<Ingredient> cardinalInputs() {
+        return cardinalInputs;
+    }
+
+    @Override
+    public List<Ingredient> diagonalInputs() {
+        return diagonalInputs;
     }
 
     @Override
