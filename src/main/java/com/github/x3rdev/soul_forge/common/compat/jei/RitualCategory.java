@@ -120,8 +120,8 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
     public void draw(RecipeHolder<RitualRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.pose().pushPose();
         renderPedestals(guiGraphics, recipe);
+        renderToolTips(guiGraphics, mouseX, mouseY);
         guiGraphics.pose().popPose();
-
     }
 
     private void renderPedestals(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe) {
@@ -187,5 +187,30 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         guiGraphics.pose().scale(15, -15, 15);
         soulEntityRenderer.render(soulEntity, 0, 0, guiGraphics.pose(), guiGraphics.bufferSource(), LightTexture.FULL_BRIGHT);
         guiGraphics.pose().popPose();
+    }
+
+    private void renderToolTips(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        if(mouseX >= 3 && mouseY >= 0 && mouseX < 23 && mouseY < 45) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.soul_storage"), (int) mouseX, (int) mouseY);
+        }
+        if(mouseX >= 35 && mouseY >= 13 && mouseX < 45 && mouseY < 32) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.soul"), (int) mouseX, (int) mouseY);
+        }
+        if(mouseX >= 63 && mouseY >= 13 && mouseX < 74 && mouseY < 32) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.undead_soul"), (int) mouseX, (int) mouseY);
+        }
+        if(mouseX >= 91 && mouseY >= 13 && mouseX < 101 && mouseY < 32) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.nether_soul"), (int) mouseX, (int) mouseY);
+        }
+        if(mouseX >= 119 && mouseY >= 13 && mouseX < 129 && mouseY < 32) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.ender_soul"), (int) mouseX, (int) mouseY);
+        }
+        if(mouseX >= 147 && mouseY >= 13 && mouseX < 157 && mouseY < 32) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.dragon_soul"), (int) mouseX, (int) mouseY);
+        }
+        if(mouseX >= 124 && mouseY >= 102 && mouseX < 135 && mouseY < 117) {
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.translatable("tooltip.soul_forge.jei.right_click_hint"), (int) mouseX, (int) mouseY);
+        }
+//        guiGraphics.fill(124, 102, 135, 117, 1000, 0x77FF0000);
     }
 }

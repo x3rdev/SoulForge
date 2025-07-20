@@ -82,12 +82,14 @@ public class PedestalRenderer extends GeoBlockRenderer<PedestalBlockEntity> {
         poseStack.translate(0.5, 0.0001, 0.5);
         float angle = (animatable.getRitualTicks()+partialTick)*Mth.clamp((animatable.getRitualTicks()+partialTick)/30F, 1F, 10F);
         poseStack.mulPose(Axis.YP.rotationDegrees(angle));
-        PoseStack.Pose whirlPose = poseStack.last();
-        VertexConsumer whirlConsumer = bufferSource.getBuffer(ShaderRegistry.soul(SPELL_WHIRL_LOCATION));
-        whirlConsumer.addVertex(whirlPose, -5, 0, -5).setColor(colour).setUv(0, 0).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
-        whirlConsumer.addVertex(whirlPose, 5, 0, -5).setColor(colour).setUv(1, 0).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
-        whirlConsumer.addVertex(whirlPose, 5, 0, 5).setColor(colour).setUv(1, 1).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
-        whirlConsumer.addVertex(whirlPose, -5, 0, 5).setColor(colour).setUv(0, 1).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
+        if(animatable.getRitualTicks() < RITUAL_DURATION - 22) {
+            PoseStack.Pose whirlPose = poseStack.last();
+            VertexConsumer whirlConsumer = bufferSource.getBuffer(ShaderRegistry.soul(SPELL_WHIRL_LOCATION));
+            whirlConsumer.addVertex(whirlPose, -5, 0, -5).setColor(colour).setUv(0, 0).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
+            whirlConsumer.addVertex(whirlPose, 5, 0, -5).setColor(colour).setUv(1, 0).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
+            whirlConsumer.addVertex(whirlPose, 5, 0, 5).setColor(colour).setUv(1, 1).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
+            whirlConsumer.addVertex(whirlPose, -5, 0, 5).setColor(colour).setUv(0, 1).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(0, 1, 0);
+        }
         poseStack.popPose();
         Vec3 u = animatable.getBlockPos().getCenter().add(new Vec3(3.75, 0, 0).yRot(angle*Mth.DEG_TO_RAD));
         Vec3 v = animatable.getBlockPos().getCenter().add(new Vec3(-3.75, 0, 0).yRot(angle*Mth.DEG_TO_RAD));
