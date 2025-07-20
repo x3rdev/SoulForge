@@ -47,16 +47,24 @@ import java.util.*;
 public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
 
     public static final int RITUAL_DURATION = 300;
-    public static final Vec3i[] otherPedestalOffsets = new Vec3i[]{
-            Vec3i.ZERO.north(3),
-            Vec3i.ZERO.north(2).east(2),
-            Vec3i.ZERO.east(3),
-            Vec3i.ZERO.south(2).east(2),
-            Vec3i.ZERO.south(3),
-            Vec3i.ZERO.south(2).west(2),
-            Vec3i.ZERO.west(3),
-            Vec3i.ZERO.north(2).west(2)
-    };
+
+    private enum PedestalOffset {
+        NORTH(Vec3i.ZERO.north(3)),
+        NORTH_EAST(Vec3i.ZERO.north(2).east(2)),
+        EAST(Vec3i.ZERO.east(3)),
+        SOUTH_EAST(Vec3i.ZERO.south(2).east(2)),
+        SOUTH(Vec3i.ZERO.south(3)),
+        SOUTH_WEST(Vec3i.ZERO.south(2).west(2)),
+        WEST(Vec3i.ZERO.west(3)),
+        NORTH_WEST(Vec3i.ZERO.north(2).west(2));
+
+        private final Vec3i offset;
+
+        PedestalOffset(Vec3i offset) {
+            this.offset = offset;
+        }
+    }
+
 
     private final IItemHandler itemHandler = new InvWrapper(this);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -94,8 +102,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 if (!recipe.isPresent()) {
                     level.playSound(null, blockEntity.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
                     blockEntity.stopRitual();
-                    for (Vec3i offset : otherPedestalOffsets) {
-                        level.getBlockEntity(blockEntity.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+                    for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                        level.getBlockEntity(blockEntity.getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
                                 .stopRitual();
                     }
                 }
@@ -108,15 +116,15 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), buildRitualInput(), level);
             if(recipe.isPresent()) {
                 Vec3 pos = getBlockPos().getCenter().add(0, 1, 0);
-                ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, recipe.get().value().getResult());
+                ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, recipe.get().value().result());
                 level.addFreshEntity(itemEntity);
                 this.removeTheItem();
-                for (Vec3i offset : otherPedestalOffsets) {
-                    level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+                for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                    level.getBlockEntity(getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
                             .removeTheItem();
                 }
                 List<SoulStorageBlockEntity> surroundingStorages = getSurroundingStorages();
-                recipe.get().value().getInputSouls().forEach((soulType, integer) -> {
+                recipe.get().value().inputSouls().forEach((soulType, integer) -> {
                     int i = integer;
                     while (i > 0) {
                         for (SoulStorageBlockEntity blockEntity : surroundingStorages) {
@@ -155,8 +163,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     }
 
     private boolean isRitualSetupValid() {
-        for (Vec3i offset : otherPedestalOffsets) {
-            BlockState state = this.level.getBlockState(this.getBlockPos().offset(offset));
+        for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+            BlockState state = this.level.getBlockState(this.getBlockPos().offset(pedestalOffset.offset));
             if(!state.is(BlockRegistry.PEDESTAL.get())) {
                 return false;
             }
@@ -167,14 +175,18 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     private RitualInput buildRitualInput() {
         return new RitualInput(
                 this.getTheItem(),
-                getItemOnOtherPedestal(otherPedestalOffsets[0]),
-                getItemOnOtherPedestal(otherPedestalOffsets[1]),
-                getItemOnOtherPedestal(otherPedestalOffsets[2]),
-                getItemOnOtherPedestal(otherPedestalOffsets[3]),
-                getItemOnOtherPedestal(otherPedestalOffsets[4]),
-                getItemOnOtherPedestal(otherPedestalOffsets[5]),
-                getItemOnOtherPedestal(otherPedestalOffsets[6]),
-                getItemOnOtherPedestal(otherPedestalOffsets[7]),
+                List.of(
+                        getItemOnOtherPedestal(PedestalOffset.NORTH.offset),
+                        getItemOnOtherPedestal(PedestalOffset.EAST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.SOUTH.offset),
+                        getItemOnOtherPedestal(PedestalOffset.WEST.offset)
+                ),
+                List.of(
+                        getItemOnOtherPedestal(PedestalOffset.NORTH_EAST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.SOUTH_EAST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.SOUTH_WEST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.NORTH_WEST.offset)
+                ),
                 getAvailableSouls()
         );
     }
@@ -205,8 +217,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     }
 
     private void spawnMissingPedestalParticles() {
-        for (Vec3i offset : otherPedestalOffsets) {
-            BlockPos pos = this.getBlockPos().offset(offset);
+        for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+            BlockPos pos = this.getBlockPos().offset(pedestalOffset.offset);
             BlockState state = this.level.getBlockState(pos);
             if(!state.is(BlockRegistry.PEDESTAL.get())) {
                 ((ServerLevel) this.level).sendParticles(ParticleTypes.SMOKE,
@@ -225,8 +237,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         setRitualParentPos(ritualParentPos);
         if(ritualParentPos == null) {
             level.playSound(null, getBlockPos(), SoundRegistry.RITUAL.get(), SoundSource.BLOCKS);
-            for (Vec3i offset : otherPedestalOffsets) {
-                level.getBlockEntity(getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+            for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                level.getBlockEntity(getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
                         .startRitual(getBlockPos());
             }
         }

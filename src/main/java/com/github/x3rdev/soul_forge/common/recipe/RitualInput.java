@@ -4,49 +4,48 @@ import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 
+import java.util.List;
 import java.util.Map;
 
 public record RitualInput(
-        ItemStack primary,
-        ItemStack catalystNorth, ItemStack catalystNorthEast,
-        ItemStack catalystEast, ItemStack catalystSouthEast,
-        ItemStack catalystSouth, ItemStack catalystSouthWest,
-        ItemStack catalystWest, ItemStack catalystNorthWest,
-        Map<SoulType, Integer> souls)
+        ItemStack centerInput,
+        List<ItemStack> cardinalInputs,
+        List<ItemStack> diagonalInputs,
+        Map<SoulType, Integer> soulInputs)
         implements RecipeInput {
 
     @Override
     public ItemStack getItem(int index) {
         switch (index) {
             case 0 -> {
-                return primary;
+                return centerInput;
             }
             case 1 -> {
-                return catalystNorth;
+                return cardinalInputs.get(0);
             }
             case 2 -> {
-                return catalystNorthEast;
+                return cardinalInputs.get(1);
             }
             case 3 -> {
-                return catalystEast;
+                return cardinalInputs.get(2);
             }
             case 4 -> {
-                return catalystSouthEast;
+                return cardinalInputs.get(3);
             }
             case 5 -> {
-                return catalystSouth;
+                return diagonalInputs.get(0);
             }
             case 6 -> {
-                return catalystSouthWest;
+                return diagonalInputs.get(1);
             }
             case 7 -> {
-                return catalystWest;
+                return diagonalInputs.get(2);
             }
             case 8 -> {
-                return catalystNorthWest;
+                return diagonalInputs.get(3);
             }
+            default -> throw new IllegalArgumentException("No item for index: " + index);
         }
-        throw new IllegalArgumentException("No item for index: " + index);
     }
 
     @Override

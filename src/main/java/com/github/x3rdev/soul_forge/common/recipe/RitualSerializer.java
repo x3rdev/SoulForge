@@ -12,39 +12,28 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
 
     public static final MapCodec<RitualRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    Ingredient.CODEC.fieldOf("primary").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorth),
-                    Ingredient.CODEC.fieldOf("catalyst_north").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorth),
-                    Ingredient.CODEC.fieldOf("catalyst_north_east").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorthEast),
-                    Ingredient.CODEC.fieldOf("catalyst_east").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystEast),
-                    Ingredient.CODEC.fieldOf("catalyst_south_east").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouthEast),
-                    Ingredient.CODEC.fieldOf("catalyst_south").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouth),
-                    Ingredient.CODEC.fieldOf("catalyst_south_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystSouthWest),
-                    Ingredient.CODEC.fieldOf("catalyst_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystWest),
-                    Ingredient.CODEC.fieldOf("catalyst_north_west").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::getInputCatalystNorthWest),
-                    Codec.unboundedMap(SoulType.CODEC, Codec.INT).fieldOf("souls").forGetter(RitualRecipe::getInputSouls),
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(RitualRecipe::getResult)
+                    Ingredient.CODEC.fieldOf("center_input").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::centerInput),
+                    Codec.list(Ingredient.CODEC, 0, 4).fieldOf("cardinal_inputs").orElse(List.of()).forGetter(RitualRecipe::cardinalInputs),
+                    Codec.list(Ingredient.CODEC, 0, 4).fieldOf("diagonal_inputs").orElse(List.of()).forGetter(RitualRecipe::diagonalInputs),
+                    Codec.unboundedMap(SoulType.CODEC, Codec.INT).fieldOf("soul_inputs").orElse(Map.of()).forGetter(RitualRecipe::inputSouls),
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(RitualRecipe::result)
             ).apply(instance, RitualRecipe::new)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, RitualRecipe> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public RitualRecipe decode(RegistryFriendlyByteBuf buffer) {
-            Ingredient inputPrimary = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystNorth = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystNorthEast = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystEast = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystSouthEast = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystSouth = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystSouthWest = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystWest = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient inputCatalystNorthWest = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            HashMap<SoulType, Integer> inputSouls = ByteBufCodecs.map(
+            Ingredient centerInput = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            List<Ingredient> cardinalInputs = Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).decode(buffer);
+            List<Ingredient> diagonalInputs = Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).decode(buffer);
+            HashMap<SoulType, Integer> soulInputs = ByteBufCodecs.map(
                     HashMap::new,
                     SoulType.STREAM_CODEC,
                     ByteBufCodecs.INT,
@@ -52,38 +41,26 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
             ).decode(buffer);
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             return new RitualRecipe(
-                    inputPrimary,
-                    inputCatalystNorth,
-                    inputCatalystNorthEast,
-                    inputCatalystEast,
-                    inputCatalystSouthEast,
-                    inputCatalystSouth,
-                    inputCatalystSouthWest,
-                    inputCatalystWest,
-                    inputCatalystNorthWest,
-                    inputSouls,
+                    centerInput,
+                    cardinalInputs,
+                    diagonalInputs,
+                    soulInputs,
                     result
             );
         }
 
         @Override
         public void encode(RegistryFriendlyByteBuf buffer, RitualRecipe value) {
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputPrimary());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystNorth());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystNorthEast());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystEast());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystSouthEast());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystSouth());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystSouthWest());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystWest());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.getInputCatalystNorthWest());
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.centerInput());
+            Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).encode(buffer, value.cardinalInputs());
+            Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).encode(buffer, value.diagonalInputs());
             ByteBufCodecs.map(
                     HashMap::new,
                     SoulType.STREAM_CODEC,
                     ByteBufCodecs.INT,
                     SoulType.values().length
-            ).encode(buffer, new HashMap<>(value.getInputSouls()));
-            ItemStack.STREAM_CODEC.encode(buffer, value.getResult());
+            ).encode(buffer, new HashMap<>(value.inputSouls()));
+            ItemStack.STREAM_CODEC.encode(buffer, value.result());
         }
     };
 

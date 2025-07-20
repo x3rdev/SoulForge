@@ -11,62 +11,47 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class RitualRecipe implements Recipe<RitualInput> {
-    private final Ingredient inputPrimary;
-    private final Ingredient inputCatalystNorth;
-    private final Ingredient inputCatalystNorthEast;
-    private final Ingredient inputCatalystEast;
-    private final Ingredient inputCatalystSouthEast;
-    private final Ingredient inputCatalystSouth;
-    private final Ingredient inputCatalystSouthWest;
-    private final Ingredient inputCatalystWest;
-    private final Ingredient inputCatalystNorthWest;
-    private final Map<SoulType, Integer> inputSouls;
-
-    private final ItemStack result;
-
-    public RitualRecipe(Ingredient inputPrimary,
-                        Ingredient inputCatalystNorth, Ingredient inputCatalystNorthEast,
-                        Ingredient inputCatalystEast, Ingredient inputCatalystSouthEast,
-                        Ingredient inputCatalystSouth, Ingredient inputCatalystSouthWest,
-                        Ingredient inputCatalystWest, Ingredient inputCatalystNorthWest,
-                        Map<SoulType, Integer> inputSouls,
-                        ItemStack result) {
-        this.inputPrimary = inputPrimary;
-        this.inputCatalystNorth = inputCatalystNorth;
-        this.inputCatalystNorthEast = inputCatalystNorthEast;
-        this.inputCatalystEast = inputCatalystEast;
-        this.inputCatalystSouthEast = inputCatalystSouthEast;
-        this.inputCatalystSouth = inputCatalystSouth;
-        this.inputCatalystSouthWest = inputCatalystSouthWest;
-        this.inputCatalystWest = inputCatalystWest;
-        this.inputCatalystNorthWest = inputCatalystNorthWest;
-        this.inputSouls = inputSouls;
-        this.result = result;
-    }
+public record RitualRecipe(
+        Ingredient centerInput,
+        List<Ingredient> cardinalInputs,
+        List<Ingredient> diagonalInputs,
+        Map<SoulType, Integer> inputSouls,
+        ItemStack result) implements Recipe<RitualInput> {
 
     @Override
     public boolean matches(RitualInput input, Level level) {
         return
-                inputPrimary.test(input.primary()) &&
-                inputCatalystNorth.test(input.catalystNorth()) &&
-                inputCatalystNorthEast.test(input.catalystNorthEast()) &&
-                inputCatalystEast.test(input.catalystEast()) &&
-                inputCatalystSouthEast.test(input.catalystSouthEast()) &&
-                inputCatalystSouth.test(input.catalystSouth()) &&
-                inputCatalystSouthWest.test(input.catalystSouthWest()) &&
-                inputCatalystWest.test(input.catalystWest()) &&
-                inputCatalystNorthWest.test(input.catalystNorthWest()) &&
+                centerInput.test(input.centerInput()) &&
+                ingredientListMatches(cardinalInputs, input.cardinalInputs()) &&
+                ingredientListMatches(diagonalInputs, input.diagonalInputs()) &&
                 inputHasSufficientSouls(input);
+    }
+
+    private boolean ingredientListMatches(List<Ingredient> ingredients, List<ItemStack> inputs) {
+        List<Ingredient> ingredientsCopy = new ArrayList<>(ingredients);
+        List<ItemStack> inputsCopy = new ArrayList<>(inputs);
+        for (int i = 0; i < 4-ingredients.size(); i++) {
+            ingredientsCopy.add(Ingredient.EMPTY);
+        }
+        for (Ingredient ingredient : ingredientsCopy) {
+            for (ItemStack stack : inputsCopy) {
+                if (ingredient.test(stack)) {
+                    inputsCopy.remove(stack);
+                    break;
+                }
+            }
+        }
+        return inputsCopy.isEmpty();
     }
 
     private boolean inputHasSufficientSouls(RitualInput input) {
         for (Map.Entry<SoulType, Integer> entry : inputSouls.entrySet()) {
-            int inputSouls = input.souls().getOrDefault(entry.getKey(), 0);
-            if(inputSouls < entry.getValue()) {
+            int availableSoulCount = input.soulInputs().getOrDefault(entry.getKey(), 0);
+            if (availableSoulCount < entry.getValue()) {
                 return false;
             }
         }
@@ -96,49 +81,5 @@ public class RitualRecipe implements Recipe<RitualInput> {
     @Override
     public RecipeType<?> getType() {
         return RecipeTypeRegistry.RITUAL.get();
-    }
-
-    public Ingredient getInputPrimary() {
-        return inputPrimary;
-    }
-
-    public Ingredient getInputCatalystNorth() {
-        return inputCatalystNorth;
-    }
-
-    public Ingredient getInputCatalystNorthEast() {
-        return inputCatalystNorthEast;
-    }
-
-    public Ingredient getInputCatalystEast() {
-        return inputCatalystEast;
-    }
-
-    public Ingredient getInputCatalystSouthEast() {
-        return inputCatalystSouthEast;
-    }
-
-    public Ingredient getInputCatalystSouth() {
-        return inputCatalystSouth;
-    }
-
-    public Ingredient getInputCatalystSouthWest() {
-        return inputCatalystSouthWest;
-    }
-
-    public Ingredient getInputCatalystWest() {
-        return inputCatalystWest;
-    }
-
-    public Ingredient getInputCatalystNorthWest() {
-        return inputCatalystNorthWest;
-    }
-
-    public Map<SoulType, Integer> getInputSouls() {
-        return inputSouls;
-    }
-
-    public ItemStack getResult() {
-        return result;
     }
 }
