@@ -176,7 +176,7 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         guiGraphics.pose().popPose();
     }
 
-    private void renderSoul(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe, int x, int y, EntityType<?> entityType, SoulType soulType) {
+    private void renderSoul(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe, int x, int y, EntityType<SoulEntity> entityType, SoulType soulType) {
         SoulEntity soulEntity = new SoulEntity(entityType, Minecraft.getInstance().level, soulType, true);
         EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         EntityRenderer<? super SoulEntity> soulEntityRenderer = entityRenderDispatcher.getRenderer(soulEntity);

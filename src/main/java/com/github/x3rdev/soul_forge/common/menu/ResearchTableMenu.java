@@ -4,11 +4,15 @@ import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
@@ -84,6 +88,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                 }
             }
             Necronomicon.unlockResearch(player, getNecronomicon(), research);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.9F, 0.3F);
             player.closeContainer();
         }
     }

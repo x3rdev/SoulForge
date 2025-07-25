@@ -19,27 +19,27 @@ public class EntityRegistry {
             (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.SOUL),
             MobCategory.MISC,
             0.5F,
-            1.0F);
+            1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> UNDEAD_SOUL = registerMob("undead_soul",
             (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.UNDEAD_SOUL),
             MobCategory.MISC,
             0.5F,
-            1.0F);
+            1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> NETHER_SOUL = registerMob("nether_soul",
             (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.NETHER_SOUL),
             MobCategory.MISC,
             0.5F,
-            1.0F);
+            1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> ENDER_SOUL = registerMob("ender_soul",
             (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.ENDER_SOUL),
             MobCategory.MISC,
             0.5F,
-            1.0F);
+            1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulEntity>> DRAGON_SOUL = registerMob("dragon_soul",
             (pEntityType, pLevel) -> new SoulEntity(pEntityType, pLevel, SoulType.DRAGON_SOUL),
             MobCategory.MISC,
             0.75F,
-            1.0F);
+            1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulScytheProjectileEntity>> SOUL_SCYTHE_PROJECTILE = registerMob("soul_scythe_projectile",
             SoulScytheProjectileEntity::new,
             MobCategory.MISC,

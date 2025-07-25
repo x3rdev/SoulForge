@@ -23,11 +23,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ResearchTableBlock extends Block {
 
@@ -104,6 +107,14 @@ public class ResearchTableBlock extends Block {
                 (containerId, playerInventory, player1) -> new ResearchTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos), hand),
                 getName()
         );
+    }
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        if(state.getValue(PART) == TablePart.RIGHT) {
+            return List.of();
+        }
+        return super.getDrops(state, params);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common.item;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSpawnEntity;
 import com.github.x3rdev.soul_forge.common.packet.SendParticlePayload;
+import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import com.github.x3rdev.soul_forge.common.scheduler.ServerScheduler;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -10,6 +11,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -51,6 +54,10 @@ public class ScrollOfShadows extends Item {
                         NergalEntity nergal = new NergalEntity(level);
                         nergal.setPos(position);
                         level.addFreshEntity(nergal);
+                        LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);
+                        lightningbolt.setVisualOnly(true);
+                        lightningbolt.setPos(position);
+                        level.addFreshEntity(lightningbolt);
                     },
                     190
             );

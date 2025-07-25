@@ -4,7 +4,6 @@ import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
 import com.github.x3rdev.soul_forge.common.compat.PatchouliCompat;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
@@ -15,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +24,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.DataPackConfig;
 import net.minecraft.world.level.Level;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -66,8 +63,8 @@ public class Necronomicon extends Item {
     }
 
     public static void whisper(Player player, Component component) {
-        player.level().playSound(null, player.blockPosition(), SoundRegistry.NECRONOMICON_LAUGH.get(), SoundSource.BLOCKS);
-        player.displayClientMessage(component.copy().withStyle(ChatFormatting.DARK_GRAY), true);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundRegistry.NECRONOMICON_LAUGH.get(), SoundSource.BLOCKS);
+        player.displayClientMessage(component, true);
     }
 
     @Override

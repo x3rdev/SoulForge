@@ -92,7 +92,6 @@ public class PedestalBlock extends Block implements EntityBlock {
             }
         }
         blockEntity.removeTheItem();
-        level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
     }
 
     @Override
