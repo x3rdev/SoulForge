@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public final class ResearchTree implements Comparable<ResearchTree> {
+
     private final Holder.Reference<Research> head;
     private final SortedSet<ResearchTree> children;
 
