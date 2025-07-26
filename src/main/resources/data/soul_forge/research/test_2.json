@@ -1,6 +1,7 @@
 {
   "parent": "soul_forge:new_beginnings",
   "title": "New Beginnings",
+  "description": "test",
   "icon_item_stack": {
     "id": "soul_forge:soul_crystal"
   }

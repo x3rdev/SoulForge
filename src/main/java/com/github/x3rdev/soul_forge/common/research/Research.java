@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public record Research(ResourceKey<Research> parent, String title, ItemStack iconItemStack, ItemStack unlockItemStack, boolean inactive) {
+public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, ItemStack unlockItemStack, boolean inactive) {
 
     public static final ResourceKey<Research> EMPTY_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.withDefaultNamespace("empty"));
     public static final ResourceKey<Research> HEAD_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "head"));
@@ -22,6 +22,7 @@ public record Research(ResourceKey<Research> parent, String title, ItemStack ico
             instance.group(
                     ResourceKey.codec(DatapackRegistry.RESEARCH_KEY).fieldOf("parent").orElse(EMPTY_RESOURCE_KEY).forGetter(Research::parent),
                     Codec.STRING.fieldOf("title").forGetter(Research::title),
+                    Codec.STRING.fieldOf("description").forGetter(Research::description),
                     ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("icon_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::iconItemStack),
                     ItemStack.STRICT_CODEC.fieldOf("unlock_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::unlockItemStack),
                     Codec.BOOL.fieldOf("inactive").orElse(false).forGetter(Research::inactive)
@@ -33,6 +34,8 @@ public record Research(ResourceKey<Research> parent, String title, ItemStack ico
             Research::parent,
             ByteBufCodecs.STRING_UTF8,
             Research::title,
+            ByteBufCodecs.STRING_UTF8,
+            Research::description,
             ItemStack.STREAM_CODEC,
             Research::iconItemStack,
             ItemStack.OPTIONAL_STREAM_CODEC,

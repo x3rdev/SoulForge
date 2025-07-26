@@ -1,6 +1,7 @@
 {
   "parent": null,
-  "title": "Unlock the necronomicon",
+  "title": "Necronomicon",
+  "description": "test",
   "icon_item_stack": {
     "id": "soul_forge:necronomicon"
   },

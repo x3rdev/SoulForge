@@ -12,20 +12,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class SubmitButton extends AbstractWidget {
+public class UnlockButton extends AbstractWidget {
 
-    public static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_unlock.png");
+    public static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_inspect.png");
 
     private final ResearchTableScreen screen;
 
-    public SubmitButton(int x, int y, ResearchTableScreen screen) {
-        super(x, y, 32, 14, Component.literal("Submit"));
+    public UnlockButton(int x, int y, ResearchTableScreen screen) {
+        super(x, y, 32, 14, Component.literal("Unlock"));
         this.screen = screen;
     }
 
     @Override
     public boolean isActive() {
-        return super.isActive() && screen.unlockScreenActive();
+        return super.isActive() && screen.inspectScreenActive();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SubmitButton extends AbstractWidget {
         if(isActive()) {
             guiGraphics.pose().pushPose();
             guiGraphics.blit(LOCATION, getX(), getY(), 176, isHovered() && playerHasItemsForSubmit() ? 16 : 0, 34, 16);
-            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("Submit"), getX()+2, getY()+4, playerHasItemsForSubmit() ? 0xbababa : 0x181d24);
+            guiGraphics.drawString(Minecraft.getInstance().font, Component.literal("Unlock"), getX()+2, getY()+4, playerHasItemsForSubmit() ? 0xbababa : 0x181d24, false);
             if(isHovered() && !playerHasItemsForSubmit()) {
                 guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("Insufficient items"), mouseX, mouseY);
             }

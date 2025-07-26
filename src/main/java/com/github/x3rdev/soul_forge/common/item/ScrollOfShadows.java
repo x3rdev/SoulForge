@@ -6,6 +6,7 @@ import com.github.x3rdev.soul_forge.common.packet.SendParticlePayload;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import com.github.x3rdev.soul_forge.common.scheduler.ServerScheduler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -16,8 +17,13 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ScrollOfShadows extends Item {
@@ -33,34 +39,42 @@ public class ScrollOfShadows extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        stack.consume(1, livingEntity);
-        Vec3 position = livingEntity.position();
-        if(!level.isClientSide()) {
-            NergalSpawnEntity nergalSpawn = new NergalSpawnEntity(level);
-            nergalSpawn.setPos(position.add(0,0.1,0));
-            level.addFreshEntity(nergalSpawn);
-            for (int i = 0; i < 180; i++) {
+        if(livingEntity instanceof Player player) {
+            stack.consume(1, livingEntity);
+
+
+
+            if (!level.isClientSide()) {
+                BlockHitResult blockhitresult = getPlayerPOVHitResult(
+                        level, player, ClipContext.Fluid.NONE
+                );
+                Vec3 position = blockhitresult.getType().equals(HitResult.Type.MISS) ? livingEntity.position() : blockhitresult.getLocation();
+                NergalSpawnEntity nergalSpawn = new NergalSpawnEntity(level);
+                nergalSpawn.setPos(position.add(0, 0.1, 0));
+                level.addFreshEntity(nergalSpawn);
+                for (int i = 0; i < 180; i++) {
+                    ServerScheduler.schedule(
+                            () -> PacketDistributor.sendToPlayersTrackingEntity(nergalSpawn, new SendParticlePayload(
+                                    ParticleRegistry.RITUAL_TRAIL.get(),
+                                    position.x() + 0.25 * (Math.random() - 0.5F), position.y() - 0.05, position.z() + 0.25 * (Math.random() - 0.5F),
+                                    0.05 * (Math.random() - 0.5F), 0.1, 0.05 * (Math.random() - 0.5F))
+                            ),
+                            i
+                    );
+                }
                 ServerScheduler.schedule(
-                        () -> PacketDistributor.sendToPlayersTrackingEntity(nergalSpawn, new SendParticlePayload(
-                                ParticleRegistry.RITUAL_TRAIL.get(),
-                                position.x()+0.25*(Math.random()-0.5F), position.y()-0.05, position.z()+0.25*(Math.random()-0.5F),
-                                0.05*(Math.random()-0.5F), 0.1, 0.05*(Math.random()-0.5F))
-                        ),
-                        i
+                        () -> {
+                            NergalEntity nergal = new NergalEntity(level);
+                            nergal.setPos(position);
+                            level.addFreshEntity(nergal);
+                            LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);
+                            lightningbolt.setVisualOnly(true);
+                            lightningbolt.setPos(position);
+                            level.addFreshEntity(lightningbolt);
+                        },
+                        190
                 );
             }
-            ServerScheduler.schedule(
-                    () -> {
-                        NergalEntity nergal = new NergalEntity(level);
-                        nergal.setPos(position);
-                        level.addFreshEntity(nergal);
-                        LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);
-                        lightningbolt.setVisualOnly(true);
-                        lightningbolt.setPos(position);
-                        level.addFreshEntity(lightningbolt);
-                    },
-                    190
-            );
         }
         return stack;
     }

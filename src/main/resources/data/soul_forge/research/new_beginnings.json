@@ -1,6 +1,7 @@
 {
   "parent": null,
   "title": "New Beginnings",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar augue ut purus iaculis vehicula. Donec ultricies malesuada tempus. Proin egestas suscipit est. Vestibulum vel metus quis elit malesuada consequat. Quisque eu nulla lorem. Maecenas tincidunt facilisis gravida. Fusce tristique feugiat sodales. Mauris fermentum sem id fermentum interdum. Duis venenatis at tellus sed feugiat. Praesent id imperdiet orci, sit amet pretium tellus. Mauris magna nunc, maximus nec pretium sed, finibus vitae urna. Donec sit amet sem luctus, fringilla lectus eget, sagittis neque.",
   "icon_item_stack": {
     "id": "soul_forge:soul_crystal"
   },

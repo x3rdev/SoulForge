@@ -50,6 +50,8 @@ public class ItemRegistry {
             Necronomicon::new);
     public static final DeferredHolder<Item, ScrollOfShadows> SCROLL_OF_SHADOWS = ITEMS.register("scroll_of_shadows",
             ScrollOfShadows::new);
+    public static final DeferredHolder<Item, Item> SOUL_STEEL_INGOT = ITEMS.register("soul_steel_ingot",
+            () -> new Item(new Item.Properties()));
 
 
     public static class ModItemTab {

@@ -1,12 +1,15 @@
 package com.github.x3rdev.soul_forge.common.recipe;
 
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -19,6 +22,7 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
 
     public static final MapCodec<RitualRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
+                    ResourceKey.codec(DatapackRegistry.RESEARCH_KEY).fieldOf("required_research").orElse(Research.EMPTY_RESOURCE_KEY).forGetter(RitualRecipe::requiredResearch),
                     Ingredient.CODEC.fieldOf("center_input").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::centerInput),
                     Codec.list(Ingredient.CODEC, 0, 4).fieldOf("cardinal_inputs").orElse(List.of()).forGetter(RitualRecipe::cardinalInputs),
                     Codec.list(Ingredient.CODEC, 0, 4).fieldOf("diagonal_inputs").orElse(List.of()).forGetter(RitualRecipe::diagonalInputs),
@@ -30,6 +34,7 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
     public static final StreamCodec<RegistryFriendlyByteBuf, RitualRecipe> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public RitualRecipe decode(RegistryFriendlyByteBuf buffer) {
+            ResourceKey<Research> required_research = ResourceKey.streamCodec(DatapackRegistry.RESEARCH_KEY).decode(buffer);
             Ingredient centerInput = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
             List<Ingredient> cardinalInputs = Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).decode(buffer);
             List<Ingredient> diagonalInputs = Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).decode(buffer);
@@ -41,6 +46,7 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
             ).decode(buffer);
             ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
             return new RitualRecipe(
+                    required_research,
                     centerInput,
                     cardinalInputs,
                     diagonalInputs,
@@ -51,6 +57,7 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
 
         @Override
         public void encode(RegistryFriendlyByteBuf buffer, RitualRecipe value) {
+            ResourceKey.streamCodec(DatapackRegistry.RESEARCH_KEY).encode(buffer, value.requiredResearch());
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.centerInput());
             Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).encode(buffer, value.cardinalInputs());
             Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list(4)).encode(buffer, value.diagonalInputs());
