@@ -25,7 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +92,7 @@ public class Necronomicon extends Item {
         {
             try
             {
-                return PatchouliAPI.get().getSubtitle(ItemRegistry.NECRONOMICON.getId());
+                return PatchouliCompat.getAPI().getSubtitle(ItemRegistry.NECRONOMICON.getId());
             }
             catch (IllegalArgumentException e)
             {
@@ -115,7 +114,7 @@ public class Necronomicon extends Item {
         }
         else if (player instanceof ServerPlayer serverPlayer)
         {
-            PatchouliAPI.get().openBookGUI(serverPlayer, ItemRegistry.NECRONOMICON.getId());
+            PatchouliCompat.getAPI().openBookGUI(serverPlayer, ItemRegistry.NECRONOMICON.getId());
         }
 
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);

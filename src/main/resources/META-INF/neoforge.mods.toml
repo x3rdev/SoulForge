@@ -35,7 +35,7 @@ ordering="NONE"
 side="BOTH"
 [[dependencies.${mod_id}]]
 modId="patchouli"
-mandatory=true
+mandatory=false
 versionRange="${patchouli_version_range}"
 ordering="NONE"
 side="BOTH"
