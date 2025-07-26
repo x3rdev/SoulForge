@@ -62,7 +62,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(inspectScreenActive()) {
-            int lineCount = this.font.split(Component.literal(getActiveResearch().orElseThrow().value().description()), 2*144).size();
+            int lineCount = this.font.split(Component.literal(getActiveResearch().orElseThrow().value().description()), 2*90).size();
             topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, lineCount-10));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
@@ -138,8 +138,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     private void renderInspectScreen(GuiGraphics guiGraphics) {
         if(!Necronomicon.isResearchUnlocked(getNecronomicon(), getActiveResearch().orElseThrow())) {
-                guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+2, topPos, 176, 32, 30, 26);
-                guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+11, topPos+28, 210, 0, 12, 24);
+            guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+2, topPos, 176, 32, 30, 26);
+            guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+11, topPos+28, 210, 0, 12, 24);
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().scale(0.5F, 0.5F, 1);
+            guiGraphics.drawString(this.font, Component.literal("Unlocks:"), 2*(leftPos+136)+1, 2*(topPos+22), 0x181d24, false);
+            guiGraphics.pose().popPose();
         }
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
         renderDescription(guiGraphics);
@@ -150,7 +154,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.pose().scale(0.5F, 0.5F, 1);
         int x = 2*(leftPos+16);
         int y = 2*(topPos+22);
-        List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*144);
+        List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*90);
         for (int i = topDescriptionLine; i < Math.min(lines.size()-1, topDescriptionLine+9); i++) { //9 is max lines on screen
             if(i == Math.min(lines.size()-1, topDescriptionLine+9)-1 && lines.size()-1 > topDescriptionLine+9) {
                 guiGraphics.drawString(font, Component.literal("..."), x, y, 0x181d24, false);
