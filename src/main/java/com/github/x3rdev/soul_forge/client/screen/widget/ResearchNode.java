@@ -39,7 +39,7 @@ public class ResearchNode extends MoveableWidget {
 
     @Override
     protected boolean isValidClickButton(int button) {
-        return !this.research.value().inactive() && !Necronomicon.isResearchUnlocked(screen.getNecronomicon(), research);
+        return !this.research.value().inactive();
     }
 
     @Override

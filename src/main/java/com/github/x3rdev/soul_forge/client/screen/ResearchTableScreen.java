@@ -22,6 +22,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
@@ -38,6 +39,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private int treeDepth;
     private int treeBreadth;
     private @Nullable Holder.Reference<Research> activeResearch;
+    private int topDescriptionLine;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -54,7 +56,16 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
-        addRenderableWidget(new UnlockButton(leftPos+imageWidth/2-17, topPos+60, this));
+        addRenderableWidget(new UnlockButton(leftPos+imageWidth, topPos+46, this));
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        if(inspectScreenActive()) {
+            int lineCount = this.font.split(Component.literal(getActiveResearch().orElseThrow().value().description()), 2*144).size();
+            topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, lineCount-10));
+        }
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
     public ItemStack getNecronomicon() {
@@ -92,41 +103,29 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.pose().pushPose();
         if(treeScreenActive()) {
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().scale(0.5F, 0.5F, 1);
-            boolean shouldRenderBlur = false;
-            for (Renderable renderable : renderables) {
-                if (renderable instanceof MoveableWidget widget) {
-                    widget.setX(leftPos + 8 + widget.getAnchorX() + Mth.floor(anchorX));
-                    widget.setY(topPos + 16 + widget.getAnchorY() + Mth.floor(anchorY));
-                    if (widget.isActive() && widget.isHovered()) shouldRenderBlur = true;
-                }
-            }
-            guiGraphics.pose().popPose();
-            if (shouldRenderBlur) renderBlur(guiGraphics);
+            renderTreeScreen(guiGraphics);
         }
         if(inspectScreenActive()) {
-            if(!Necronomicon.isResearchUnlocked(getNecronomicon(), getActiveResearch().orElseThrow())) {
-//                ItemStack unlockStack = activeResearch.value().unlockItemStack();
-//                guiGraphics.renderFakeItem(unlockStack, leftPos+14, topPos+35);
-//                guiGraphics.drawString(this.font, unlockStack.getHoverName(), leftPos+41, topPos+41, 0xbababa, false);
-//                guiGraphics.drawString(this.font, Component.literal(unlockStack.getCount() + "x"), leftPos+155, topPos+41, 0xbababa, false);
-            }
-            guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
-            renderDescription(guiGraphics);
+            renderInspectScreen(guiGraphics);
         }
         guiGraphics.blit(TREE_SCREEN_LOCATION, leftPos - 21, topPos, 176, 0, 20, 20);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
         guiGraphics.pose().popPose();
     }
 
-    private void renderDescription(GuiGraphics guiGraphics) {
-        int x = leftPos+155;
-        int y = topPos+31;
-        for (FormattedCharSequence formattedcharsequence : font.split(Component.literal(activeResearch.value().description()), 100)) {
-            guiGraphics.drawString(font, formattedcharsequence, x, y, 0xbababa, false);
-            y += 9;
+    private void renderTreeScreen(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(0.5F, 0.5F, 1);
+        boolean shouldRenderBlur = false;
+        for (Renderable renderable : renderables) {
+            if (renderable instanceof MoveableWidget widget) {
+                widget.setX(leftPos + 8 + widget.getAnchorX() + Mth.floor(anchorX));
+                widget.setY(topPos + 16 + widget.getAnchorY() + Mth.floor(anchorY));
+                if (widget.isActive() && widget.isHovered()) shouldRenderBlur = true;
+            }
         }
+        guiGraphics.pose().popPose();
+        if (shouldRenderBlur) renderBlur(guiGraphics);
     }
 
     private void renderBlur(GuiGraphics guiGraphics){
@@ -135,6 +134,32 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                 leftPos+8+DRAGGABLE_WINDOW_WIDTH, topPos+16+DRAGGABLE_WINDOW_HEIGHT,
                 160,
                 0x77000000);
+    }
+
+    private void renderInspectScreen(GuiGraphics guiGraphics) {
+        if(!Necronomicon.isResearchUnlocked(getNecronomicon(), getActiveResearch().orElseThrow())) {
+                guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+2, topPos, 176, 32, 30, 26);
+                guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+11, topPos+28, 210, 0, 12, 24);
+        }
+        guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
+        renderDescription(guiGraphics);
+    }
+
+    private void renderDescription(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(0.5F, 0.5F, 1);
+        int x = 2*(leftPos+16);
+        int y = 2*(topPos+22);
+        List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*144);
+        for (int i = topDescriptionLine; i < Math.min(lines.size()-1, topDescriptionLine+9); i++) { //9 is max lines on screen
+            if(i == Math.min(lines.size()-1, topDescriptionLine+9)-1 && lines.size()-1 > topDescriptionLine+9) {
+                guiGraphics.drawString(font, Component.literal("..."), x, y, 0x181d24, false);
+            } else {
+                guiGraphics.drawString(font, lines.get(i), x, y, 0x181d24, false);
+            }
+            y += 9;
+        }
+        guiGraphics.pose().popPose();
     }
 
     @Override

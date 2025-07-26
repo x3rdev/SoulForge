@@ -1,11 +1,12 @@
 {
   "parent": null,
   "title": "New Beginnings",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pulvinar augue ut purus iaculis vehicula. Donec ultricies malesuada tempus. Proin egestas suscipit est. Vestibulum vel metus quis elit malesuada consequat. Quisque eu nulla lorem. Maecenas tincidunt facilisis gravida. Fusce tristique feugiat sodales. Mauris fermentum sem id fermentum interdum. Duis venenatis at tellus sed feugiat. Praesent id imperdiet orci, sit amet pretium tellus. Mauris magna nunc, maximus nec pretium sed, finibus vitae urna. Donec sit amet sem luctus, fringilla lectus eget, sagittis neque.",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet nunc interdum, cursus arcu ac, sodales turpis. Aenean nibh purus, rhoncus eget mattis ut, interdum sed enim. Pellentesque nec dui vitae felis dignissim luctus. Suspendisse potenti. Cras sodales convallis lacus eget condimentum. Vivamus fringilla arcu quis tortor cursus, ac fringilla urna commodo. In hendrerit ligula eget ante placerat, eu fermentum tortor sollicitudin. Duis felis erat, hendrerit vitae mi in, eleifend finibus est. Quisque lacinia non quam ac consequat. Sed lectus lectus, viverra vitae leo quis, cursus cursus massa. Cras efficitur, augue vitae cursus volutpat, lectus ex gravida diam, volutpat blandit risus nibh id diam. Vestibulum tellus ipsum, elementum eget diam at, lobortis luctus lorem. Vestibulum enim ligula, condimentum a nunc quis, congue posuere odio. Duis ac tortor id ex viverra tincidunt. Duis risus mauris, dapibus vitae neque quis, scelerisque tincidunt enim. Vestibulum pretium interdum sapien, euismod sagittis ante vulputate vel.",
   "icon_item_stack": {
     "id": "soul_forge:soul_crystal"
   },
   "unlock_item_stack": {
-    "id": "soul_forge:soul_crystal"
+    "id": "soul_forge:soul_crystal",
+    "count": 4
   }
 }

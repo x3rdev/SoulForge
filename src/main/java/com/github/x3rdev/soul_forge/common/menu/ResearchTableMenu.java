@@ -4,13 +4,9 @@ import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
-import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import com.github.x3rdev.soul_forge.common.research.ResearchTree;
-import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -22,7 +18,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.extensions.IPlayerExtension;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +53,22 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             @Override
             public boolean isHighlightable() {
                 return false;
+            }
+        });
+        this.addSlot(new Slot(container, 1, 185, 4){
+            @Override
+            public boolean mayPickup(Player player) {
+                return false;
+            }
+
+            @Override
+            public boolean isHighlightable() {
+                return false;
+            }
+
+            @Override
+            public boolean isActive() {
+                return research != null && !Necronomicon.isResearchUnlocked(getNecronomicon(), research);
             }
         });
         container.setItem(0, player.getItemInHand(hand).copyAndClear());
@@ -105,6 +116,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         if(this.player.level().isClientSide()) {
             PacketDistributor.sendToServer(new UpdateResearchPayload(research.key(), this.containerId));
         }
+        container.setItem(1, research.value().unlockItemStack());
         this.research = research;
     }
 
