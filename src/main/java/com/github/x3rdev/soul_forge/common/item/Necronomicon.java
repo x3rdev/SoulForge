@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
 import com.github.x3rdev.soul_forge.common.compat.PatchouliCompat;
+import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.serialization.Codec;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -48,7 +50,16 @@ public class Necronomicon extends Item {
         return stack.get(DataComponentRegistry.NECRONOMICON_DATA).unlockedResearch().contains(research.key());
     }
 
-    public static void unlockResearch(Player player, ItemStack stack, Holder.Reference<Research> research) {
+    public static boolean isRitualUnlocked(ServerPlayer player, ItemStack stack, RecipeHolder<RitualRecipe> recipe) {
+        if(!stack.is(ItemRegistry.NECRONOMICON.get())) {
+            throw new IllegalArgumentException(String.format("ItemStack %s is not a Necronomicon", stack));
+        }
+        return stack.get(DataComponentRegistry.NECRONOMICON_DATA).unlockedResearch().stream()
+                .map(researchResourceKey -> player.level().registryAccess().holder(researchResourceKey).orElseThrow().value().ritualReward())
+                .anyMatch(recipeResourceKey -> recipeResourceKey.orElseThrow().equals(recipe.id()));
+    }
+
+    public static void unlockResearch(ItemStack stack, Holder.Reference<Research> research) {
         if(!stack.is(ItemRegistry.NECRONOMICON.get())) {
             throw new IllegalArgumentException(String.format("ItemStack %s is not a Necronomicon", stack));
         }

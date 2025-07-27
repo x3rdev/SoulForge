@@ -45,6 +45,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.access = access;
         this.player = playerInventory.player;
         this.addSlot(new Slot(container, 0, -19, 2){
+
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+
             @Override
             public boolean mayPickup(Player player) {
                 return false;
@@ -56,6 +62,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             }
         });
         this.addSlot(new Slot(container, 1, 185, 4){
+
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+
             @Override
             public boolean mayPickup(Player player) {
                 return false;
@@ -98,7 +110,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
                     }
                 }
             }
-            Necronomicon.unlockResearch(player, getNecronomicon(), research);
+            Necronomicon.unlockResearch(getNecronomicon(), research);
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.9F, 0.3F);
             player.closeContainer();
         }

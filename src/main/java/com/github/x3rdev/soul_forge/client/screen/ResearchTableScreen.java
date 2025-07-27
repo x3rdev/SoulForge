@@ -1,25 +1,28 @@
 package com.github.x3rdev.soul_forge.client.screen;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.client.screen.widget.MoveableWidget;
-import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNode;
-import com.github.x3rdev.soul_forge.client.screen.widget.ResearchNodeConnector;
-import com.github.x3rdev.soul_forge.client.screen.widget.UnlockButton;
+import com.github.x3rdev.soul_forge.client.screen.widget.*;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
+import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
+import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -57,6 +60,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
         addRenderableWidget(new UnlockButton(leftPos+imageWidth, topPos+46, this));
+        addRenderableWidget(new RitualWidget(leftPos+138, topPos+35, this));
     }
 
     @Override
@@ -140,14 +144,17 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         if(!Necronomicon.isResearchUnlocked(getNecronomicon(), getActiveResearch().orElseThrow())) {
             guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+2, topPos, 176, 32, 30, 26);
             guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+11, topPos+28, 210, 0, 12, 24);
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().scale(0.5F, 0.5F, 1);
-            guiGraphics.drawString(this.font, Component.literal("Unlocks:"), 2*(leftPos+136)+1, 2*(topPos+22), 0x181d24, false);
-            guiGraphics.pose().popPose();
         }
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(0.5F, 0.5F, 1);
+        guiGraphics.drawString(this.font, Component.literal("Unlocks"), 2*(leftPos+136)+1, 2*(topPos+22), 0x181d24, false);
+        guiGraphics.drawString(this.font, Component.literal("ritual:"), 2*(leftPos+136)+6, 2*(topPos+22)+9, 0x181d24, false);
+        guiGraphics.pose().popPose();
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
         renderDescription(guiGraphics);
     }
+
+
 
     private void renderDescription(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();

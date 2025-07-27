@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public record RitualRecipe(
-        ResourceKey<Research> requiredResearch,
         Ingredient centerInput,
         List<Ingredient> cardinalInputs,
         List<Ingredient> diagonalInputs,

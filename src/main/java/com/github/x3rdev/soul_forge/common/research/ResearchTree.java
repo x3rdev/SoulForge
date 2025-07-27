@@ -41,7 +41,6 @@ public final class ResearchTree implements Comparable<ResearchTree> {
         List<Holder.Reference<Research>> activeResearch = access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
                 .listElements()
                 .filter(researchReference -> !researchReference.value().inactive())
-//                .sorted(Comparator.comparingInt(Holder.Reference::hashCode))
                 .toList();
 
         activeResearch.forEach(research -> {

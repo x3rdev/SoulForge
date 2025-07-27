@@ -9,7 +9,9 @@ import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -36,6 +39,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -93,9 +97,11 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             blockEntity.incrementRitualTicks();
             if(blockEntity.getRitualTicks() == RITUAL_DURATION-20) {
                 blockEntity.completeRitual();
+                return;
             }
             if(blockEntity.getRitualTicks() > RITUAL_DURATION) {
                 blockEntity.stopRitual();
+                return;
             }
             if(blockEntity.isMasterPedestal() && blockEntity.getRitualTicks() < RITUAL_DURATION-20 && blockEntity.getRitualTicks() % 3 == 0) {
                 Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), blockEntity.buildRitualInput(), level);
@@ -150,8 +156,12 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             RitualInput input = buildRitualInput();
             Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
             if(recipe.isPresent()) {
-                recipe.get().value();
-                startRitual(null);
+                if(playerHasRitualUnlocked(player, necronomiconStack, recipe.get())) {
+                    startRitual(null);
+                } else {
+                    level.playSound(null, this.getBlockPos(), SoundEvents.ARMOR_STAND_HIT, SoundSource.BLOCKS);
+                    Necronomicon.whisper(player, Component.literal("You're knowledge is... insufficient"));
+                }
             } else {
                 level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
                 Necronomicon.whisper(player, Component.literal("These offerings are... inadequate"));
@@ -170,6 +180,10 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             }
         }
         return true;
+    }
+
+    private boolean playerHasRitualUnlocked(ServerPlayer player, ItemStack necronomiconStack, RecipeHolder<RitualRecipe> recipe) {
+        return Necronomicon.isRitualUnlocked(player, necronomiconStack, recipe);
     }
 
     private RitualInput buildRitualInput() {

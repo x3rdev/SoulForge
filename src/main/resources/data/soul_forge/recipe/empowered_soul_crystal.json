@@ -1,5 +1,6 @@
 {
   "type": "soul_forge:ritual",
+  "required_research": "soul_forge:empowered_soul_crystal",
   "center_input": {
     "item": "minecraft:diamond"
   },
