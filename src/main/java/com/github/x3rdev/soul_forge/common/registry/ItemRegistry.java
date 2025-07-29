@@ -20,13 +20,13 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, SoulBottle> LARGE_SOUL_BOTTLE = ITEMS.register("large_soul_bottle",
             () -> new SoulBottle(20));
     public static final DeferredHolder<Item, SoulSteelArmor> SOUL_STEEL_HELMET = ITEMS.register("soul_steel_helmet",
-            () -> new SoulSteelArmor(ArmorItem.Type.HELMET));
+            () -> new SoulSteelArmor(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(15))));
     public static final DeferredHolder<Item, SoulSteelArmor> SOUL_STEEL_CHESTPLATE = ITEMS.register("soul_steel_chestplate",
-            () -> new SoulSteelArmor(ArmorItem.Type.CHESTPLATE));
+            () -> new SoulSteelArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(15))));
     public static final DeferredHolder<Item, SoulSteelArmor> SOUL_STEEL_LEGGINGS = ITEMS.register("soul_steel_leggings",
-            () -> new SoulSteelArmor(ArmorItem.Type.LEGGINGS));
+            () -> new SoulSteelArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(15))));
     public static final DeferredHolder<Item, SoulSteelArmor> SOUL_STEEL_BOOTS = ITEMS.register("soul_steel_boots",
-            () -> new SoulSteelArmor(ArmorItem.Type.BOOTS));
+            () -> new SoulSteelArmor(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
     public static final DeferredHolder<Item, WispAmulet> WISP_AMULET = ITEMS.register("wisp_amulet",
             WispAmulet::new);
 
@@ -52,6 +52,22 @@ public class ItemRegistry {
             ScrollOfShadows::new);
     public static final DeferredHolder<Item, Item> SOUL_STEEL_INGOT = ITEMS.register("soul_steel_ingot",
             () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WOODEN_SCYTHE = ITEMS.register("wooden_scythe",
+            () -> new Scythe(Tiers.WOOD, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> STONE_SCYTHE = ITEMS.register("stone_scythe",
+            () -> new Scythe(Tiers.STONE, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> IRON_SCYTHE = ITEMS.register("iron_scythe",
+            () -> new Scythe(Tiers.IRON, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> GOLDEN_SCYTHE = ITEMS.register("golden_scythe",
+            () -> new Scythe(Tiers.GOLD, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> DIAMOND_SCYTHE = ITEMS.register("diamond_scythe",
+            () -> new Scythe(Tiers.DIAMOND, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> NETHERITE_SCYTHE = ITEMS.register("netherite_scythe",
+            () -> new Scythe(Tiers.NETHERITE, new Item.Properties()));
+    public static final DeferredHolder<Item, Item> SOULWOOD_STICK = ITEMS.register("soulwood_stick",
+            () -> new Item(new Item.Properties()));
+
+
 
 
     public static class ModItemTab {

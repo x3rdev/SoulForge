@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
+import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -23,7 +24,6 @@ public class NergalRenderer extends GeoEntityRenderer<NergalEntity> {
 
     public NergalRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "nergal")));
-        addRenderLayer(new SoulGlowingLayer<>(this));
         renderDebugHitbox = () -> renderManager.getEntityRenderDispatcher().shouldRenderHitBoxes();
     }
 
@@ -33,5 +33,10 @@ public class NergalRenderer extends GeoEntityRenderer<NergalEntity> {
         if(renderDebugHitbox.get()) {
             LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.LINES), animatable.getEntityData().get(NergalEntity.DEBUG_ATTACK_BOX), 1, 1, 1, 1);
         }
+    }
+
+    @Override
+    public @Nullable RenderType getRenderType(NergalEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return ShaderRegistry.soul(texture);
     }
 }

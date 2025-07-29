@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
+import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,6 +29,6 @@ public class WispRenderer extends GeoEntityRenderer<WispEntity> {
 
     @Override
     public RenderType getRenderType(WispEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucent(texture);
+        return ShaderRegistry.soul(texture);
     }
 }

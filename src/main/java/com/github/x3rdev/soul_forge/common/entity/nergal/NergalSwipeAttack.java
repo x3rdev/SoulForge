@@ -27,7 +27,7 @@ public class NergalSwipeAttack extends MovingHitboxAttack<NergalEntity> {
 
     public static final Predicate<NergalEntity> IS_VALID_PREDICATE = (nergal) -> {
         LivingEntity target = nergal.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElseThrow();
-        return target.isAlive() && nergal.canAttack(target) && target.distanceTo(nergal) < 5*5;
+        return target.isAlive() && nergal.canAttack(target) && target.distanceToSqr(nergal) < 5*5;
     };
 
     public NergalSwipeAttack() {

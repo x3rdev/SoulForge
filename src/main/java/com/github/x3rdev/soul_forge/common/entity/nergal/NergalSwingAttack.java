@@ -27,7 +27,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
 
     public static final Predicate<NergalEntity> IS_VALID_PREDICATE = (nergal) -> {
         LivingEntity target = nergal.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElseThrow();
-        return target.isAlive() && nergal.canAttack(target) && target.distanceTo(nergal) < 5*5;
+        return target.isAlive() && nergal.canAttack(target) && target.distanceToSqr(nergal) < 5*5;
     };
 
     public NergalSwingAttack() {
@@ -50,7 +50,7 @@ public class NergalSwingAttack extends MovingHitboxAttack<NergalEntity> {
         AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length-1, nergal.getTicksAttacking()+4));
         nergal.getEntityData().set(NergalEntity.DEBUG_ATTACK_BOX, hurtBox);
         if(nergal.getTicksAttacking() > 19 && nergal.getTicksAttacking() < 32) {
-            level.getEntities(nergal, hurtBox.move(nergal.position()), EntitySelector.NO_SPECTATORS.and(entity -> !entity.getType().equals(EntityRegistry.GHOST.get())))
+            level.getEntities(nergal, hurtBox.move(nergal.position()), EntitySelector.LIVING_ENTITY_STILL_ALIVE.and(nergal.attackablePredicate()))
                     .forEach(nergal::doHurtTarget);
         }
     }

@@ -6,7 +6,9 @@ import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -41,6 +43,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity> {
 
@@ -62,6 +65,21 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     public NergalEntity(Level level) {
         this(EntityRegistry.NERGAL.get(), level);
+    }
+
+    public Predicate<Entity> attackablePredicate() {
+        return entity ->
+                ((entity instanceof Mob) || (entity instanceof Player)) &&
+                !entity.getType().equals(this.getType()) &&
+                !entity.getType().equals(EntityRegistry.GHOST.get());
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if(!attackablePredicate().test(entity)) {
+            return false;
+        }
+        return super.doHurtTarget(entity);
     }
 
     public static AttributeSupplier createAttributes() {
@@ -119,9 +137,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public BrainActivityGroup<NergalEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(
-                        new TargetOrRetaliate<>().attackablePredicate(livingEntity -> {
-                            return !livingEntity.getType().equals(this.getType()) && !livingEntity.getType().equals(EntityRegistry.GHOST.get());
-                        }),
+                        new TargetOrRetaliate<>().attackablePredicate(livingEntity -> attackablePredicate().test(livingEntity)),
                         new SetPlayerLookTarget<>(),
                         new SetRandomLookTarget<>()),
                 new OneRandomBehaviour<>(

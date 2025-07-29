@@ -2,16 +2,19 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.client.renderer.item.SoulScytheRenderer;
 import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectileEntity;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.SimpleTier;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -20,12 +23,12 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class SoulScythe extends SwordItem implements GeoItem {
+public class SoulScythe extends Scythe {
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public static final Tier SOUL_SCYTHE_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 1738, 0, 5, 15, () -> Ingredient.of(ItemRegistry.SOUL_STEEL_INGOT.get()));
 
     public SoulScythe() {
-        super(Tiers.DIAMOND, new Properties());
+        super(SOUL_SCYTHE_TIER, new Properties());
     }
 
     @Override
@@ -70,15 +73,5 @@ public class SoulScythe extends SwordItem implements GeoItem {
                 return renderer;
             }
         });
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 }

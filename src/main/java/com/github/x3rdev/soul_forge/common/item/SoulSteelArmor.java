@@ -2,9 +2,11 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.client.renderer.item.SoulSteelArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +21,8 @@ import java.util.function.Consumer;
 public class SoulSteelArmor extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SoulSteelArmor(Type pType) {
-        super(ArmorMaterials.GOLD, pType, new Properties());
+    public SoulSteelArmor(Type type, Properties properties) {
+        super(ArmorMaterials.GOLD, type, properties);
     }
 
     @Override
