@@ -1,3 +1,17 @@
-// 1.21.1	2025-07-18T22:37:15.5582429	Recipes
-199e2588e7a077019890b41ba90c9fb78c0da2f2 data/soul_forge/advancement/recipes/misc/research_table.json
-4989434037bb29149ba9c8753c93e37569f37686 data/soul_forge/recipe/research_table.json
+// 1.21.1	2025-08-02T10:41:26.3674746	Recipes
+d8a4c527a02461f29f640d7f70e70d02322aa803 data/minecraft/advancement/recipes/combat/netherite_scythe_smithing.json
+e5e4c8944914ce3ab504164ad007f4d108c2500f data/minecraft/recipe/netherite_scythe_smithing.json
+06f78f77a6b168e1c4885ac7708fc8af0556c2eb data/soul_forge/advancement/recipes/combat/diamond_scythe.json
+a4b17bc0d98557291ed8b0176dc9f6439c568bb0 data/soul_forge/advancement/recipes/combat/golden_scythe.json
+997c405dc439074a8e6309e126c9e9a2835a2968 data/soul_forge/advancement/recipes/combat/iron_scythe.json
+62ee8ff79ed7791b1623ac427724e01c40c52d38 data/soul_forge/advancement/recipes/combat/stone_scythe.json
+f2ae3187899a0a0d05c44551c112facb4bb477b8 data/soul_forge/advancement/recipes/combat/wooden_scythe.json
+f67027bd818313dc460a41088aa8877eb101d67c data/soul_forge/advancement/recipes/misc/necronomicon.json
+51f3cde95c4c47a4ae402a9bd5ad0b73ca5f7f89 data/soul_forge/advancement/recipes/misc/research_table.json
+59af88411d005cf7bb773cc28065e2ec8b197097 data/soul_forge/recipe/diamond_scythe.json
+0cc48c0e981d0772e9872757b588152510116047 data/soul_forge/recipe/golden_scythe.json
+cfb1172fd31e2c3a9c3961b7645da1c668007692 data/soul_forge/recipe/iron_scythe.json
+180ea91dedc2f476e4d1cd9b5f99f82ac8df7aed data/soul_forge/recipe/necronomicon.json
+1761ca626f64a345fb650bf2b91a10223645b513 data/soul_forge/recipe/research_table.json
+26a21c146667e730b0333daa853698abbdf03f9b data/soul_forge/recipe/stone_scythe.json
+a3b789fba7e97705da52e7a416171167477410bd data/soul_forge/recipe/wooden_scythe.json

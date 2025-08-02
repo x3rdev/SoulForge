@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_soulwood": {
+    "has_soulwood_planks": {
       "conditions": {
         "items": [
           {
-            "items": "soul_forge:soulwood_log"
+            "items": "soul_forge:soulwood_planks"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "soul_forge:research_table"
+        "recipe": "soul_forge:wooden_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_soulwood"
+      "has_soulwood_planks"
     ]
   ],
   "rewards": {
     "recipes": [
-      "soul_forge:research_table"
+      "soul_forge:wooden_scythe"
     ]
   }
 }

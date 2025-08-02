@@ -6,11 +6,18 @@
       "item": "soul_forge:soulwood_planks"
     },
     "b": {
-      "item": "soul_forge:soul_crystal"
+      "item": "minecraft:ink_sac"
+    },
+    "c": {
+      "item": "minecraft:paper"
+    },
+    "d": {
+      "item": "minecraft:feather"
     }
   },
   "pattern": [
-    "aba",
+    "bcd",
+    "aaa",
     "a a"
   ],
   "result": {

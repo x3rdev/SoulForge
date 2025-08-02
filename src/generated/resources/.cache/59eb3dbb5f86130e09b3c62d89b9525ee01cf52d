@@ -1,8 +1,7 @@
-// 1.21.1	2025-07-20T12:17:25.1095989	Loot Tables
+// 1.21.1	2025-08-01T22:48:06.8341956	Loot Tables
 f494cf1d21b0fe1009a293c6230c092efcd1e307 data/soul_forge/loot_table/blocks/chiseled_soul_bricks.json
 337b31ce9dbbdb531c075b94d3358a20e4f83dcb data/soul_forge/loot_table/blocks/cracked_soul_bricks.json
 5ad8c0aa597bd4da4f573057a30cb9fdff0302fb data/soul_forge/loot_table/blocks/dark_tomb.json
-16bff7de2498701d14372ac82e61ed24e7b66d21 data/soul_forge/loot_table/blocks/obelisk.json
 6ee92b0dc2e2cbc47d75dfc711d998255e70a155 data/soul_forge/loot_table/blocks/pedestal.json
 9c03b63afa93a1ba08ddd047b2ad7346c1071768 data/soul_forge/loot_table/blocks/research_table.json
 21558e69d3b3fb0da40503ffb65da64b086fd87f data/soul_forge/loot_table/blocks/soulwood_leaves.json

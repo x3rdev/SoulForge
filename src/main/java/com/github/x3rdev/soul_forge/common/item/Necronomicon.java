@@ -10,8 +10,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
@@ -39,6 +43,14 @@ public class Necronomicon extends Item {
                 .component(DataComponentRegistry.NECRONOMICON_DATA, new NecronomiconData(List.of()))
         );
     }
+
+    @Override
+    public void onCraftedBy(ItemStack stack, Level level, Player player) {
+        super.onCraftedBy(stack, level, player);
+        stack.set(DataComponents.ITEM_NAME, MutableComponent.create(PlainTextContents.EMPTY).append(player.getDisplayName()).append("'s").append(stack.getDisplayName()));
+//        stack.set(DataComponents.LORE, Component.literal(String.format("%d research unlocked", 0)));
+    }
+
 
     public static boolean isResearchUnlocked(ItemStack stack, Holder.Reference<Research> research) {
         if(!stack.is(ItemRegistry.NECRONOMICON.get())) {

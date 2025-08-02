@@ -35,8 +35,6 @@ public class BlockRegistry {
             () -> new SoulCandleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN)));
     public static final DeferredHolder<Block, SoulCandelabraBlock> SOUL_CANDELABRA = BLOCKS.register("soul_candelabra",
             () -> new SoulCandelabraBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN)));
-    public static final DeferredHolder<Block, ObeliskBlock> OBELISK = BLOCKS.register("obelisk",
-            () -> new ObeliskBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
     public static final DeferredHolder<Block, DarkTombBlock> DARK_TOMB = BLOCKS.register("dark_tomb",
             () -> new DarkTombBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
     public static final DeferredHolder<Block, StatueBlock> STATUE = BLOCKS.register("statue",

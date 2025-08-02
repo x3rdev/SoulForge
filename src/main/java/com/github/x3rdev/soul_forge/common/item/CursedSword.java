@@ -17,12 +17,7 @@ public class CursedSword extends SwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public CursedSword() {
-        super(Tiers.NETHERITE, new Properties());
-    }
-
-    @Override
-    public int getEnchantmentValue() {
-        return 1;
+        super(Tiers.NETHERITE, new Properties().durability(1000));
     }
 
     @Override

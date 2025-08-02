@@ -33,6 +33,7 @@ public class SoulScytheProjectileEntity extends Projectile {
         this.stack = stack;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void tick() {
         Entity owner = this.getOwner();

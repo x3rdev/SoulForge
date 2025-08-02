@@ -33,8 +33,6 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOUL_CANDLESTICK.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOUL_CANDELABRA = BLOCK_ITEMS.register("soul_candelabra",
             () -> new BlockItem(BlockRegistry.SOUL_CANDELABRA.get(), new Item.Properties()));
-    public static final DeferredHolder<Item, BlockItem> OBELISK = BLOCK_ITEMS.register("obelisk",
-            () -> new BlockItem(BlockRegistry.OBELISK.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> DARK_TOMB = BLOCK_ITEMS.register("dark_tomb",
             () -> new BlockItem(BlockRegistry.DARK_TOMB.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> STATUE = BLOCK_ITEMS.register("statue",

@@ -61,7 +61,6 @@ public class SoulForgeLootTableProvider extends LootTableProvider {
             dropSelf(BlockRegistry.SOUL_STEEL_BARS.get());
             dropSelf(BlockRegistry.SOUL_CANDLESTICK.get());
             dropSelf(BlockRegistry.SOUL_CANDELABRA.get());
-            dropSelf(BlockRegistry.OBELISK.get());
             add(BlockRegistry.DARK_TOMB.get(), noDrop());
             dropSelf(BlockRegistry.STATUE.get());
             dropSelf(BlockRegistry.SOUL_CHANDELIER.get());

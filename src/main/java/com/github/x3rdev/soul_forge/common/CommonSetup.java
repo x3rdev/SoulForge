@@ -39,6 +39,11 @@ public class CommonSetup {
         event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
         event.put(EntityRegistry.GHOST.get(), GhostEntity.createAttributes());
         event.put(EntityRegistry.NERGAL.get(), NergalEntity.createAttributes());
+        event.put(EntityRegistry.SOUL.get(), SoulEntity.createAttributes());
+        event.put(EntityRegistry.UNDEAD_SOUL.get(), SoulEntity.createAttributes());
+        event.put(EntityRegistry.NETHER_SOUL.get(), SoulEntity.createAttributes());
+        event.put(EntityRegistry.ENDER_SOUL.get(), SoulEntity.createAttributes());
+        event.put(EntityRegistry.DRAGON_SOUL.get(), SoulEntity.createAttributes());
     }
 
     @SubscribeEvent
@@ -55,28 +60,27 @@ public class CommonSetup {
     public static void onDeath(LivingDeathEvent event) {
         Level level = event.getEntity().level();
         if(!level.isClientSide() && event.getSource().getEntity() instanceof Player player) {
-                ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-                if(stack.getItem() instanceof Scythe) {
-                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
-                        dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                        return;
-                    }
-                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_NETHER_SOUL)) {
-                        dropNetherSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                        return;
-                    }
-                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_ENDER_SOUL)) {
-                        dropEnderSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                        return;
-                    }
-                    if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_DRAGON_SOUL)) {
-                        dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                        return;
-                    }
-                    dropNormalSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+            ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+            if(stack.getItem() instanceof Scythe) {
+                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
+                    dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+                    return;
                 }
+                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_NETHER_SOUL)) {
+                    dropNetherSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+                    return;
+                }
+                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_ENDER_SOUL)) {
+                    dropEnderSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+                    return;
+                }
+                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_DRAGON_SOUL)) {
+                    dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+                    return;
+                }
+                dropNormalSoul(level, event.getEntity().position().add(0, 1.25F, 0));
             }
-
+        }
     }
 
     private static boolean isEntityTypeInTag(LivingEntity entity, TagKey<EntityType<?>> tagKey) {

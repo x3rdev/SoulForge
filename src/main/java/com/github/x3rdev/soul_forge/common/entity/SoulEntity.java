@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -26,7 +27,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class SoulEntity extends Entity implements GeoEntity {
+public class SoulEntity extends LivingEntity implements GeoEntity {
     private static final EntityDataAccessor<String> DATA_SOUL_TYPE = SynchedEntityData.defineId(SoulEntity.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final boolean fake;
@@ -34,7 +35,6 @@ public class SoulEntity extends Entity implements GeoEntity {
     public SoulEntity(EntityType<SoulEntity> pEntityType, Level pLevel, SoulType soulType, boolean fake) {
         super(pEntityType, pLevel);
         this.entityData.set(DATA_SOUL_TYPE, soulType.toString());
-        this.noPhysics = false;
         this.fake = fake;
     }
 
@@ -42,9 +42,15 @@ public class SoulEntity extends Entity implements GeoEntity {
         this(pEntityType, pLevel, soulType, false);
     }
 
+    public static AttributeSupplier createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 1.0F)
+                .build();
+    }
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if(source.getDirectEntity().getType().equals(EntityType.PLAYER)) {
+        if(source.getDirectEntity() != null && source.getDirectEntity().getType().equals(EntityType.PLAYER)) {
             for (int i = 0; i < 10; i++) {
                 level().addParticle(ParticleTypes.POOF, getX(), getY(), getZ(), Math.random()-0.5F, Math.random()-0.5F, Math.random()-0.5F);
             }
@@ -55,8 +61,25 @@ public class SoulEntity extends Entity implements GeoEntity {
     }
 
     @Override
+    public Iterable<ItemStack> getArmorSlots() {
+        return List.of();
+    }
+
+    @Override
+    public ItemStack getItemBySlot(EquipmentSlot slot) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
+
+    }
+
+    @Override
     public void tick() {
         super.tick();
+        setYRot(0);
+        setYHeadRot(0);
         if (!this.isNoGravity()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.0025D, 0.0D));
         }
@@ -66,6 +89,12 @@ public class SoulEntity extends Entity implements GeoEntity {
         if(this.tickCount > 6000) {
             this.discard();
         }
+    }
+
+
+    @Override
+    public boolean shouldShowName() {
+        return false;
     }
 
     @Override
@@ -100,17 +129,18 @@ public class SoulEntity extends Entity implements GeoEntity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
-
+    public HumanoidArm getMainArm() {
+        return null;
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-
+    public float getYRot() {
+        return 0;
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_SOUL_TYPE, SoulType.EMPTY.toString());
     }
 

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "a": {
+      "item": "soul_forge:soulwood_planks"
+    },
+    "b": {
+      "item": "soul_forge:soulwood_stick"
+    }
+  },
+  "pattern": [
+    "aa ",
+    "b a",
+    "b  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soul_forge:wooden_scythe"
+  }
+}
