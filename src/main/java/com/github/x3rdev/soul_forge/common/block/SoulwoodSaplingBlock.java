@@ -2,20 +2,23 @@ package com.github.x3rdev.soul_forge.common.block;
 
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.FoliagePlacerTypeRegistry;
+import com.github.x3rdev.soul_forge.common.registry.TreeDecoratorRegistry;
 import com.github.x3rdev.soul_forge.common.registry.TrunkPlacerTypeRegistry;
 import com.github.x3rdev.soul_forge.common.worldgen.ConfiguredFeatureBootstrap;
 import com.google.common.collect.Lists;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.BiasedToBottomInt;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.MangrovePropaguleBlock;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +26,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.RandomizedIntStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.AttachedToLeavesDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.*;
 import net.minecraft.world.phys.Vec3;
 
@@ -48,6 +55,10 @@ public class SoulwoodSaplingBlock extends SaplingBlock {
                 new AcaciaFoliagePlacer(UniformInt.of(3, 4), ConstantInt.of(0)),
                 Optional.empty(),
                 new TwoLayersFeatureSize(1, 0, 1)
+        ).decorators(
+                List.of(
+                        new SoulwoodLianaDecorator(0.15F)
+                )
         );
     }
 
@@ -145,6 +156,37 @@ public class SoulwoodSaplingBlock extends SaplingBlock {
         @Override
         protected boolean shouldSkipLocation(RandomSource random, int localX, int localY, int localZ, int range, boolean large) {
             return false;
+        }
+    }
+
+    public static class SoulwoodLianaDecorator extends TreeDecorator {
+
+        public static final MapCodec<SoulwoodLianaDecorator> CODEC = Codec.floatRange(0.0F, 1.0F)
+                .fieldOf("density")
+                .xmap(SoulwoodLianaDecorator::new, c -> c.probability);
+
+        private final float probability;
+
+        public SoulwoodLianaDecorator(float probability) {
+            this.probability = probability;
+        }
+
+        @Override
+        protected TreeDecoratorType<?> type() {
+            return TreeDecoratorRegistry.SOULWOOD_LIANA_DECORATOR.get();
+        }
+
+        @Override
+        public void place(Context context) {
+            for (BlockPos pos : context.leaves()) {
+                if(context.random().nextFloat() < this.probability) {
+                    int length = context.random().nextInt(1, 5);
+                    for (int i = 1; i < length; i++) {
+                        context.setBlock(pos.below(i), BlockRegistry.SOULWOOD_LIANA_BODY.get().defaultBlockState());
+                    }
+                    context.setBlock(pos.below(length), BlockRegistry.SOULWOOD_LIANA_BODY.get().defaultBlockState());
+                }
+            }
         }
     }
 }

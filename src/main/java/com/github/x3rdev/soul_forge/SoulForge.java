@@ -37,6 +37,7 @@ public class SoulForge {
         RecipeTypeRegistry.RECIPE_TYPES.register(modEventBus);
         SoundRegistry.SOUND_EVENTS.register(modEventBus);
         StructureRegistry.STRUCTURES.register(modEventBus);
+        TreeDecoratorRegistry.TREE_DECORATORS.register(modEventBus);
         TrunkPlacerTypeRegistry.TRUNK_PLACER_TYPES.register(modEventBus);
 
         modEventBus.addListener(CommonSetup::createEntityAttributes);

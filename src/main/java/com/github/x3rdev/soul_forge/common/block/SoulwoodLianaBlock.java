@@ -2,8 +2,10 @@ package com.github.x3rdev.soul_forge.common.block;
 
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +19,11 @@ public class SoulwoodLianaBlock extends GrowingPlantHeadBlock {
 
     public SoulwoodLianaBlock(Properties properties) {
         super(properties, Direction.DOWN, SHAPE, false, 0.1F);
+    }
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return super.canSurvive(state, level, pos) || level.getBlockState(pos.above()).is(BlockRegistry.SOULWOOD_LEAVES);
     }
 
     @Override
