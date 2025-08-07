@@ -20,10 +20,10 @@ import java.util.stream.Stream;
 
 public class SoulCandleBlock extends WallTorchBlock {
 
-    private static VoxelShape SHAPE_NORTH;
-    private static VoxelShape SHAPE_EAST;
-    private static VoxelShape SHAPE_SOUTH;
-    private static VoxelShape SHAPE_WEST;
+    private VoxelShape shapeNorth;
+    private VoxelShape shapeEast;
+    private VoxelShape shapeSouth;
+    private VoxelShape shapeWest;
 
     public SoulCandleBlock(Properties pProperties) {
         super(ParticleTypes.SOUL_FIRE_FLAME, pProperties);
@@ -31,8 +31,8 @@ public class SoulCandleBlock extends WallTorchBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if (SHAPE_NORTH == null) {
-            SHAPE_NORTH = Stream.of(
+        if (shapeNorth == null) {
+            shapeNorth = Stream.of(
                     Block.box(8, 7, 7.5, 8, 13, 9.5),
                     Block.box(6.5, 4, 10, 9.5, 6, 16),
                     Block.box(6, 8, 9.5, 10, 10, 13.5),
@@ -43,29 +43,32 @@ public class SoulCandleBlock extends WallTorchBlock {
                     Block.box(10, 7, 11.5, 12, 13, 11.5),
                     Block.box(4, 7, 11.5, 6, 13, 11.5),
                     Block.box(8, 7, 13.5, 8, 13, 15.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElseThrow();
         }
         switch (pState.getValue(FACING)) {
+            case NORTH -> {
+                return  shapeNorth;
+            }
             case EAST -> {
-                if (SHAPE_EAST == null) {
-                    SHAPE_EAST = BlockUtil.rotateShape(Direction.NORTH, Direction.SOUTH, SHAPE_NORTH);
+                if (shapeEast == null) {
+                    shapeEast = BlockUtil.rotateShape(Direction.NORTH, Direction.SOUTH, shapeNorth);
                 }
-                return SHAPE_EAST;
+                return shapeEast;
             }
             case SOUTH -> {
-                if (SHAPE_SOUTH == null) {
-                    SHAPE_SOUTH = BlockUtil.rotateShape(Direction.NORTH, Direction.WEST, SHAPE_NORTH);
+                if (shapeSouth == null) {
+                    shapeSouth = BlockUtil.rotateShape(Direction.NORTH, Direction.WEST, shapeNorth);
                 }
-                return SHAPE_SOUTH;
+                return shapeSouth;
             }
             case WEST -> {
-                if (SHAPE_WEST == null) {
-                    SHAPE_WEST = BlockUtil.rotateShape(Direction.NORTH, Direction.EAST, SHAPE_NORTH);
+                if (shapeWest == null) {
+                    shapeWest = BlockUtil.rotateShape(Direction.NORTH, Direction.EAST, shapeNorth);
                 }
-                return SHAPE_WEST;
+                return shapeWest;
             }
             default -> {
-                return SHAPE_NORTH;
+                throw new IllegalArgumentException();
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,7 +15,6 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 public class WispRenderer extends GeoEntityRenderer<WispEntity> {
     public WispRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "wisp")));
-        addRenderLayer(new SoulGlowingLayer<>(this));
     }
 
     @Override

@@ -97,7 +97,7 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-    runtimeOnly "blank:worldedit-mod:7.3.8"
+//    runtimeOnly "blank:worldedit-mod:7.3.8"
 }
 
 tasks.withType(ProcessResources).configureEach {

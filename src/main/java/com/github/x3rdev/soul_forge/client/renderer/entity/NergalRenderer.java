@@ -1,7 +1,6 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.mojang.blaze3d.vertex.PoseStack;

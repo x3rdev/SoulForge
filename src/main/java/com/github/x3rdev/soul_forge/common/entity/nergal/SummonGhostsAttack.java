@@ -3,14 +3,12 @@ package com.github.x3rdev.soul_forge.common.entity.nergal;
 import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 
