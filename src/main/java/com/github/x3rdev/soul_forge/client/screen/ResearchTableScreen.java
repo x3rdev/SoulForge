@@ -97,6 +97,16 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                 anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT / 2F - yScroll, DRAGGABLE_WINDOW_HEIGHT / 2F + yScroll);
             }
         }
+        if(inspectScreenActive()) {
+            int x = leftPos + 106;
+            int y = topPos+30;
+            int barBackgroundLength = MAX_DESCRIPTION_LINES*LINE_HEIGHT;
+            int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
+            int barLength = Mth.floor((float)barBackgroundLength*(float)MAX_DESCRIPTION_LINES/descriptionLineCount);
+            if(mouseX > x-1 && mouseX < x+1 && mouseY > y+topDescriptionLine && mouseY < y+topDescriptionLine+barLength) {
+                topDescriptionLine = (int) Math.clamp(topDescriptionLine+dragY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
+            }
+        }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
@@ -112,6 +122,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         }
         guiGraphics.blit(TREE_SCREEN_LOCATION, leftPos - 21, topPos, 176, 0, 20, 20);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+
         guiGraphics.pose().popPose();
     }
 
