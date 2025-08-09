@@ -31,6 +31,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public static final int DRAGGABLE_WINDOW_HEIGHT = 142;
     public static final int ICON_SIZE = 26;
     public static final int PADDING = ICON_SIZE/2;
+    public static final int MAX_DESCRIPTION_LINES = 7;
+    public static final int LINE_HEIGHT = 4;
     private double anchorX;
     private double anchorY;
     private int treeDepth;
@@ -60,8 +62,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(inspectScreenActive()) {
-            int lineCount = this.font.split(Component.literal(getActiveResearch().orElseThrow().value().description()), 2*90).size();
-            topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, lineCount-10));
+            int descriptionLineCount = this.font.split(Component.literal(getActiveResearch().orElseThrow().value().description()), 2*90).size();
+            topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
@@ -85,13 +87,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if(mouseX-dragX > leftPos+8 && mouseX-dragX < leftPos+8+DRAGGABLE_WINDOW_WIDTH && mouseY-dragY > topPos+16 && mouseY-dragY < topPos+16+DRAGGABLE_WINDOW_HEIGHT) {
-            anchorX += dragX;
-            float xScroll = Math.min(ICON_SIZE/2F+PADDING, DRAGGABLE_WINDOW_WIDTH-(treeDepth));
-            anchorX = Math.clamp(anchorX, xScroll, ICON_SIZE/2F+PADDING);
-            anchorY += dragY;
-            float yScroll = -Math.min(0, DRAGGABLE_WINDOW_HEIGHT-(treeBreadth+PADDING));
-            anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT/2F-yScroll, DRAGGABLE_WINDOW_HEIGHT/2F+yScroll);
+        if(treeScreenActive()) {
+            if (mouseX - dragX > leftPos + 8 && mouseX - dragX < leftPos + 8 + DRAGGABLE_WINDOW_WIDTH && mouseY - dragY > topPos + 16 && mouseY - dragY < topPos + 16 + DRAGGABLE_WINDOW_HEIGHT) {
+                anchorX += dragX;
+                float xScroll = Math.min(ICON_SIZE / 2F + PADDING, DRAGGABLE_WINDOW_WIDTH - (treeDepth));
+                anchorX = Math.clamp(anchorX, xScroll, ICON_SIZE / 2F + PADDING);
+                anchorY += dragY;
+                float yScroll = -Math.min(0, DRAGGABLE_WINDOW_HEIGHT - (treeBreadth + PADDING));
+                anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT / 2F - yScroll, DRAGGABLE_WINDOW_HEIGHT / 2F + yScroll);
+            }
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
@@ -145,25 +149,50 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.drawString(this.font, Component.literal("ritual:"), 2*(leftPos+136)+6, 2*(topPos+22)+9, 0x181d24, false);
         guiGraphics.pose().popPose();
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
-        renderDescription(guiGraphics);
+        renderResearchTitle(guiGraphics);
+        renderResearchDescription(guiGraphics);
+        renderScrollBar(guiGraphics);
     }
 
-
-
-    private void renderDescription(GuiGraphics guiGraphics) {
+    private void renderResearchTitle(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().scale(0.5F, 0.5F, 1);
-        int x = 2*(leftPos+16);
-        int y = 2*(topPos+21);
+        guiGraphics.pose().translate(0, -0.5, 0);
+        int x = leftPos+16;
+        int y = topPos+22;
+        guiGraphics.drawString(font, activeResearch.value().title(), x, y, 0x181d24, false);
+        guiGraphics.pose().popPose();
+    }
+
+    private void renderResearchDescription(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushPose();
+        int scale = 2;
+        guiGraphics.pose().scale(1F/scale, 1F/scale, 1);
+        int x = scale*(leftPos+16);
+        int y = scale*(topPos+31);
         List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*90);
-        for (int i = topDescriptionLine; i < Math.min(lines.size()-1, topDescriptionLine+9); i++) { //9 is max lines on screen
-            if(i == Math.min(lines.size()-1, topDescriptionLine+9)-1 && lines.size()-1 > topDescriptionLine+9) {
+        for (int i = topDescriptionLine; i < Math.min(lines.size()-1, topDescriptionLine+MAX_DESCRIPTION_LINES); i++) {
+            if(i == Math.min(lines.size()-1, topDescriptionLine+MAX_DESCRIPTION_LINES)-1 && lines.size()-1 > topDescriptionLine+MAX_DESCRIPTION_LINES) {
                 guiGraphics.drawString(font, Component.literal("..."), x, y, 0x181d24, false);
             } else {
                 guiGraphics.drawString(font, lines.get(i), x, y, 0x181d24, false);
             }
-            y += 9;
+            y += scale*LINE_HEIGHT;
         }
+        guiGraphics.pose().popPose();
+    }
+
+    private void renderScrollBar(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushPose();
+        int scale = 4;
+        guiGraphics.pose().scale(1F/scale, 1F/scale, 1);
+        int x = scale*(leftPos + 106)+1;
+        int y = scale*(topPos + 30);
+        int barBackgroundLength = MAX_DESCRIPTION_LINES*scale*LINE_HEIGHT;
+        int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
+        int barLength = Mth.floor((float)barBackgroundLength*(float)MAX_DESCRIPTION_LINES/descriptionLineCount);
+        guiGraphics.fill(x, y, x+2, y+barBackgroundLength+scale*(LINE_HEIGHT-2), 0xFFbababa);
+        guiGraphics.fill(x, y+topDescriptionLine*scale, x+2, y+topDescriptionLine*scale+barLength, 0xFFFFFFFF);
+
         guiGraphics.pose().popPose();
     }
 
