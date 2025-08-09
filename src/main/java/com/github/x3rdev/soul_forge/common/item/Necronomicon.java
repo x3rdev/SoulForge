@@ -47,7 +47,10 @@ public class Necronomicon extends Item {
     @Override
     public void onCraftedBy(ItemStack stack, Level level, Player player) {
         super.onCraftedBy(stack, level, player);
-        stack.set(DataComponents.ITEM_NAME, MutableComponent.create(PlainTextContents.EMPTY).append(player.getDisplayName()).append("'s").append(stack.getDisplayName()));
+        stack.set(DataComponents.ITEM_NAME, MutableComponent.create(PlainTextContents.EMPTY)
+                .append(player.getDisplayName())
+                .append("'s ")
+                .append(stack.getHoverName()));
 //        stack.set(DataComponents.LORE, Component.literal(String.format("%d research unlocked", 0)));
     }
 

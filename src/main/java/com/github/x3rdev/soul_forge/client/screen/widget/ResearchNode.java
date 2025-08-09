@@ -72,7 +72,8 @@ public class ResearchNode extends MoveableWidget {
             if (!isHovered()) {
                 guiGraphics.enableScissor(minX, minY, maxX, maxY);
             }
-            float scrollAlpha = getNodeRenderState() == NodeRenderState.UNLOCKED ? 1.0F : 0.48F ;
+//            float scrollAlpha = getNodeRenderState() == NodeRenderState.UNLOCKED ? 1.0F : 0.48F;
+            float scrollAlpha = 1.0F;
             if (isHovered()) {
                 guiGraphics.pose().translate(0, 0, 160);
                 guiGraphics.drawString(font, getMessage(), 20 + (offset * 18 - textLength) / 2 + 1, 8, 0x181d24);
@@ -81,8 +82,8 @@ public class ResearchNode extends MoveableWidget {
                 }
             }
             guiGraphics.renderItem(iconItemStack, 5, 5);
-            if(getNodeRenderState() == NodeRenderState.CAN_BE_UNLOCKED) {
-                guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), 5, 5, 5 + 16, 5 + 16, 0x30999999);
+            if(getNodeRenderState() == NodeRenderState.CAN_BE_UNLOCKED && !isHovered()) {
+                guiGraphics.innerBlit(LOCATION, -2, -2+30, 1, 1+26, 160, (float) 48/256, (float) 78/256, 0, (float) 26/256, 1.0F, 1.0F, 1.0F, 1.0F);
             }
             guiGraphics.innerBlit(LOCATION, -2, -2+20, 1, 1+26, 0, 0, (float) 20/256, 0, (float) 26/256, 1.0F, 1.0F, 1.0F, scrollAlpha); // render left part of scroll
             guiGraphics.innerBlit(LOCATION, -2+20+(isHovered() ? 18 * offset : 0), -2+20+(isHovered() ? 18 * offset : 0)+10, 1, 1+26, 0, (float) 20/256, (float) (20+10)/256, 0, (float) 26/256, 1.0F, 1.0F, 1.0F, scrollAlpha); // render left part of scroll

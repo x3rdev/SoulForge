@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec2;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -78,8 +79,6 @@ public class SoulEntity extends LivingEntity implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        setYRot(0);
-        setYHeadRot(0);
         if (!this.isNoGravity()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.0025D, 0.0D));
         }
@@ -89,12 +88,9 @@ public class SoulEntity extends LivingEntity implements GeoEntity {
         if(this.tickCount > 6000) {
             this.discard();
         }
-    }
-
-
-    @Override
-    public boolean shouldShowName() {
-        return false;
+        setXRot(0);
+        setYRot(0);
+        setYHeadRot(0);
     }
 
     @Override
@@ -124,18 +120,38 @@ public class SoulEntity extends LivingEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isPickable() {
-        return true;
-    }
-
-    @Override
     public HumanoidArm getMainArm() {
         return null;
     }
 
     @Override
+    public float getXRot() {
+        return 0;
+    }
+
+    @Override
     public float getYRot() {
         return 0;
+    }
+
+    @Override
+    public float getYHeadRot() {
+        return 0;
+    }
+
+    @Override
+    public float getViewXRot(float partialTicks) {
+        return 0;
+    }
+
+    @Override
+    public float getViewYRot(float partialTicks) {
+        return 0;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
     }
 
     @Override

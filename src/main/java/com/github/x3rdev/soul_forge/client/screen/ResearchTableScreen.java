@@ -4,25 +4,19 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.screen.widget.*;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
-import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
-import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -160,7 +154,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(0.5F, 0.5F, 1);
         int x = 2*(leftPos+16);
-        int y = 2*(topPos+22);
+        int y = 2*(topPos+21);
         List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*90);
         for (int i = topDescriptionLine; i < Math.min(lines.size()-1, topDescriptionLine+9); i++) { //9 is max lines on screen
             if(i == Math.min(lines.size()-1, topDescriptionLine+9)-1 && lines.size()-1 > topDescriptionLine+9) {

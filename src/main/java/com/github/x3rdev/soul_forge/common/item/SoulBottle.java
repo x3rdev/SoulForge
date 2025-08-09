@@ -4,6 +4,7 @@ import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -83,9 +84,6 @@ public class SoulBottle extends Item {
 
     @Override
     public int getBarColor(ItemStack pStack) {
-        if (getSoulType(pStack).isEmpty()) {
-            return 0x000000;
-        }
         return getSoulType(pStack).color();
     }
 
@@ -96,7 +94,7 @@ public class SoulBottle extends Item {
             String soulType = formatSoulTypeName(getSoulType(stack));
             tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", soulCount + soulType).withColor(getSoulType(stack).color()));
         } else {
-            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", "0").withColor(0x28292e));
+            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip.empty").withStyle(ChatFormatting.GRAY));
         }
     }
 
