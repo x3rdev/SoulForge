@@ -1,0 +1,28 @@
+{
+  "name": "Research Table",
+  "icon": "soul_forge:research_table",
+  "category": "soul_forge:research",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "item": "soul_forge:research_table"
+      },
+      "text": "Allows you to unlock rituals"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Research Table",
+      "multiblock": {
+        "mapping": {
+          "L": "soul_forge:research_table[table_part=left]",
+          "R": "soul_forge:research_table[table_part=right]"
+        },
+        "pattern": [
+          [" 0", "LR"]
+        ]
+      },
+      "enable_visualize": false
+    }
+  ]
+}

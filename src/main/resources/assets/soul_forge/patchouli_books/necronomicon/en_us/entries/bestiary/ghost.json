@@ -1,0 +1,21 @@
+{
+  "name": "Ghost",
+  "icon": "soul_forge:ghost_spawn_egg",
+  "category": "soul_forge:bestiary",
+  "pages": [
+    {
+      "type": "patchouli:entity",
+      "entity": "soul_forge:ghost",
+      "offset": "0.15",
+      "text": "A lost spirit, roaming the overworld. Spawn infrequently in large groups."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Drops:",
+      "item": {
+        "item": "soul_forge:ectoplasm"
+      },
+      "text": "0-1 $(l:ectoplasm)ectoplasm$()."
+    }
+  ]
+}

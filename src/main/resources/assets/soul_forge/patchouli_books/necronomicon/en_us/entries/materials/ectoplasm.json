@@ -1,0 +1,20 @@
+{
+  "name": "Ectoplasm",
+  "icon": "soul_forge:ectoplasm",
+  "category": "soul_forge:materials",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "item": "soul_forge:ectoplasm"
+      },
+      "text": "Slimy to the touch. This material drops from $(l:ghost)ghosts$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "title": "Drops From:",
+      "entity": "soul_forge:ghost",
+      "offset": "0.15"
+    }
+  ]
+}

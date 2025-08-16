@@ -4,6 +4,7 @@ import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.packet.SubmitResearchPayload;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -26,7 +27,7 @@ public class UnlockButton extends AbstractWidget {
 
     @Override
     public boolean isActive() {
-        return super.isActive() && screen.inspectScreenActive() && !Necronomicon.isResearchUnlocked(screen.getNecronomicon(), screen.getActiveResearch().orElseThrow());
+        return super.isActive() && screen.inspectScreenActive() && !Research.playerHasResearchUnlocked(Minecraft.getInstance().player, screen.getActiveResearch().orElseThrow());
     }
 
     @Override

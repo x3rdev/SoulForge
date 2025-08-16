@@ -12,6 +12,6 @@ public class MenuTypeRegistry {
 
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, SoulForge.MOD_ID);
 
-    public static final DeferredHolder<MenuType<?>, MenuType<ResearchTableMenu>> RESEARCH_TABLE = MENUS.register("research_table",
+    public static final DeferredHolder<MenuType<?>, MenuType<ResearchTableMenu>> RESEARCH_TABLE = MENUS.register("research_table.json",
             () -> IMenuTypeExtension.create(ResearchTableMenu::new));
 }

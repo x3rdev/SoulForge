@@ -25,6 +25,7 @@ public class SoulForge {
         BlockEntityRegistry.BLOCK_ENTITIES.register(modEventBus);
         BlockItemRegistry.BLOCK_ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
+        DataAttachmentRegistry.DATA_ATTACHMENT_TYPES.register(modEventBus);
         DataComponentRegistry.DATA_COMPONENTS.register(modEventBus);
         EntityDataRegistry.ENTITY_DATA.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
@@ -45,6 +46,8 @@ public class SoulForge {
         modEventBus.addListener(PacketRegistry::registerPayloadHandlers);
         modEventBus.addListener(DatapackRegistry::registerDatapackRegistries);
         modEventBus.addListener(CommonSetup::registerSpawnPlacements);
+        neoEventBus.addListener(CommonSetup::playerClone);
+        neoEventBus.addListener(CommonSetup::playerLoggedIn);
 
         PatchouliCompat.init();
     }

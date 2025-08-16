@@ -40,7 +40,7 @@ public class ResearchNodeConnector extends MoveableWidget {
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if(screen.treeScreenActive() && Necronomicon.isResearchUnlocked(screen.getNecronomicon(), research.value().getParent(Minecraft.getInstance().level.registryAccess()))) {
+        if(screen.treeScreenActive() && Research.playerHasResearchUnlocked(Minecraft.getInstance().player, research.value().getParent(Minecraft.getInstance().level.registryAccess()))) {
             guiGraphics.pose().pushPose();
             guiGraphics.enableScissor(minX, minY, maxX, maxY);
             guiGraphics.pose().translate(getX(), getY(), 0);

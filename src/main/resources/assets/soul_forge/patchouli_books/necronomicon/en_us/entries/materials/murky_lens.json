@@ -1,0 +1,18 @@
+{
+  "name": "Murky Lens",
+  "icon": "soul_forge:murky_lens",
+  "category": "soul_forge:materials",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "item": "soul_forge:murky_lens"
+      },
+      "text": "Glass infused with $(l:ectoplasm)ectoplasm$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "soul_forge:murky_lens"
+    }
+  ]
+}

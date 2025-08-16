@@ -7,6 +7,7 @@ import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -80,10 +81,10 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
             @Override
             public boolean isActive() {
-                return research != null && !Necronomicon.isResearchUnlocked(getNecronomicon(), research);
+                return research != null && !Research.playerHasResearchUnlocked(player, research);
             }
         });
-        container.setItem(0, player.getItemInHand(hand).copyAndClear());
+        container.setItem(0, player.getItemInHand(hand));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 this.addSlot(new ResearchTableSlot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -104,13 +105,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         if(inventory.countItem(unlockStack.getItem()) >= count) {
             for (int i = 0; i < count; i++) {
                 for (int j = 0; j < inventory.getContainerSize(); j++) {
-                    ItemStack itemstack = inventory.getItem(j);
-                    if (itemstack.getItem().equals(unlockStack.getItem())) {
-                        itemstack.shrink(1);
+                    if(inventory.getItem(j).is(unlockStack.getItem())) {
+                        inventory.removeItem(j, 1);
                     }
                 }
             }
-            Necronomicon.unlockResearch(getNecronomicon(), research);
+            Research.grantResearchToPlayer((ServerPlayer) player, research);
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.9F, 0.3F);
             player.closeContainer();
         }
@@ -141,7 +141,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        this.access.execute((level, pos) -> this.clearContainer(player, this.container));
+//        this.access.execute((level, pos) -> this.clearContainer(player, this.container));
     }
 
     @Override

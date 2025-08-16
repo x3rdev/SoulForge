@@ -1,10 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.block_entity.DarkTombBlockEntity;
-import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
-import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
-import com.github.x3rdev.soul_forge.common.block_entity.StatueBlockEntity;
+import com.github.x3rdev.soul_forge.common.block_entity.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;

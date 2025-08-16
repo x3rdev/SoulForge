@@ -5,8 +5,11 @@ import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
 import com.github.x3rdev.soul_forge.common.item.SoulScythe;
+import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
@@ -15,12 +18,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 
 public class CommonSetup {
@@ -57,6 +64,20 @@ public class CommonSetup {
     }
 
     @SubscribeEvent
+    public static void playerClone(PlayerEvent.Clone event) {
+        if (event.isWasDeath() && event.getOriginal().hasData(DataAttachmentRegistry.UNLOCKED_RESEARCH)) {
+            event.getEntity().setData(DataAttachmentRegistry.UNLOCKED_RESEARCH, event.getOriginal().getData(DataAttachmentRegistry.UNLOCKED_RESEARCH));
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if(event.getEntity() instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.sendToPlayer(serverPlayer, new SendResearchDataPayload(serverPlayer.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH)));
+        }
+    }
+
+    @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         Level level = event.getEntity().level();
         if(!level.isClientSide() && event.getSource().getEntity() instanceof Player player) {
@@ -86,7 +107,6 @@ public class CommonSetup {
     private static boolean isEntityTypeInTag(LivingEntity entity, TagKey<EntityType<?>> tagKey) {
         return entity.getType().is(tagKey);
     }
-
 
     private static void dropUndeadSoul(Level level, Vec3 pos) {
         SoulEntity soulEntity = new SoulEntity(EntityRegistry.UNDEAD_SOUL.get(), level, SoulType.UNDEAD_SOUL);

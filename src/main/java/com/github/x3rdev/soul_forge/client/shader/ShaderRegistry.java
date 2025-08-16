@@ -62,9 +62,9 @@ public class ShaderRegistry {
                             .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
                             .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                             .setCullState(NO_CULL)
-                            .setWriteMaskState(new WriteMaskStateShard(true, true))
+                            .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
                             .setOverlayState(OVERLAY)
-                            .createCompositeState(false)
+                            .createCompositeState(true)
             );
         }
     }

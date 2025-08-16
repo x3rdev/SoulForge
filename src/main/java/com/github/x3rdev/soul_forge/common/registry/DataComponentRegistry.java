@@ -27,7 +27,7 @@ public class DataComponentRegistry {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> WISP_UUID = DATA_COMPONENTS.registerComponentType("wisp_uuid",
             builder -> builder.persistent(UUIDUtil.CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Necronomicon.NecronomiconData>> NECRONOMICON_DATA = DATA_COMPONENTS.registerComponentType("necronomicon_data",
-            builder -> builder.persistent(Necronomicon.NecronomiconData.CODEC).networkSynchronized(Necronomicon.NecronomiconData.STREAM_CODEC));
+//    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Necronomicon.NecronomiconData>> NECRONOMICON_DATA = DATA_COMPONENTS.registerComponentType("necronomicon_data",
+//            builder -> builder.persistent(Necronomicon.NecronomiconData.CODEC).networkSynchronized(Necronomicon.NecronomiconData.STREAM_CODEC));
 }
 

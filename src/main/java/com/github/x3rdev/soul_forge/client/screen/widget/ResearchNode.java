@@ -98,11 +98,11 @@ public class ResearchNode extends MoveableWidget {
     }
 
     private NodeRenderState getNodeRenderState() {
-        if(Necronomicon.isResearchUnlocked(screen.getNecronomicon(), research) ) {
+        if(Research.playerHasResearchUnlocked(Minecraft.getInstance().player, research)) {
             return NodeRenderState.UNLOCKED;
         }
         Holder.Reference<Research> parent = research.value().getParent(Minecraft.getInstance().level.registryAccess());
-        if(Necronomicon.isResearchUnlocked(screen.getNecronomicon(), parent)) {
+        if(Research.playerHasResearchUnlocked(Minecraft.getInstance().player, parent)) {
             return NodeRenderState.CAN_BE_UNLOCKED;
         }
         return NodeRenderState.HIDDEN;

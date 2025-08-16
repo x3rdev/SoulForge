@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "soul_forge:block/soul_crystal_ore"
+    "all": "soul_forge:block/soul_crystal_ore",
+    "particle": "soul_forge:block/soul_crystal_ore"
   }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "Soul Crystal",
+  "icon": "soul_forge:soul_crystal",
+  "category": "soul_forge:materials",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "item": "soul_forge:soul_crystal"
+      },
+      "text": "An ancient crystal found underground. It comes from $(l:soul_crystal_ore)ore$() imbued with souls of the fallen."
+    }
+  ]
+}

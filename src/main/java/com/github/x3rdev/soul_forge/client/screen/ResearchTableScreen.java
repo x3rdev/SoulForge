@@ -6,6 +6,7 @@ import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -103,8 +104,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             int barBackgroundLength = MAX_DESCRIPTION_LINES*LINE_HEIGHT;
             int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
             int barLength = Mth.floor((float)barBackgroundLength*(float)MAX_DESCRIPTION_LINES/descriptionLineCount);
-            if(mouseX > x-1 && mouseX < x+1 && mouseY > y+topDescriptionLine && mouseY < y+topDescriptionLine+barLength) {
-                topDescriptionLine = (int) Math.clamp(topDescriptionLine+dragY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
+            if(mouseX > x-5 && mouseX < x+2 && mouseY > y+topDescriptionLine && mouseY < y+topDescriptionLine+barLength) {
+                topDescriptionLine = (int) Math.clamp(topDescriptionLine+2*dragY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
             }
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -150,7 +151,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderInspectScreen(GuiGraphics guiGraphics) {
-        if(!Necronomicon.isResearchUnlocked(getNecronomicon(), getActiveResearch().orElseThrow())) {
+        if(!Research.playerHasResearchUnlocked(Minecraft.getInstance().player, getActiveResearch().orElseThrow())) {
             guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+2, topPos, 176, 32, 30, 26);
             guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+11, topPos+28, 210, 0, 12, 24);
         }
@@ -198,12 +199,13 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.pose().scale(1F/scale, 1F/scale, 1);
         int x = scale*(leftPos + 106)+1;
         int y = scale*(topPos + 30);
-        int barBackgroundLength = MAX_DESCRIPTION_LINES*scale*LINE_HEIGHT;
         int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
-        int barLength = Mth.floor((float)barBackgroundLength*(float)MAX_DESCRIPTION_LINES/descriptionLineCount);
-        guiGraphics.fill(x, y, x+2, y+barBackgroundLength+scale*(LINE_HEIGHT-2), 0xFFbababa);
-        guiGraphics.fill(x, y+topDescriptionLine*scale, x+2, y+topDescriptionLine*scale+barLength, 0xFFFFFFFF);
-
+        if(descriptionLineCount > MAX_DESCRIPTION_LINES) {
+            int barBackgroundLength = MAX_DESCRIPTION_LINES * scale * LINE_HEIGHT;
+            int barLength = Mth.floor((float) barBackgroundLength * (float) MAX_DESCRIPTION_LINES / descriptionLineCount);
+            guiGraphics.fill(x, y, x + 2, y + barBackgroundLength + scale * (LINE_HEIGHT - 2), 0xFFbababa);
+            guiGraphics.fill(x, y + topDescriptionLine * scale, x + 2, y + topDescriptionLine * scale + barLength, 0xFFFFFFFF);
+        }
         guiGraphics.pose().popPose();
     }
 

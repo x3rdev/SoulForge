@@ -1,0 +1,14 @@
+{
+  "name": "Empowered Soul Crystal",
+  "icon": "soul_forge:empowered_soul_crystal",
+  "category": "soul_forge:materials",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "item": "soul_forge:empowered_soul_crystal"
+      },
+      "text": "A soul crystal imbued with souls"
+    }
+  ]
+}

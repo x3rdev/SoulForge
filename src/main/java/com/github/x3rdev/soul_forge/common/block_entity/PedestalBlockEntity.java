@@ -5,10 +5,7 @@ import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
-import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
-import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
-import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
-import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
+import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -183,7 +180,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     }
 
     private boolean playerHasRitualUnlocked(ServerPlayer player, ItemStack necronomiconStack, RecipeHolder<RitualRecipe> recipe) {
-        return Necronomicon.isRitualUnlocked(player, necronomiconStack, recipe);
+        return Research.playerHasRitualUnlocked(player, recipe);
+//        return Necronomicon.isRitualUnlocked(player, necronomiconStack, recipe);
     }
 
     private RitualInput buildRitualInput() {

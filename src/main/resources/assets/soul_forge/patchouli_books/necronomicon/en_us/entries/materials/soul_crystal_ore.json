@@ -1,0 +1,14 @@
+{
+  "name": "Soul Crystal Ore",
+  "icon": "soul_forge:soul_crystal_ore",
+  "category": "soul_forge:materials",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "item": "soul_forge:soul_crystal_ore"
+      },
+      "text": "This ore drops $(l:soul_crystal)Soul Crystals$() and is found typically around y=50"
+    }
+  ]
+}

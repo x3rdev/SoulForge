@@ -1,10 +1,13 @@
 package com.github.x3rdev.soul_forge.client.renderer.layer;
 
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.texture.AutoGlowingTexture;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
@@ -16,7 +19,22 @@ public class SoulGlowingLayer<T extends GeoAnimatable> extends AutoGlowingGeoLay
     }
 
     @Override
+    public void preRender(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        poseStack.pushPose();
+        poseStack.translate(0, 1, 0);
+        super.preRender(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
+        poseStack.popPose();
+    }
+
+    @Override
+    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        super.render(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
+    }
+
+    @Override
     protected @Nullable RenderType getRenderType(T animatable, @Nullable MultiBufferSource bufferSource) {
-        return ShaderRegistry.soul(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
+//        return RenderType.entitySolid(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
+//        return ShaderRegistry.soul(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
+        return renderer.getRenderType(animatable, getTextureResource(animatable), bufferSource, 0);
     }
 }

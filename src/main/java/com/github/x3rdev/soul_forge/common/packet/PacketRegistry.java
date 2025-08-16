@@ -38,5 +38,13 @@ public class PacketRegistry {
                         (payload, context) -> {}
                 )
         );
+        registrar.playToClient(
+                SendResearchDataPayload.TYPE,
+                SendResearchDataPayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        ClientPayloadHandler::handleSendResearchData,
+                        (payload, context) -> {}
+                )
+        );
     }
 }

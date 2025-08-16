@@ -1,23 +1,29 @@
 package com.github.x3rdev.soul_forge.common.research;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
+import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
+import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
-import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, ItemStack unlockItemStack, Optional<ResourceLocation> ritualReward, boolean inactive) {
@@ -68,6 +74,28 @@ public record Research(ResourceKey<Research> parent, String title, String descri
         return access.holder(HEAD_RESOURCE_KEY).orElseThrow();
     }
 
+    public static void grantResearchToPlayer(ServerPlayer player, Holder.Reference<Research> research) {
+        List<ResourceKey<Research>> currentKeys = player.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get());
+        ResourceKey<Research> newKey = research.key();
+        if(!currentKeys.contains(newKey)) {
+            ImmutableList<ResourceKey<Research>> newKeys = ImmutableList.<ResourceKey<Research>>builder().addAll(currentKeys).add(newKey).build();
+            player.setData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get(), newKeys);
+            PacketDistributor.sendToPlayer(player, new SendResearchDataPayload(newKeys));
+        }
+    }
+
+    public static boolean playerHasResearchUnlocked(Player player, Holder.Reference<Research> research) {
+        if(research.value().inactive()) {
+            return true;
+        }
+        return player.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get()).contains(research.key());
+    }
+
+    public static boolean playerHasRitualUnlocked(Player player, RecipeHolder<RitualRecipe> recipe) {
+        return player.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get()).stream()
+                .map(researchResourceKey -> player.level().registryAccess().holder(researchResourceKey).orElseThrow().value().ritualReward())
+                .anyMatch(recipeResourceKey -> recipeResourceKey.orElseThrow().equals(recipe.id()));
+    }
 
     public Holder.Reference<Research> getParent(RegistryAccess access) {
         if(parent == null) {

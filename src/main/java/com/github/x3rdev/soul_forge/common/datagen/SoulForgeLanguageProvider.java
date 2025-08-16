@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.datagen;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
+import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -71,6 +72,18 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
 
         // Item Group
         add("itemGroup.soul_forge", "Soul Forge");
+
+        // Entity
+        addEntityType(EntityRegistry.SOUL, "Soul");
+        addEntityType(EntityRegistry.UNDEAD_SOUL, "Undead Soul");
+        addEntityType(EntityRegistry.NETHER_SOUL, "Nether Soul");
+        addEntityType(EntityRegistry.ENDER_SOUL, "Ender Soul");
+        addEntityType(EntityRegistry.DRAGON_SOUL, "Dragon Soul");
+        addEntityType(EntityRegistry.SOUL_SCYTHE_PROJECTILE, "Soul Scythe");
+        addEntityType(EntityRegistry.WISP, "Wisp");
+        addEntityType(EntityRegistry.GHOST, "Ghost");
+        addEntityType(EntityRegistry.NERGAL, "Nergal");
+        addEntityType(EntityRegistry.NERGAL_SPAWN, "Nergal Spawn");
 
         // Tooltip
         add("item.soul_forge.soul_bottle.tooltip", "Contains %s soul(s)");
