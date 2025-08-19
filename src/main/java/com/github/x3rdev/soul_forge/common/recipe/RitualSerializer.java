@@ -23,8 +23,8 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
     public static final MapCodec<RitualRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Ingredient.CODEC.fieldOf("center_input").orElse(Ingredient.EMPTY).forGetter(RitualRecipe::centerInput),
-                    Codec.list(Ingredient.CODEC, 0, 4).fieldOf("cardinal_inputs").orElse(List.of()).forGetter(RitualRecipe::cardinalInputs),
-                    Codec.list(Ingredient.CODEC, 0, 4).fieldOf("diagonal_inputs").orElse(List.of()).forGetter(RitualRecipe::diagonalInputs),
+                    new FilledIngredientListCodec(4).fieldOf("cardinal_inputs").orElse(List.of()).forGetter(RitualRecipe::cardinalInputs),
+                    new FilledIngredientListCodec(4).fieldOf("diagonal_inputs").orElse(List.of()).forGetter(RitualRecipe::diagonalInputs),
                     Codec.unboundedMap(SoulType.CODEC, Codec.INT).fieldOf("soul_inputs").orElse(Map.of()).forGetter(RitualRecipe::inputSouls),
                     ItemStack.STRICT_CODEC.fieldOf("result").forGetter(RitualRecipe::result)
             ).apply(instance, RitualRecipe::new)
@@ -66,8 +66,6 @@ public class RitualSerializer implements RecipeSerializer<RitualRecipe> {
                     result
             );
         }
-
-
     };
 
     @Override

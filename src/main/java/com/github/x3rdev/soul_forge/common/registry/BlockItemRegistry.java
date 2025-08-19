@@ -59,4 +59,6 @@ public class BlockItemRegistry {
             () -> new GeckoBlock(BlockRegistry.SOUL_STORAGE.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> RESEARCH_TABLE = BLOCK_ITEMS.register("research_table",
             () -> new BlockItem(BlockRegistry.RESEARCH_TABLE.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, BlockItem> SOUL_ANVIL = BLOCK_ITEMS.register("soul_anvil",
+            () -> new GeckoBlock(BlockRegistry.SOUL_ANVIL.get(), new Item.Properties()));
 }

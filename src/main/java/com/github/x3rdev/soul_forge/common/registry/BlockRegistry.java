@@ -63,4 +63,6 @@ public class BlockRegistry {
             () -> new SoulStorageBlock(BlockBehaviour.Properties.of()));
     public static final DeferredHolder<Block, ResearchTableBlock> RESEARCH_TABLE = BLOCKS.register("research_table",
             () -> new ResearchTableBlock(BlockBehaviour.Properties.of()));
+    public static final DeferredHolder<Block, SoulAnvilBlock> SOUL_ANVIL = BLOCKS.register("soul_anvil",
+            () -> new SoulAnvilBlock(BlockBehaviour.Properties.of()));
 }

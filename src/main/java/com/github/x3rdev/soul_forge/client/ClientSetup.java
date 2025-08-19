@@ -6,6 +6,7 @@ import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
 import com.github.x3rdev.soul_forge.client.renderer.block.*;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
+import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -44,6 +45,7 @@ public class ClientSetup {
         event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), context -> new StatueRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.PEDESTAL.get(), PedestalRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_STORAGE.get(), context -> new SoulStorageRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_ANVIL.get(), context -> new SoulAnvilRenderer());
     }
 
     @SubscribeEvent
@@ -78,6 +80,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(MenuTypeRegistry.RESEARCH_TABLE.get(), ResearchTableScreen::new);
+        event.register(MenuTypeRegistry.SOUL_ANVIL.get(), SoulAnvilScreen::new);
     }
 
 }

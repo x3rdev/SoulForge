@@ -3,10 +3,7 @@ package com.github.x3rdev.soul_forge.common.recipe;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.RecipeSerializerRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
-import com.github.x3rdev.soul_forge.common.research.Research;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -14,7 +11,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,26 +25,9 @@ public record RitualRecipe(
     public boolean matches(RitualInput input, Level level) {
         return
                 centerInput.test(input.centerInput()) &&
-                ingredientListMatches(cardinalInputs, input.cardinalInputs()) &&
-                ingredientListMatches(diagonalInputs, input.diagonalInputs()) &&
+                RecipeUtil.itemStacksMatchIngredients(input.cardinalInputs(), cardinalInputs) &&
+                RecipeUtil.itemStacksMatchIngredients(input.diagonalInputs(), diagonalInputs) &&
                 inputHasSufficientSouls(input);
-    }
-
-    private boolean ingredientListMatches(List<Ingredient> ingredients, List<ItemStack> inputs) {
-        List<Ingredient> ingredientsCopy = new ArrayList<>(ingredients);
-        List<ItemStack> inputsCopy = new ArrayList<>(inputs);
-        for (int i = 0; i < 4-ingredients.size(); i++) {
-            ingredientsCopy.add(Ingredient.EMPTY);
-        }
-        for (Ingredient ingredient : ingredientsCopy) {
-            for (ItemStack stack : inputsCopy) {
-                if (ingredient.test(stack)) {
-                    inputsCopy.remove(stack);
-                    break;
-                }
-            }
-        }
-        return inputsCopy.isEmpty();
     }
 
     private boolean inputHasSufficientSouls(RitualInput input) {
