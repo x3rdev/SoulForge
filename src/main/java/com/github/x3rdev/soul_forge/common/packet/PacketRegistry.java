@@ -46,5 +46,13 @@ public class PacketRegistry {
                         (payload, context) -> {}
                 )
         );
+        registrar.playToServer(
+                StartSoulAnvilPayload.TYPE,
+                StartSoulAnvilPayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        (payload, context) -> {},
+                        ServerPayloadHandler::handleStartSoulAnvil
+                )
+        );
     }
 }

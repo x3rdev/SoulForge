@@ -1,6 +1,9 @@
 package com.github.x3rdev.soul_forge.common.packet.handler;
 
+import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
+import com.github.x3rdev.soul_forge.common.menu.SoulAnvilMenu;
+import com.github.x3rdev.soul_forge.common.packet.StartSoulAnvilPayload;
 import com.github.x3rdev.soul_forge.common.packet.SubmitResearchPayload;
 import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
 import net.minecraft.core.RegistryAccess;
@@ -24,6 +27,15 @@ public class ServerPayloadHandler {
             AbstractContainerMenu containerMenu = context.player().containerMenu;
             if(containerMenu.containerId == payload.containerId() && containerMenu instanceof ResearchTableMenu researchTableMenu) {
                 researchTableMenu.submitResearch();
+            }
+        });
+    }
+
+    public static void handleStartSoulAnvil(StartSoulAnvilPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            AbstractContainerMenu containerMenu = context.player().containerMenu;
+            if(containerMenu.containerId == payload.containerId() && containerMenu instanceof SoulAnvilMenu soulAnvilMenu) {
+                soulAnvilMenu.startAnvil();
             }
         });
     }

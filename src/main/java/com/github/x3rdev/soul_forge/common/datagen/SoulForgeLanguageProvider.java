@@ -40,6 +40,7 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addBlock(BlockRegistry.PEDESTAL, "Pedestal");
         addBlock(BlockRegistry.SOUL_STORAGE, "Soul Storage");
         addBlock(BlockRegistry.RESEARCH_TABLE, "Research Table");
+        addBlock(BlockRegistry.SOUL_ANVIL, "Soul Anvil");
 
 
         // Item
@@ -58,7 +59,6 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addItem(ItemRegistry.ECTOPLASM, "Ectoplasm");
         addItem(ItemRegistry.MURKY_LENS, "Murky Lens");
         addItem(ItemRegistry.RESEARCHER_GLASSES, "Researcher Glasses");
-        addItem(ItemRegistry.CURSED_SWORD, "Cursed Sword");
         addItem(ItemRegistry.NECRONOMICON, "Necronomicon");
         addItem(ItemRegistry.SCROLL_OF_SHADOWS, "Scroll Of Shadows");
         addItem(ItemRegistry.SOUL_STEEL_INGOT, "Soul Steel Ingot");
@@ -88,5 +88,8 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         // Tooltip
         add("item.soul_forge.soul_bottle.tooltip", "Contains %s soul(s)");
         add("item.soul_forge.soul_bottle.tooltip.empty", "Contains nothing");
+
+        //Container
+        add("container.soul_forge.soul_anvil", "Soul Anvil");
     }
 }

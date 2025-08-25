@@ -42,7 +42,7 @@ import java.util.List;
 
 public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe>> {
 
-    public static final ResourceLocation SPRITES = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/ritual.png");
+    public static final ResourceLocation SPRITES = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/jei/ritual.png");
 
     private final IDrawable icon;
 

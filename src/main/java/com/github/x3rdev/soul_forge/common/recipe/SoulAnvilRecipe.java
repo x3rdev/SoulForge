@@ -9,13 +9,13 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public record SoulAnvilRecipe(List<Ingredient> gridInputs, List<Ingredient> outerInputs, ItemStack result) implements Recipe<SoulAnvilInput> {
+public record SoulAnvilRecipe(ShapedRecipePattern gridInput, List<Ingredient> outerInputs, ItemStack result) implements Recipe<SoulAnvilInput> {
 
 
     @Override
     public boolean matches(SoulAnvilInput input, Level level) {
         return
-                RecipeUtil.itemStacksStrictlyMatchIngredients(input.gridInputs(), gridInputs) &&
+                gridInput.matches(input.gridInput()) &&
                 RecipeUtil.itemStacksMatchIngredients(input.outerInputs(), outerInputs);
     }
 
@@ -36,7 +36,7 @@ public record SoulAnvilRecipe(List<Ingredient> gridInputs, List<Ingredient> oute
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializerRegistry.RITUAL_RECIPE_SERIALIZER.get();
+        return RecipeSerializerRegistry.SOUL_ANVIL_RECIPE_SERIALIZER.get();
     }
 
     @Override

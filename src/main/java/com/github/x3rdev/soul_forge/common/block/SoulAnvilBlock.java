@@ -1,9 +1,12 @@
 package com.github.x3rdev.soul_forge.common.block;
 
+import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
 import com.github.x3rdev.soul_forge.common.block_entity.SoulAnvilBlockEntity;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.menu.SoulAnvilMenu;
+import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -13,7 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -27,6 +33,17 @@ public class SoulAnvilBlock extends Block implements EntityBlock {
     
     public SoulAnvilBlock(Properties properties) {
         super(properties.noOcclusion());
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return level.isClientSide() ? null : new BlockEntityTicker<T>() {
+            @Override
+            public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
+                SoulAnvilBlockEntity.serverTick(level, pos, state, (SoulAnvilBlockEntity) blockEntity);
+            }
+        };
     }
 
     @Override
@@ -55,7 +72,7 @@ public class SoulAnvilBlock extends Block implements EntityBlock {
     @Override
     protected MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider(
-                (containerId, playerInventory, player1) -> new SoulAnvilMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos)),
+                (containerId, playerInventory, player) -> new SoulAnvilMenu(containerId, playerInventory, level.getBlockEntity(pos, BlockEntityRegistry.SOUL_ANVIL.get()).orElseThrow()),
                 getName()
         );
     }
