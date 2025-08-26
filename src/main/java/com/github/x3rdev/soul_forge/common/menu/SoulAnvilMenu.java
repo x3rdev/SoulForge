@@ -11,6 +11,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -42,15 +43,15 @@ public class SoulAnvilMenu extends AbstractContainerMenu {
         this.blockEntity = blockEntity;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                this.addSlot(new Slot(container, i+j*3, 62+i*18, 25+j*18));
+                this.addSlot(new Slot(container, i+j*3, 61+i*19, 31+j*19));
             }
         }
-        addSlot(new Slot(container, 9, 40, 18));
-        addSlot(new Slot(container, 10, 121, 18));
-        addSlot(new Slot(container, 11, 40, 68));
-        addSlot(new Slot(container, 12, 121, 68));
+        addSlot(new Slot(container, 9, 27, 25));
+        addSlot(new Slot(container, 10, 133, 25));
+        addSlot(new Slot(container, 11, 27, 75));
+        addSlot(new Slot(container, 12, 133, 75));
 
-        addSlot(new Slot(container, 13, 80, 102) {
+        addSlot(new Slot(container, 13, 80, 125) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
@@ -59,12 +60,12 @@ public class SoulAnvilMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 135 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 165 + i * 18));
             }
         }
 
         for (int k = 0; k < 9; k++) {
-            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 193));
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 223));
         }
     }
 
@@ -76,8 +77,19 @@ public class SoulAnvilMenu extends AbstractContainerMenu {
         return this.player.level().getRecipeManager().getRecipeFor(RecipeTypeRegistry.SOUL_ANVIL.get(), input, this.player.level());
     }
 
+    public boolean canPressHammer() {
+        Optional<RecipeHolder<SoulAnvilRecipe>> recipeInContainer = getRecipeInContainer();
+        return blockEntity.getProgressTicks() == 0 && recipeInContainer.isPresent() && (recipeInContainer.get().value().result().is(getItems().get(13).getItem()) || getItems().get(13).isEmpty());
+    }
+
     public void startAnvil() {
-        blockEntity.startAnvil();
+        if(canPressHammer()) {
+            blockEntity.startAnvil();
+        }
+    }
+
+    public float getRecipeProgress() {
+        return (float) blockEntity.getProgressTicks() /SoulAnvilBlockEntity.TICKS_UNTIL_ITEM_CRAFTED;
     }
 
     @Override
@@ -94,6 +106,7 @@ public class SoulAnvilMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         this.container.stopOpen(player);
     }
+
 
 
 }

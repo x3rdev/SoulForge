@@ -20,14 +20,14 @@ public class SoulAnvilStartButton extends Button {
 
     @Override
     public void onClick(double mouseX, double mouseY) {
-        if(screen.canPressHammer()) {
+        if(screen.getMenu().canPressHammer()) {
             super.onClick(mouseX, mouseY);
         }
     }
 
     @Override
     public void playDownSound(SoundManager handler) {
-        if(screen.canPressHammer()) {
+        if(screen.getMenu().canPressHammer()) {
             super.playDownSound(handler);
         }
     }
