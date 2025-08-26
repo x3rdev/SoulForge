@@ -1,0 +1,32 @@
+{
+  "type": "soul_forge:soul_anvil",
+  "grid_input": {
+    "key": {
+      "a": {
+        "item": "soul_forge:soul_steel_ingot"
+      }
+    },
+    "pattern": [
+      "aaa",
+      "a a",
+      "   "
+    ]
+  },
+  "outer_inputs": [
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    }
+  ],
+  "result": {
+    "id": "soul_forge:soul_steel_helmet"
+  }
+}
