@@ -51,6 +51,10 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addItem(ItemRegistry.SOUL_STEEL_CHESTPLATE, "Soul Steel Chestplate");
         addItem(ItemRegistry.SOUL_STEEL_LEGGINGS, "Soul Steel Leggings");
         addItem(ItemRegistry.SOUL_STEEL_BOOTS, "Soul Steel Boots");
+        addItem(ItemRegistry.AWAKENED_SOUL_STEEL_HELMET, "Awakened Soul Steel Helmet");
+        addItem(ItemRegistry.AWAKENED_SOUL_STEEL_CHESTPLATE, "Awakened Soul Steel Chestplate");
+        addItem(ItemRegistry.AWAKENED_SOUL_STEEL_LEGGINGS, "Awakened Soul Steel Leggings");
+        addItem(ItemRegistry.AWAKENED_SOUL_STEEL_BOOTS, "Awakened Soul Steel Boots");
         addItem(ItemRegistry.WISP_AMULET, "Wisp Amulet");
         addItem(ItemRegistry.GHOST_SPAWN_EGG, "Ghost Spawn Egg");
         addItem(ItemRegistry.NERGAL_SPAWN_EGG, "Nergal Spawn Egg");

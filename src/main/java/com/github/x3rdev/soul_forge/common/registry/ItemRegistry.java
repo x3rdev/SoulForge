@@ -27,6 +27,14 @@ public class ItemRegistry {
             () -> new SoulSteelArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(15))));
     public static final DeferredHolder<Item, SoulSteelArmor> SOUL_STEEL_BOOTS = ITEMS.register("soul_steel_boots",
             () -> new SoulSteelArmor(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
+    public static final DeferredHolder<Item, AwakenedSoulSteelArmor> AWAKENED_SOUL_STEEL_HELMET = ITEMS.register("awakened_soul_steel_helmet",
+            () -> new AwakenedSoulSteelArmor(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(15))));
+    public static final DeferredHolder<Item, AwakenedSoulSteelArmor> AWAKENED_SOUL_STEEL_CHESTPLATE = ITEMS.register("awakened_soul_steel_chestplate",
+            () -> new AwakenedSoulSteelArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(15))));
+    public static final DeferredHolder<Item, AwakenedSoulSteelArmor> AWAKENED_SOUL_STEEL_LEGGINGS = ITEMS.register("awakened_soul_steel_leggings",
+            () -> new AwakenedSoulSteelArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(15))));
+    public static final DeferredHolder<Item, AwakenedSoulSteelArmor> AWAKENED_SOUL_STEEL_BOOTS = ITEMS.register("awakened_soul_steel_boots",
+            () -> new AwakenedSoulSteelArmor(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
     public static final DeferredHolder<Item, WispAmulet> WISP_AMULET = ITEMS.register("wisp_amulet",
             WispAmulet::new);
 

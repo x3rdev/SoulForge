@@ -8,8 +8,7 @@
     },
     "pattern": [
       "aaa",
-      "a a",
-      "   "
+      "a a"
     ]
   },
   "outer_inputs": [
