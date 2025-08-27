@@ -55,8 +55,8 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOULWOOD_PLANKS.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> PEDESTAL = BLOCK_ITEMS.register("pedestal",
             () -> new GeckoBlock(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
-    public static final DeferredHolder<Item, BlockItem> SOUL_STORAGE = BLOCK_ITEMS.register("soul_storage",
-            () -> new GeckoBlock(BlockRegistry.SOUL_STORAGE.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, BlockItem> SOUL_CAULDRON = BLOCK_ITEMS.register("soul_cauldron",
+            () -> new GeckoBlock(BlockRegistry.SOUL_CAULDRON.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> RESEARCH_TABLE = BLOCK_ITEMS.register("research_table",
             () -> new BlockItem(BlockRegistry.RESEARCH_TABLE.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOUL_ANVIL = BLOCK_ITEMS.register("soul_anvil",

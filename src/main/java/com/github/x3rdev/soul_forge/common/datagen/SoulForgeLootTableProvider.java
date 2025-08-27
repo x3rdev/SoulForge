@@ -73,7 +73,7 @@ public class SoulForgeLootTableProvider extends LootTableProvider {
             dropSelf(BlockRegistry.SOULWOOD_LOG.get());
             dropSelf(BlockRegistry.SOULWOOD_PLANKS.get());
             dropSelf(BlockRegistry.PEDESTAL.get());
-            dropSelf(BlockRegistry.SOUL_STORAGE.get());
+            dropSelf(BlockRegistry.SOUL_CAULDRON.get());
             dropSelf(BlockRegistry.RESEARCH_TABLE.get());
             dropSelf(BlockRegistry.SOUL_ANVIL.get());
         }

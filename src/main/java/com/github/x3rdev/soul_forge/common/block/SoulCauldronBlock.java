@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.block;
 
-import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
+import com.github.x3rdev.soul_forge.common.block_entity.SoulCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -13,20 +13,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.stream.Stream;
+public class SoulCauldronBlock extends Block implements EntityBlock {
 
-public class SoulStorageBlock extends Block implements EntityBlock {
+    private static final VoxelShape INSIDE = box(2.0, 4.0, 2.0, 14.0, 16.0, 14.0);
+    private static final VoxelShape SHAPE = Shapes.join(
+            Shapes.block(),
+            Shapes.or(box(0.0, 0.0, 4.0, 16.0, 3.0, 12.0), box(4.0, 0.0, 0.0, 12.0, 3.0, 16.0), box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0), INSIDE),
+            BooleanOp.ONLY_FIRST
+    );
 
-    private static final VoxelShape SHAPE = Stream.of(
-            Block.box(1, 0, 1, 15, 2, 15),
-            Block.box(3, 2, 3, 13, 8, 13),
-            Block.box(2, 8, 2, 14, 10, 14),
-            Block.box(5, 10, 7, 7, 12, 9),
-            Block.box(9, 10, 7, 11, 12, 9),
-            Block.box(5, 12, 7, 11, 14, 9)
-    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElseThrow();;
-
-    public SoulStorageBlock(Properties properties) {
+    public SoulCauldronBlock(Properties properties) {
         super(properties);
     }
 
@@ -37,6 +33,6 @@ public class SoulStorageBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new SoulStorageBlockEntity(pos, state);
+        return new SoulCauldronBlockEntity(pos, state);
     }
 }

@@ -54,11 +54,9 @@ public class SoulAnvilScreen extends AbstractContainerScreen<SoulAnvilMenu> impl
             guiGraphics.blit(LOCATION, leftPos+68, topPos+96, 176, 0, 40, (int) (menu.getRecipeProgress()*16));
         } else if(recipeInContainer.isPresent()) {
             guiGraphics.blit(LOCATION, leftPos+68, topPos+96, 176, 0, 40, 16);
-//            if(getMenu().getItems().get(13).isEmpty()) {
-//                ItemStack result = recipeInContainer.get().value().result();
-//                guiGraphics.renderFakeItem(result, leftPos + 80, topPos + 125);
-//                guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), leftPos + 80, topPos + 125, leftPos + 80 + 16, topPos + 125 + 16, 0x66FFFFFF);
-//            }
+            ItemStack result = recipeInContainer.get().value().result();
+            guiGraphics.renderFakeItem(result, leftPos + 80, topPos + 125);
+            guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), leftPos + 80, topPos + 125, leftPos + 80 + 16, topPos + 125 + 16, 0x66FFFFFF);
         }
         guiGraphics.pose().popPose();
     }

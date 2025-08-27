@@ -19,6 +19,11 @@ public class SoulGlowingLayer<T extends GeoAnimatable> extends AutoGlowingGeoLay
     }
 
     @Override
+    public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        super.render(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
+    }
+
+    @Override
     protected @Nullable RenderType getRenderType(T animatable, @Nullable MultiBufferSource bufferSource) {
         return ShaderRegistry.soul(AutoGlowingTexture.getEmissiveResource(getTextureResource(animatable)));
     }

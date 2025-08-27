@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge.common.compat.jei;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
+import com.github.x3rdev.soul_forge.common.block_entity.SoulCauldronBlockEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
@@ -22,7 +22,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -162,10 +161,10 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         renderSoul(guiGraphics, recipe, 40+28*4, 30, EntityRegistry.DRAGON_SOUL.get(), SoulType.DRAGON_SOUL);
         guiGraphics.pose().popPose();
 
-        SoulStorageBlockEntity blockEntity = new SoulStorageBlockEntity(BlockPos.ZERO, BlockRegistry.SOUL_STORAGE.get().defaultBlockState());
+        SoulCauldronBlockEntity blockEntity = new SoulCauldronBlockEntity(BlockPos.ZERO, BlockRegistry.SOUL_CAULDRON.get().defaultBlockState());
         blockEntity.setLevel(Minecraft.getInstance().level);
         BlockEntityRenderDispatcher blockEntityRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
-        BlockEntityRenderer<SoulStorageBlockEntity> storageRenderer = blockEntityRenderDispatcher.getRenderer(blockEntity);
+        BlockEntityRenderer<SoulCauldronBlockEntity> storageRenderer = blockEntityRenderDispatcher.getRenderer(blockEntity);
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(20, 39, 10);

@@ -1,18 +1,22 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.common.block_entity.SoulStorageBlockEntity;
+import com.github.x3rdev.soul_forge.common.block.SoulCauldronBlock;
+import com.github.x3rdev.soul_forge.common.block_entity.SoulCauldronBlockEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,40 +40,23 @@ public class SoulBottle extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack stack = player.getItemInHand(usedHand);
-        Optional<SoulStorageBlockEntity> optionalSoulStorage = optionalInViewSoulStorage(level, player);
-        if(optionalSoulStorage.isPresent()) {
-            SoulStorageBlockEntity soulStorage = optionalSoulStorage.get();
+    public InteractionResult useOn(UseOnContext context) {
+        ItemStack stack = context.getItemInHand();
+        Player player = context.getPlayer();
+        Optional<SoulCauldronBlockEntity> soulCauldronOptional = context.getLevel().getBlockEntity(context.getClickedPos(), BlockEntityRegistry.SOUL_CAULDRON.get());
+        if(soulCauldronOptional.isPresent()) {
+            SoulCauldronBlockEntity soulCauldron = soulCauldronOptional.get();
             boolean interactionSuccess;
             if(getSoulCount(stack) > 0) {
-                interactionSuccess = tryEmptyBottle(stack, soulStorage, player);
+                interactionSuccess = tryEmptyBottle(stack, soulCauldron, player);
             } else {
-                interactionSuccess = tryFillBottle(stack, soulStorage, player);
+                interactionSuccess = tryFillBottle(stack, soulCauldron, player);
             }
             if(interactionSuccess) {
-                return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide());
+                return InteractionResult.sidedSuccess(context.getLevel().isClientSide());
             }
         }
-        return super.use(level, player, usedHand);
-    }
-
-    private Optional<SoulStorageBlockEntity> optionalInViewSoulStorage(Level level, Player player) {
-        ChunkPos pos = new ChunkPos(player.blockPosition());
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                for (BlockEntity blockEntity : level.getChunk(pos.x+i, pos.z+j).getBlockEntities().values()) {
-                    if (blockEntity instanceof SoulStorageBlockEntity soulStorage) {
-                        Vec3 lookVec = player.getLookAngle().normalize();
-                        AABB box = AABB.ofSize(soulStorage.getBlockPos().getCenter().add(0, soulStorage.getCrystalHeight(0), 0), 1.5, 1.5, 1.5);
-                        if(box.clip(player.getEyePosition(), player.getEyePosition().add(lookVec.scale(10))).isPresent()) {
-                            return Optional.of(soulStorage);
-                        }
-                    }
-                }
-            }
-        }
-        return Optional.empty();
+        return super.useOn(context);
     }
 
     @Override
@@ -98,7 +85,7 @@ public class SoulBottle extends Item {
         }
     }
 
-    public boolean tryEmptyBottle(ItemStack stack, SoulStorageBlockEntity soulStorage, Player player) {
+    public boolean tryEmptyBottle(ItemStack stack, SoulCauldronBlockEntity soulStorage, Player player) {
         SoulType bottleSoulType = getSoulType(stack);
         SoulType storageSoulType = soulStorage.getSoulType();
         if(!bottleSoulType.isEmpty() && (storageSoulType.isEmpty() || bottleSoulType.equals(storageSoulType)) && bottleSoulTypeFitsInStorage(stack, soulStorage)) {
@@ -113,8 +100,8 @@ public class SoulBottle extends Item {
         return false;
     }
 
-    private boolean bottleSoulTypeFitsInStorage(ItemStack stack, SoulStorageBlockEntity blockEntity) {
-        return getSoulType(stack).size() <= blockEntity.getMaxCapacity()-blockEntity.getSoulCount();
+    private boolean bottleSoulTypeFitsInStorage(ItemStack stack, SoulCauldronBlockEntity blockEntity) {
+        return getSoulType(stack).size() <= SoulCauldronBlockEntity.MAX_CAPACITY -blockEntity.getSoulCount();
     }
 
     public boolean tryFillBottle(ItemStack stack, SoulEntity soulEntity, Player player) {
@@ -128,7 +115,7 @@ public class SoulBottle extends Item {
         return false;
     }
 
-    public boolean tryFillBottle(ItemStack stack, SoulStorageBlockEntity soulStorage, Player player) {
+    public boolean tryFillBottle(ItemStack stack, SoulCauldronBlockEntity soulStorage, Player player) {
         SoulType storageSoulType = soulStorage.getSoulType();
         if(canBottleFitSoul(stack, storageSoulType)) {
             setSoulType(stack, storageSoulType);

@@ -59,8 +59,8 @@ public class BlockRegistry {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
     public static final DeferredHolder<Block, PedestalBlock> PEDESTAL = BLOCKS.register("pedestal",
             () -> new PedestalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
-    public static final DeferredHolder<Block, SoulStorageBlock> SOUL_STORAGE = BLOCKS.register("soul_storage",
-            () -> new SoulStorageBlock(BlockBehaviour.Properties.of()));
+    public static final DeferredHolder<Block, SoulCauldronBlock> SOUL_CAULDRON = BLOCKS.register("soul_cauldron",
+            () -> new SoulCauldronBlock(BlockBehaviour.Properties.of()));
     public static final DeferredHolder<Block, ResearchTableBlock> RESEARCH_TABLE = BLOCKS.register("research_table",
             () -> new ResearchTableBlock(BlockBehaviour.Properties.of()));
     public static final DeferredHolder<Block, SoulAnvilBlock> SOUL_ANVIL = BLOCKS.register("soul_anvil",

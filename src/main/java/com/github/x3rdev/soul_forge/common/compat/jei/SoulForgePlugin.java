@@ -9,7 +9,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -55,7 +54,7 @@ public class SoulForgePlugin implements IModPlugin {
         registration.addRecipeCatalysts(
                 RITUAL_RECIPE_TYPE.get(),
                 BlockItemRegistry.PEDESTAL.get(),
-                BlockItemRegistry.SOUL_STORAGE.get()
+                BlockItemRegistry.SOUL_CAULDRON.get()
         );
         registration.addRecipeCatalysts(
                 SOUL_ANVIL_RECIPE_TYPE.get(),

@@ -16,6 +16,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -24,12 +25,14 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -38,7 +41,7 @@ import java.util.stream.IntStream;
 
 public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements GeoBlockEntity {
 
-    public static final int SOUL_ANVIL_CONTAINER_SIZE = 14;
+    public static final int SOUL_ANVIL_CONTAINER_SIZE = 13;
     public static final int TICKS_UNTIL_ITEM_CRAFTED = 12 * 20;
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation FORGING = RawAnimation.begin().thenPlay("forging");
@@ -58,8 +61,6 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
             SoulAnvilRecipe recipe = blockEntity.getActiveRecipe().get();
             if(isRecipeStillValid(level, blockEntity)) {
                 blockEntity.progressTicks++;
-                blockEntity.setChanged();
-                blockEntity.getLevel().sendBlockUpdated(pos, state, state, 3);
                 if(blockEntity.progressTicks > TICKS_UNTIL_ITEM_CRAFTED) {
                     for (int i = 0; i < recipe.gridInput().ingredients().size(); i++) {
                         if(!recipe.gridInput().ingredients().get(i).isEmpty()) {
@@ -71,17 +72,19 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
                             blockEntity.getItem(i+9).shrink(1);
                         }
                     }
-                    if(blockEntity.getItem(13).isEmpty()) {
-                        blockEntity.setItem(13, recipe.result());
-                    } else {
-                        blockEntity.getItem(13).grow(1);
-                    }
+                    Vec3 itemPos = blockEntity.getBlockPos().getCenter().add(0, 1, 0);
+                    ItemEntity entity = new ItemEntity(level, itemPos.x, itemPos.y, itemPos.z, recipe.result().copy());
+                    level.addFreshEntity(entity);
                     blockEntity.stopTriggeredAnim("c", "forging");
                     blockEntity.setActiveRecipe(null);
                 }
+                blockEntity.setChanged();
+                blockEntity.getLevel().sendBlockUpdated(pos, state, state, 3);
             } else {
                 blockEntity.setActiveRecipe(null);
             }
+        } else {
+            blockEntity.progressTicks = 0;
         }
     }
 
@@ -162,9 +165,7 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("progress_ticks", progressTicks);
-        return tag;
+        return saveCustomOnly(registries);
     }
 
     @Nullable
@@ -175,9 +176,8 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "c", 0, state -> {
-            return state.setAndContinue(IDLE);
-        }).triggerableAnim("forging", FORGING));
+        controllerRegistrar.add(new AnimationController<>(this, "c", 0, state -> PlayState.CONTINUE)
+                .triggerableAnim("forging", FORGING));
     }
 
     @Override

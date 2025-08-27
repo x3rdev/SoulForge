@@ -51,13 +51,6 @@ public class SoulAnvilMenu extends AbstractContainerMenu {
         addSlot(new Slot(container, 11, 27, 75));
         addSlot(new Slot(container, 12, 133, 75));
 
-        addSlot(new Slot(container, 13, 80, 125) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-        });
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 165 + i * 18));
@@ -79,7 +72,7 @@ public class SoulAnvilMenu extends AbstractContainerMenu {
 
     public boolean canPressHammer() {
         Optional<RecipeHolder<SoulAnvilRecipe>> recipeInContainer = getRecipeInContainer();
-        return blockEntity.getProgressTicks() == 0 && recipeInContainer.isPresent() && (recipeInContainer.get().value().result().is(getItems().get(13).getItem()) || getItems().get(13).isEmpty());
+        return blockEntity.getProgressTicks() == 0 && recipeInContainer.isPresent();
     }
 
     public void startAnvil() {

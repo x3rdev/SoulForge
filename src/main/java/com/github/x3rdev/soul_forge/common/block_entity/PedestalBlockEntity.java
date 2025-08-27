@@ -8,7 +8,6 @@ import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,7 +17,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -36,7 +34,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -126,11 +123,11 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                     level.getBlockEntity(getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
                             .removeTheItem();
                 }
-                List<SoulStorageBlockEntity> surroundingStorages = getSurroundingStorages();
+                List<SoulCauldronBlockEntity> surroundingStorages = getSurroundingStorages();
                 recipe.get().value().inputSouls().forEach((soulType, integer) -> {
                     int i = integer;
                     while (i > 0) {
-                        for (SoulStorageBlockEntity blockEntity : surroundingStorages) {
+                        for (SoulCauldronBlockEntity blockEntity : surroundingStorages) {
                             if (blockEntity.getSoulType().equals(soulType) && blockEntity.getSoulCount() > 0) {
                                 blockEntity.setSoulCount(blockEntity.getSoulCount()-1);
                                 i--;
@@ -213,13 +210,13 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         return availableSouls;
     }
 
-    private List<SoulStorageBlockEntity> getSurroundingStorages() {
-        List<SoulStorageBlockEntity> list = new ArrayList<>();
+    private List<SoulCauldronBlockEntity> getSurroundingStorages() {
+        List<SoulCauldronBlockEntity> list = new ArrayList<>();
         ChunkPos pos = new ChunkPos(getBlockPos());
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 this.level.getChunk(pos.x+i, pos.z+j).getBlockEntities().values().forEach(blockEntity -> {
-                    if(blockEntity instanceof SoulStorageBlockEntity soulStorage) {
+                    if(blockEntity instanceof SoulCauldronBlockEntity soulStorage) {
                         list.add(soulStorage);
                     }
                 });

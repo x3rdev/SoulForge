@@ -44,7 +44,7 @@ public class ClientSetup {
         event.registerBlockEntityRenderer(BlockEntityRegistry.DARK_TOMB.get(), context -> new DarkTombRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.STATUE.get(), context -> new StatueRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.PEDESTAL.get(), PedestalRenderer::new);
-        event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_STORAGE.get(), context -> new SoulStorageRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_CAULDRON.get(), context -> new SoulCauldronRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_ANVIL.get(), context -> new SoulAnvilRenderer());
     }
 

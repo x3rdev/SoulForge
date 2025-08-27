@@ -16,35 +16,21 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.util.Color;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class SoulCauldronBlockEntity extends BlockEntity implements GeoBlockEntity {
+
+    public static final int MAX_CAPACITY = 20;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final int maxCapacity;
 
     private SoulType soulType;
     private int soulCount;
-    private long tickLoaded = 0;
 
-    public SoulStorageBlockEntity(BlockPos pos, BlockState blockState) {
-        super(BlockEntityRegistry.SOUL_STORAGE.get(), pos, blockState);
+    public SoulCauldronBlockEntity(BlockPos pos, BlockState blockState) {
+        super(BlockEntityRegistry.SOUL_CAULDRON.get(), pos, blockState);
         this.soulType = SoulType.EMPTY;
         this.soulCount = 0;
-        this.maxCapacity = 20;
-    }
-
-    public float getCrystalHeight(float partialTick) {
-        int tick = getTick();
-        int timeUntilApex = 3 * 20;
-        int min = 1;
-        int max = 3;
-        if(tick < timeUntilApex) {
-            return (float) (min + ((max-min) * (-(Math.cos(Math.PI * ((tick + partialTick) / timeUntilApex)) - 1) / 2)));
-        } else {
-            return max;
-        }
     }
 
     public SoulType getSoulType() {
@@ -66,10 +52,6 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
         }
         this.soulCount = soulCount;
         this.setChanged();
-    }
-
-    public int getMaxCapacity() {
-        return this.maxCapacity;
     }
 
     public int getContainedSoulColor() {
@@ -109,18 +91,6 @@ public class SoulStorageBlockEntity extends BlockEntity implements GeoBlockEntit
     public void setChanged() {
         super.setChanged();
         level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        if(this.level.isClientSide()) {
-            tickLoaded = this.level.getGameTime();
-        }
-    }
-
-    public int getTick() {
-        return (int) (this.level.getGameTime() - tickLoaded);
     }
 
     @Override
