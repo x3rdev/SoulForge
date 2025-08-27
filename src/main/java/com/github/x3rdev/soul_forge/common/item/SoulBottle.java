@@ -66,7 +66,7 @@ public class SoulBottle extends Item {
 
     @Override
     public int getBarWidth(ItemStack pStack) {
-        return Math.round(13F * getSoulCount(pStack) / capacity);
+        return Math.round(13F * getSoulCount(pStack)*getSoulType(pStack).size() / capacity);
     }
 
     @Override
@@ -79,7 +79,9 @@ public class SoulBottle extends Item {
         if (!getSoulType(stack).isEmpty()) {
             int soulCount = getSoulCount(stack);
             String soulType = formatSoulTypeName(getSoulType(stack));
-            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip", soulCount + soulType).withColor(getSoulType(stack).color()));
+            tooltipComponents.add(Component.translatable(
+                    soulCount == 1 ? "item.soul_forge.soul_bottle.tooltip" : "item.soul_forge.soul_bottle.tooltip_plural"
+                    , soulCount + soulType).withColor(getSoulType(stack).color()));
         } else {
             tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip.empty").withStyle(ChatFormatting.GRAY));
         }
@@ -91,8 +93,8 @@ public class SoulBottle extends Item {
         if(!bottleSoulType.isEmpty() && (storageSoulType.isEmpty() || bottleSoulType.equals(storageSoulType)) && bottleSoulTypeFitsInStorage(stack, soulStorage)) {
             soulStorage.setSoulType(bottleSoulType);
             while (bottleSoulTypeFitsInStorage(stack, soulStorage) && getSoulCount(stack) > 0) {
-                soulStorage.setSoulCount(soulStorage.getSoulCount()+bottleSoulType.size());
-                setSoulCount(stack, getSoulCount(stack)-bottleSoulType.size());
+                soulStorage.setSoulCount(soulStorage.getSoulCount()+1);
+                setSoulCount(stack, getSoulCount(stack)-1);
             }
             player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH);
             return true;
@@ -101,14 +103,14 @@ public class SoulBottle extends Item {
     }
 
     private boolean bottleSoulTypeFitsInStorage(ItemStack stack, SoulCauldronBlockEntity blockEntity) {
-        return getSoulType(stack).size() <= SoulCauldronBlockEntity.MAX_CAPACITY -blockEntity.getSoulCount();
+        return getSoulType(stack).size() <= SoulCauldronBlockEntity.MAX_CAPACITY-(blockEntity.getSoulCount()*getSoulType(stack).size());
     }
 
     public boolean tryFillBottle(ItemStack stack, SoulEntity soulEntity, Player player) {
         SoulType entitySoulType = soulEntity.getSoulType();
         if (canBottleFitSoul(stack, entitySoulType)) {
             setSoulType(stack, entitySoulType);
-            setSoulCount(stack, getSoulCount(stack) + entitySoulType.size());
+            setSoulCount(stack, getSoulCount(stack) + 1);
             player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH);
             return true;
         }
@@ -120,8 +122,8 @@ public class SoulBottle extends Item {
         if(canBottleFitSoul(stack, storageSoulType)) {
             setSoulType(stack, storageSoulType);
             while (canBottleFitSoul(stack, storageSoulType) && soulStorage.getSoulCount() > 0) {
-                setSoulCount(stack, getSoulCount(stack) + storageSoulType.size());
-                soulStorage.setSoulCount(soulStorage.getSoulCount() - storageSoulType.size());
+                setSoulCount(stack, getSoulCount(stack) + 1);
+                soulStorage.setSoulCount(soulStorage.getSoulCount() - 1);
             }
             player.playSound(SoundEvents.SHULKER_TELEPORT);
             return true;
@@ -151,7 +153,7 @@ public class SoulBottle extends Item {
 
     private void setSoulCount(ItemStack stack, int soulCount) {
         if(soulCount == 0) {
-            setSoulType(stack,  SoulType.EMPTY);
+            setSoulType(stack, SoulType.EMPTY);
         }
         stack.set(DataComponentRegistry.STORED_SOUL_COUNT, soulCount);
     }
