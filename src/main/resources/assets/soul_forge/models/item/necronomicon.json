@@ -1,6 +1,81 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "soul_forge:item/necronomicon"
+  "loader": "neoforge:separate_transforms",
+  "gui_light": "front",
+  "perspectives": {
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "soul_forge:item/necronomicon_gui"
+      }
+    }
+  },
+  "base": {
+    "parent": "builtin/entity",
+    "texture_size": [
+      64,
+      64
+    ],
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [
+          15,
+          -180,
+          0
+        ]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [
+          15,
+          -180,
+          0
+        ]
+      },
+      "firstperson_righthand": {
+        "rotation": [
+          -15,
+          -180,
+          0
+        ],
+        "translation": [
+          -2,
+          0,
+          0
+        ]
+      },
+      "firstperson_lefthand": {
+        "rotation": [
+          -15,
+          -180,
+          0
+        ],
+        "translation": [
+          -2,
+          0,
+          0
+        ]
+      },
+      "ground": {
+        "translation": [
+          0,
+          -1.75,
+          0
+        ],
+        "scale": [
+          0.5,
+          0.5,
+          0.5
+        ]
+      },
+      "fixed": {
+        "translation": [
+          0,
+          -5,
+          0.25
+        ]
+      }
+    },
+    "textures": {
+      "particle": "soul_forge:item/necronomicon"
+    }
   }
 }

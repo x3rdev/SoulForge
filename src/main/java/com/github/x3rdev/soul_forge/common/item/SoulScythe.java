@@ -40,7 +40,7 @@ public class SoulScythe extends Scythe {
     @Override
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
         if (pLivingEntity instanceof Player player) {
-            player.getCooldowns().addCooldown(this, 10);
+            player.getCooldowns().addCooldown(this, 40);
         }
         if (!pLevel.isClientSide()) {
             SoulScytheProjectileEntity projectile = new SoulScytheProjectileEntity(pLevel, pLivingEntity, pStack);

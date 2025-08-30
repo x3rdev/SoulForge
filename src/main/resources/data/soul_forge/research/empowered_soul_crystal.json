@@ -5,7 +5,7 @@
   "icon_item_stack": {
     "id": "soul_forge:soul_crystal"
   },
-  "ritual_reward": "soul_forge:empowered_soul_crystal",
+  "ritual_reward": "soul_forge:ritual/empowered_soul_crystal",
   "unlock_item_stack": {
     "id": "soul_forge:soul_crystal",
     "count": 4

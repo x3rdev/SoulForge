@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.item;
 
+import com.github.x3rdev.soul_forge.client.renderer.item.NecronomiconRenderer;
 import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
 import com.github.x3rdev.soul_forge.common.compat.PatchouliCompat;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
@@ -8,6 +9,10 @@ import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -19,11 +24,14 @@ import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,17 +39,37 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public class Necronomicon extends Item {
+public class Necronomicon extends Item implements GeoItem {
+
+    private static final RawAnimation CLOSING = RawAnimation.begin().thenPlayAndHold("closing");
+    private static final RawAnimation CLOSED = RawAnimation.begin().thenPlayAndHold("closed");
+    private static final RawAnimation OPENING = RawAnimation.begin().thenPlayAndHold("opening");
+    private static final RawAnimation OPEN = RawAnimation.begin().thenPlayAndHold("open");
+    private static final RawAnimation PAGE_FLIP = RawAnimation.begin().thenPlayAndHold("pageflip");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public Necronomicon() {
         super(new Properties().stacksTo(1)
-//                .component(DataComponentRegistry.NECRONOMICON_DATA, new NecronomiconData(List.of()))
-        );
+                .component(DataComponentRegistry.NECRONOMICON_OPEN, false));
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     @Override
@@ -51,41 +79,7 @@ public class Necronomicon extends Item {
                 .append(player.getDisplayName())
                 .append("'s ")
                 .append(stack.getHoverName()));
-//        stack.set(DataComponents.LORE, Component.literal(String.format("%d research unlocked", 0)));
     }
-
-
-//    public static boolean isResearchUnlocked(ItemStack stack, Holder.Reference<Research> research) {
-//        if(!stack.is(ItemRegistry.NECRONOMICON.get())) {
-//            throw new IllegalArgumentException(String.format("ItemStack %s is not a Necronomicon", stack));
-//        }
-//        if(research.value().inactive()) {
-//            return true;
-//        }
-//        return stack.get(DataComponentRegistry.NECRONOMICON_DATA).unlockedResearch().contains(research.key());
-//    }
-
-//    public static boolean isRitualUnlocked(ServerPlayer player, ItemStack stack, RecipeHolder<RitualRecipe> recipe) {
-//        if(!stack.is(ItemRegistry.NECRONOMICON.get())) {
-//            throw new IllegalArgumentException(String.format("ItemStack %s is not a Necronomicon", stack));
-//        }
-//        return stack.get(DataComponentRegistry.NECRONOMICON_DATA).unlockedResearch().stream()
-//                .map(researchResourceKey -> player.level().registryAccess().holder(researchResourceKey).orElseThrow().value().ritualReward())
-//                .anyMatch(recipeResourceKey -> recipeResourceKey.orElseThrow().equals(recipe.id()));
-//    }
-
-//    public static void unlockResearch(ItemStack stack, Holder.Reference<Research> research) {
-//        if(!stack.is(ItemRegistry.NECRONOMICON.get())) {
-//            throw new IllegalArgumentException(String.format("ItemStack %s is not a Necronomicon", stack));
-//        }
-//        List<ResourceKey<Research>> currentKeys = stack.get(DataComponentRegistry.NECRONOMICON_DATA).unlockedResearch();
-//        ResourceKey<Research> newKey = research.key();
-//        if(!currentKeys.contains(newKey)) {
-//            List<ResourceKey<Research>> newKeys = new ArrayList<>(currentKeys);
-//            newKeys.add(newKey);
-//            stack.set(DataComponentRegistry.NECRONOMICON_DATA, new NecronomiconData(newKeys));
-//        }
-//    }
 
     public static void whisper(Player player, Component component) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundRegistry.NECRONOMICON_LAUGH.get(), SoundSource.BLOCKS);
@@ -140,23 +134,56 @@ public class Necronomicon extends Item {
         }
         else if (player instanceof ServerPlayer serverPlayer)
         {
+            stack.set(DataComponentRegistry.NECRONOMICON_OPEN, true);
+            triggerAnim(player, GeoItem.getOrAssignId(stack, ((ServerLevel) level)), "c", "opening");
             PatchouliCompat.getAPI().openBookGUI(serverPlayer, ItemRegistry.NECRONOMICON.getId());
         }
 
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 
-//    public record NecronomiconData(List<ResourceKey<Research>> unlockedResearch) {
-//
-//        public static final Codec<NecronomiconData> CODEC = RecordCodecBuilder.create(instance ->
-//                instance.group(
-//                        Codec.list(ResourceKey.codec(DatapackRegistry.RESEARCH_KEY)).fieldOf("unlocked_research").forGetter(NecronomiconData::unlockedResearch)
-//                ).apply(instance, NecronomiconData::new)
-//        );
-//        public static final StreamCodec<RegistryFriendlyByteBuf, NecronomiconData> STREAM_CODEC = StreamCodec.composite(
-//                ResourceKey.streamCodec(DatapackRegistry.RESEARCH_KEY).apply(ByteBufCodecs.list()),
-//                NecronomiconData::unlockedResearch,
-//                NecronomiconData::new
-//        );
-//    }
+    @SubscribeEvent
+    public static void screenClosing(ScreenEvent.Closing event) {
+        if(PatchouliCompat.PatchouliIsPresent() && ItemRegistry.NECRONOMICON.getId().equals(PatchouliCompat.getAPI().getOpenBookGui())) {
+            for (InteractionHand value : InteractionHand.values()) {
+                ItemStack stack = Minecraft.getInstance().player.getItemInHand(value);
+                if(stack.is(ItemRegistry.NECRONOMICON.get())) {
+                    stack.set(DataComponentRegistry.NECRONOMICON_OPEN, false);
+                    ((Necronomicon) stack.getItem()).triggerAnim(event.getScreen().getMinecraft().player, GeoItem.getId(stack), "c", "closing");
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private NecronomiconRenderer renderer;
+
+            @Override
+            public @Nullable BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new NecronomiconRenderer();
+
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController(this, "c", 1, state -> {
+            return state.setAndContinue(CLOSED);
+        })
+                .triggerableAnim("opening", OPENING)
+                .triggerableAnim("closing", CLOSING)
+        );
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
 }

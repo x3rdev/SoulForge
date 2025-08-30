@@ -148,11 +148,11 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         guiGraphics.blit(SPRITES, 148, yOffset+1, 31, 0, 22, 15); //ARROW
 
 
-        renderStorage(guiGraphics, recipe);
+        renderCauldron(guiGraphics, recipe);
         guiGraphics.pose().popPose();
     }
 
-    private void renderStorage(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe) {
+    private void renderCauldron(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe) {
         guiGraphics.pose().pushPose();
         renderSoul(guiGraphics, recipe, 40, 30, EntityRegistry.SOUL.get(), SoulType.SOUL);
         renderSoul(guiGraphics, recipe, 40+28, 30, EntityRegistry.UNDEAD_SOUL.get(), SoulType.UNDEAD_SOUL);
@@ -167,7 +167,7 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         BlockEntityRenderer<SoulCauldronBlockEntity> storageRenderer = blockEntityRenderDispatcher.getRenderer(blockEntity);
 
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(20, 39, 10);
+        guiGraphics.pose().translate(25, 29, 10);
         guiGraphics.pose().scale(10, -10, 10);
         guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(30));
         guiGraphics.pose().mulPose(Axis.YP.rotationDegrees(180+45));

@@ -50,5 +50,7 @@ public class SoulForge {
         neoEventBus.addListener(CommonSetup::playerLoggedIn);
 
         PatchouliCompat.init();
+
+
     }
 }

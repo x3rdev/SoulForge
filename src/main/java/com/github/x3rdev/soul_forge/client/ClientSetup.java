@@ -26,8 +26,7 @@ public class ClientSetup {
     private static ShaderInstance soulShader;
     @Nullable
     private static ShaderInstance ritualTrailShader;
-
-
+    
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.SOUL.get(), SoulRenderer::new);

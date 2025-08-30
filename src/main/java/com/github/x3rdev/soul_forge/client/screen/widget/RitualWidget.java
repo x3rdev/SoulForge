@@ -52,7 +52,8 @@ public class RitualWidget extends AbstractWidget {
     }
 
     private ItemStack getRitualResultStack(ResourceLocation resourceLocation) {
-        RecipeHolder<?> holder = Minecraft.getInstance().level.getRecipeManager().byKey(resourceLocation).orElseThrow();
+        RecipeHolder<?> holder = Minecraft.getInstance().level.getRecipeManager().byKey(resourceLocation)
+                .orElseThrow(() -> new IllegalStateException("Recipe key " + resourceLocation + " found"));
         if(holder.value() instanceof RitualRecipe ritualRecipe) {
             return ritualRecipe.result();
         }
