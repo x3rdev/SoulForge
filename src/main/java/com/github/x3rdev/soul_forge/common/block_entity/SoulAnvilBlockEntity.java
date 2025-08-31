@@ -82,6 +82,9 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
                 blockEntity.getLevel().sendBlockUpdated(pos, state, state, 3);
             } else {
                 blockEntity.setActiveRecipe(null);
+                blockEntity.setChanged();
+                blockEntity.getLevel().sendBlockUpdated(pos, state, state, 3);
+                blockEntity.stopTriggeredAnim("c", "forging");
             }
         } else {
             blockEntity.progressTicks = 0;
@@ -176,7 +179,7 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "c", 0, state -> PlayState.CONTINUE)
+        controllerRegistrar.add(new AnimationController<>(this, "c", 10, state -> PlayState.CONTINUE)
                 .triggerableAnim("forging", FORGING));
     }
 
