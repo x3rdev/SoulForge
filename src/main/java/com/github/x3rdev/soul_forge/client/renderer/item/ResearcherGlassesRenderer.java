@@ -42,7 +42,7 @@ public class ResearcherGlassesRenderer extends GeoArmorRenderer<ResearcherGlasse
         }
     }
 
-    private static boolean isGlassesEffectLoaded() {
+    public static boolean isGlassesEffectLoaded() {
         PostChain postEffect = Minecraft.getInstance().gameRenderer.postEffect;
         return postEffect != null && postEffect.getName().equals(ShaderRegistry.researcherGlassesPostEffect().toString());
     }

@@ -79,12 +79,12 @@ public class SoulEntity extends LivingEntity implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!this.isNoGravity()) {
-            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.0025D, 0.0D));
-        }
-        if (!this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-5F || (this.tickCount + this.getId()) % 4 == 0) {
-            this.move(MoverType.SELF, this.getDeltaMovement());
-        }
+//        if (!this.isNoGravity()) {
+//            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.0025D, 0.0D));
+//        }
+//        if (!this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-5F || (this.tickCount + this.getId()) % 4 == 0) {
+//            this.move(MoverType.SELF, this.getDeltaMovement());
+//        }
         if(this.tickCount > 6000) {
             this.discard();
         }

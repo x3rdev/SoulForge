@@ -21,7 +21,7 @@ public class ResearcherGlasses extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public ResearcherGlasses(Type pType) {
-        super(ArmorMaterials.GOLD, pType, new Properties());
+        super(ArmorMaterials.GOLD, pType, new Properties().stacksTo(1));
     }
 
     @Override

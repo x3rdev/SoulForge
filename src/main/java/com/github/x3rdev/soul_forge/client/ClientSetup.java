@@ -8,10 +8,20 @@ import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.registry.*;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.github.x3rdev.soul_forge.mixin.PostPassMixin;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.pipeline.TextureTarget;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.*;
 
@@ -80,6 +90,18 @@ public class ClientSetup {
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(MenuTypeRegistry.RESEARCH_TABLE.get(), ResearchTableScreen::new);
         event.register(MenuTypeRegistry.SOUL_ANVIL.get(), SoulAnvilScreen::new);
+    }
+
+    private static RenderTarget overlayTarget;
+
+    public static RenderTarget getOrCreateOverlayTarget() {
+        if(overlayTarget == null) {
+            Minecraft mc = Minecraft.getInstance();
+            int width = mc.getWindow().getWidth();
+            int height = mc.getWindow().getHeight();
+            overlayTarget = new TextureTarget(width, height, true, Minecraft.ON_OSX);
+        }
+        return overlayTarget;
     }
 
 }

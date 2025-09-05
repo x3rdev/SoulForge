@@ -1,12 +1,16 @@
 {
   "targets": [
-    "swap"
+    "swap",
+    "soul_forge:entity_mask"
   ],
   "passes": [
     {
       "name": "soul_forge:researcher_glasses",
       "intarget": "minecraft:main",
-      "outtarget": "swap"
+      "outtarget": "swap",
+      "auxtargets": [
+        { "id": "soul_forge:entity_mask", "name": "EntityMaskSampler" }
+      ]
     },
     {
       "name": "blit",
