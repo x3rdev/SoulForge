@@ -23,8 +23,10 @@ public class SoulSteelShieldRenderer extends GeoItemRenderer<SoulSteelShield> {
         poseStack.pushPose();
         if(stack.get(DataComponentRegistry.SHIELD_BLOCKING)) {
             if(transformType.equals(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) || transformType.equals(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)) {
-                poseStack.mulPose(Axis.YP.rotationDegrees(45));
-                poseStack.translate(-0.75, 0, 0);
+                poseStack.mulPose(Axis.YP.rotationDegrees(70));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(-15));
+                poseStack.mulPose(Axis.XP.rotationDegrees(20));
+                poseStack.translate(-1.2, 0, -0.25);
             }
             if(transformType.equals(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) || transformType.equals(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)) {
                 poseStack.translate(-0.25, 0, 0);
