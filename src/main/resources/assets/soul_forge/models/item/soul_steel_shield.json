@@ -1,0 +1,92 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    64,
+    64
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        3.5,
+        -3.25,
+        3
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        3.5,
+        -3.25,
+        3
+      ]
+    },
+    "firstperson_righthand": {
+      "translation": [
+        2.5,
+        -1,
+        1.5
+      ]
+    },
+    "firstperson_lefthand": {
+      "translation": [
+        2.5,
+        -1,
+        1.5
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        6,
+        0
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -180,
+        0,
+        -135
+      ],
+      "translation": [
+        0.25,
+        0.25,
+        0
+      ],
+      "scale": [
+        0.58,
+        0.58,
+        0.58
+      ]
+    },
+    "fixed": {
+      "translation": [
+        0,
+        0.75,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    }
+  },
+  "textures": {
+    "particle": "item/soul_steel_shield"
+  }
+}
