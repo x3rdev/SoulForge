@@ -22,6 +22,7 @@ public abstract class PostPassMixin {
     public void process(float partialTicks, CallbackInfo ci) {
         if(this.effect.getName().equals("soul_forge:researcher_glasses") && ClientSetup.getOrCreateOverlayTarget() != null) {
             this.effect.setSampler("EntityMaskSampler", ClientSetup.getOrCreateOverlayTarget()::getColorTextureId);
+
         }
     }
 

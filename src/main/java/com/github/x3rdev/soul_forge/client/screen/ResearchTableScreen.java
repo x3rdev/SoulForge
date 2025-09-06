@@ -2,8 +2,8 @@ package com.github.x3rdev.soul_forge.client.screen;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.screen.widget.*;
-import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
 import net.minecraft.client.Minecraft;
@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
-
-    public static final ResourceLocation TREE_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_tree.png");
     public static final ResourceLocation INSPECT_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_inspect.png");
+    public static final ResourceLocation SCROLL_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_scrolls.png");
+    public static final ResourceLocation TREE_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_tree.png");
     public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/block/soulwood_planks.png");
     public static final int DRAGGABLE_WINDOW_WIDTH = 160;
     public static final int DRAGGABLE_WINDOW_HEIGHT = 142;
@@ -56,7 +56,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
-        addRenderableWidget(new UnlockButton(leftPos+imageWidth, topPos+46, this));
         addRenderableWidget(new RitualWidget(leftPos+138, topPos+35, this));
     }
 
@@ -100,12 +99,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         }
         if(inspectScreenActive()) {
             int x = leftPos + 106;
-            int y = topPos+30;
+            int y = topPos + 30;
             int barBackgroundLength = MAX_DESCRIPTION_LINES*LINE_HEIGHT;
             int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
             int barLength = Mth.floor((float)barBackgroundLength*(float)MAX_DESCRIPTION_LINES/descriptionLineCount);
             if(mouseX > x-5 && mouseX < x+2 && mouseY > y+topDescriptionLine && mouseY < y+topDescriptionLine+barLength) {
-                topDescriptionLine = (int) Math.clamp(topDescriptionLine+2*dragY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
+                topDescriptionLine = (int) Math.clamp(topDescriptionLine+4*dragY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
             }
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -121,7 +120,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         if(inspectScreenActive()) {
             renderInspectScreen(guiGraphics);
         }
-        guiGraphics.blit(TREE_SCREEN_LOCATION, leftPos - 21, topPos, 176, 0, 20, 20);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 
         guiGraphics.pose().popPose();
@@ -151,19 +149,34 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderInspectScreen(GuiGraphics guiGraphics) {
-        if(!Research.playerHasResearchUnlocked(Minecraft.getInstance().player, getActiveResearch().orElseThrow())) {
-            guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+2, topPos, 176, 32, 30, 26);
-            guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+imageWidth+11, topPos+28, 210, 0, 12, 24);
+        if(Research.playerHasResearchUnlocked(Minecraft.getInstance().player, getActiveResearch().orElseThrow())) {
+            renderUnlockedResearch(guiGraphics);
+        } else {
+            renderLockedResearch(guiGraphics);
         }
+    }
+
+    private void renderUnlockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(0.5F, 0.5F, 1);
         guiGraphics.drawString(this.font, Component.literal("Unlocks"), 2*(leftPos+136)+1, 2*(topPos+22), 0x181d24, false);
         guiGraphics.drawString(this.font, Component.literal("ritual:"), 2*(leftPos+136)+6, 2*(topPos+22)+9, 0x181d24, false);
         guiGraphics.pose().popPose();
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
+        guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 52, 108, 52);
+        guiGraphics.blit(SCROLL_LOCATION, leftPos+123, topPos+17, 0, 104, 46, 52);
         renderResearchTitle(guiGraphics);
         renderResearchDescription(guiGraphics);
         renderScrollBar(guiGraphics);
+    }
+
+    private void renderLockedResearch(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 0, 161, 52);
+        guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+58, topPos+35, 176, 0, 13, 13);
+        guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+105, topPos+35, 189, 0, 13, 13);
+        guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+128, topPos+34, 202, 0, 12, 14);
+        guiGraphics.pose().popPose();
     }
 
     private void renderResearchTitle(GuiGraphics guiGraphics) {

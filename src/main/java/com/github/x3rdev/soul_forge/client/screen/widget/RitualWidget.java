@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.client.screen.widget;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.compat.jei.SoulForgePlugin;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.runtime.IClickableIngredient;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -30,15 +33,24 @@ public class RitualWidget extends AbstractWidget {
 
     @Override
     public void onClick(double mouseX, double mouseY, int button) {
-        super.onClick(mouseX, mouseY, button);
-        if(ModList.get().isLoaded("jei")) {
+        if(isActive()) {
+            super.onClick(mouseX, mouseY, button);
+            if (ModList.get().isLoaded("jei")) {
 
+            }
+        }
+    }
+
+    @Override
+    public void playDownSound(SoundManager handler) {
+        if(isActive()) {
+            super.playDownSound(handler);
         }
     }
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if(screen.inspectScreenActive()) {
+        if(isActive()) {
             screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(recipeResourceKey -> {
                 guiGraphics.renderFakeItem(getRitualResultStack(recipeResourceKey), getX(), getY());
                 if(isHovered()) {
@@ -49,6 +61,11 @@ public class RitualWidget extends AbstractWidget {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean isActive() {
+        return super.isActive() && screen.inspectScreenActive() && Research.playerHasResearchUnlocked(Minecraft.getInstance().player, screen.getActiveResearch().orElseThrow());
     }
 
     private ItemStack getRitualResultStack(ResourceLocation resourceLocation) {

@@ -11,6 +11,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
@@ -21,12 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, ItemStack unlockItemStack, Optional<ResourceLocation> ritualReward, boolean inactive) {
+
+    private static Set<Holder.Reference<Research>> cachedUnlockableResearch;
 
     public static final ResourceKey<Research> EMPTY_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.withDefaultNamespace("empty"));
     public static final ResourceKey<Research> HEAD_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "head"));
@@ -37,7 +37,7 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                     Codec.STRING.fieldOf("title").forGetter(Research::title),
                     Codec.STRING.fieldOf("description").forGetter(Research::description),
                     ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("icon_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::iconItemStack),
-                    ItemStack.STRICT_CODEC.fieldOf("unlock_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::unlockItemStack),
+                    ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("unlock_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::unlockItemStack),
                     ResourceLocation.CODEC.optionalFieldOf("ritual_reward").forGetter(Research::ritualReward),
                     Codec.BOOL.fieldOf("inactive").orElse(false).forGetter(Research::inactive)
             ).apply(instance, Research::new)
@@ -81,7 +81,15 @@ public record Research(ResourceKey<Research> parent, String title, String descri
             ImmutableList<ResourceKey<Research>> newKeys = ImmutableList.<ResourceKey<Research>>builder().addAll(currentKeys).add(newKey).build();
             player.setData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get(), newKeys);
             PacketDistributor.sendToPlayer(player, new SendResearchDataPayload(newKeys));
+
+            player.sendSystemMessage(Component.translatable("research.soul_forge.unlock" + newKey));
         }
+    }
+
+    public static void clearResearchFromPlayer(ServerPlayer player) {
+        ImmutableList<ResourceKey<Research>> newKeys = ImmutableList.of();
+        player.setData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get(), newKeys);
+        PacketDistributor.sendToPlayer(player, new SendResearchDataPayload(newKeys));
     }
 
     public static boolean playerHasResearchUnlocked(Player player, Holder.Reference<Research> research) {
@@ -95,6 +103,30 @@ public record Research(ResourceKey<Research> parent, String title, String descri
         return player.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get()).stream()
                 .map(researchResourceKey -> player.level().registryAccess().holder(researchResourceKey).orElseThrow().value().ritualReward())
                 .anyMatch(recipeResourceKey -> recipeResourceKey.orElseThrow().equals(recipe.id()));
+    }
+
+    public static Set<Holder.Reference<Research>> getCachedUnlockableResearch(Player player, RegistryAccess access) {
+        if(cachedUnlockableResearch == null) {
+            cachedUnlockableResearch = getUnlockableResearch(player, access);
+        }
+        return cachedUnlockableResearch;
+    }
+
+    public static void clearCache() {
+        cachedUnlockableResearch = null;
+    }
+
+    public static Set<Holder.Reference<Research>> getUnlockableResearch(Player player, RegistryAccess access) {
+        Set<Holder.Reference<Research>> result = new HashSet<>();
+        access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
+                .listElements()
+                .filter(researchReference -> !researchReference.value().inactive())
+                .forEach(researchReference -> {
+                    if(!playerHasResearchUnlocked(player, researchReference) && playerHasResearchUnlocked(player, researchReference.value().getParent(access))) {
+                        result.add(researchReference);
+                    }
+                });
+        return result;
     }
 
     public Holder.Reference<Research> getParent(RegistryAccess access) {

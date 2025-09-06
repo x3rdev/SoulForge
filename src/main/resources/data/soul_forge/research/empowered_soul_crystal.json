@@ -7,7 +7,6 @@
   },
   "ritual_reward": "soul_forge:ritual/empowered_soul_crystal",
   "unlock_item_stack": {
-    "id": "soul_forge:soul_crystal",
-    "count": 4
+    "id": "soul_forge:soul_crystal"
   }
 }

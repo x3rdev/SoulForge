@@ -4,30 +4,38 @@ import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
-import com.github.x3rdev.soul_forge.common.item.SoulScythe;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.research.Research;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 public class CommonSetup {
@@ -132,6 +140,52 @@ public class CommonSetup {
         SoulEntity soulEntity = new SoulEntity(EntityRegistry.SOUL.get(), level, SoulType.SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
+    }
+
+    private static int researchProgress = 0;
+
+    @SubscribeEvent
+    public static void playerTickEvent(PlayerTickEvent.Post event) {
+        Player entity = event.getEntity();
+        if(!entity.level().isClientSide()) {
+            Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) entity));
+
+            if (itemLookingAt.isPresent() &&
+                    Research.getCachedUnlockableResearch(Minecraft.getInstance().player, Minecraft.getInstance().level.registryAccess()).stream().anyMatch(
+                    researchReference -> researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem()))
+            ){
+                researchProgress++;
+                if(researchProgress % 2 == 0) {
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
+                }
+                if (researchProgress == 20) {
+                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
+                    Research.getCachedUnlockableResearch(entity, entity.registryAccess()).forEach(researchReference -> {
+                        if (researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem())) {
+                            Research.grantResearchToPlayer(((ServerPlayer) entity), researchReference);
+                        }
+                    });
+                    researchProgress = 0;
+                }
+            } else{
+                researchProgress = 0;
+            }
+        }
+    }
+
+    public static Optional<ItemEntity> getItemLookingAt(ServerPlayer player) {
+        Vec3 eyePos = player.getEyePosition();
+        Vec3 lookVec = player.getLookAngle().normalize();
+
+        List<Entity> entities = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            AABB box = AABB.ofSize(eyePos.add(lookVec.scale(i)), 1, 1, 1);
+            entities.addAll(player.level().getEntities(player, box));
+        }
+        return entities.stream()
+                .filter(ItemEntity.class::isInstance)
+                .map(ItemEntity.class::cast)
+                .min((o1, o2) -> (int) (o1.distanceToSqr(player) - o2.distanceToSqr(player)));
     }
 
 }

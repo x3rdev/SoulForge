@@ -8,26 +8,28 @@ import com.github.x3rdev.soul_forge.client.renderer.entity.*;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.registry.*;
-import com.github.x3rdev.soul_forge.mixin.PostPassMixin;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.*;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 public class ClientSetup {
@@ -92,6 +94,43 @@ public class ClientSetup {
         event.register(MenuTypeRegistry.SOUL_ANVIL.get(), SoulAnvilScreen::new);
     }
 
+    @SubscribeEvent
+    public static void renderGui(RenderGuiLayerEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        int scaledWidth = mc.getWindow().getGuiScaledWidth();
+        int scaledHeight = mc.getWindow().getGuiScaledHeight();
+        Optional<ItemEntity> itemLookingAt = getItemLookingAt(event.getPartialTick().getGameTimeDeltaPartialTick(true));
+        if(itemLookingAt.isPresent() &&
+                Research.getCachedUnlockableResearch(Minecraft.getInstance().player, Minecraft.getInstance().level.registryAccess()).stream().anyMatch(
+                        researchReference -> researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem()))
+        ) {
+            event.getGuiGraphics().drawCenteredString(
+                    mc.font,
+                    Component.translatable("soul_forge.gui.researching"),
+                    scaledWidth/2,
+                    scaledHeight/2+20,
+                    0xFFFFFFFF);
+        }
+
+    }
+
+    public static Optional<ItemEntity> getItemLookingAt(float partialTicks) {
+        Minecraft mc = Minecraft.getInstance();
+
+        Vec3 eyePos = mc.player.getEyePosition(partialTicks);
+        Vec3 lookVec = mc.player.getLookAngle().normalize();
+
+        List<Entity> entities = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            AABB box = AABB.ofSize(eyePos.add(lookVec.scale(i)), 1, 1, 1);
+            entities.addAll(mc.level.getEntities(mc.player, box));
+        }
+        return entities.stream()
+                        .filter(ItemEntity.class::isInstance)
+                        .map(ItemEntity.class::cast)
+                        .min((o1, o2) -> (int) (o1.distanceToSqr(mc.player) - o2.distanceToSqr(mc.player)));
+    }
+
     private static RenderTarget overlayTarget;
 
     public static RenderTarget getOrCreateOverlayTarget() {
@@ -99,7 +138,7 @@ public class ClientSetup {
             Minecraft mc = Minecraft.getInstance();
             int width = mc.getWindow().getWidth();
             int height = mc.getWindow().getHeight();
-            overlayTarget = new TextureTarget(width, height, true, Minecraft.ON_OSX);
+            overlayTarget = new TextureTarget(width, height, false, Minecraft.ON_OSX);
         }
         return overlayTarget;
     }

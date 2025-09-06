@@ -48,6 +48,7 @@ public class SoulForge {
         modEventBus.addListener(CommonSetup::registerSpawnPlacements);
         neoEventBus.addListener(CommonSetup::playerClone);
         neoEventBus.addListener(CommonSetup::playerLoggedIn);
+        neoEventBus.addListener(CommonSetup::playerTickEvent);
 
         PatchouliCompat.init();
 

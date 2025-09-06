@@ -106,7 +106,7 @@ public class ResearchTableBlock extends Block {
 
     private MenuProvider getMenuProvider(Level level, BlockPos pos, InteractionHand hand) {
         return new SimpleMenuProvider(
-                (containerId, playerInventory, player1) -> new ResearchTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos), hand),
+                (containerId, playerInventory, player1) -> new ResearchTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, pos)),
                 getName()
         );
     }

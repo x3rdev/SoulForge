@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common.menu;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -34,63 +36,24 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this(
                 containerId,
                 playerInventory,
-                ContainerLevelAccess.create(playerInventory.player.level(), byteBuf.readBlockPos()),
-                byteBuf.readEnum(InteractionHand.class)
+                ContainerLevelAccess.create(playerInventory.player.level(), byteBuf.readBlockPos())
         );
     }
 
     //Server
-    public ResearchTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access, InteractionHand hand) {
+    public ResearchTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
         super(MenuTypeRegistry.RESEARCH_TABLE.get(), containerId);
-        this.container = new SimpleContainer(28);
         this.access = access;
+        this.container = new SimpleContainer(2);
         this.player = playerInventory.player;
-        this.addSlot(new Slot(container, 0, -19, 2){
-
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-
-            @Override
-            public boolean mayPickup(Player player) {
-                return false;
-            }
-
-            @Override
-            public boolean isHighlightable() {
-                return false;
-            }
-        });
-        this.addSlot(new Slot(container, 1, 185, 4){
-
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return false;
-            }
-
-            @Override
-            public boolean mayPickup(Player player) {
-                return false;
-            }
-
-            @Override
-            public boolean isHighlightable() {
-                return false;
-            }
-
-            @Override
-            public boolean isActive() {
-                return research != null && !Research.playerHasResearchUnlocked(player, research);
-            }
-        });
-        container.setItem(0, player.getItemInHand(hand));
+        this.addSlot(new ResearchUnlockSlot(container, 0, 33, 34));
+        this.addSlot(new ResearchUnlockSlot(container, 1, 80, 34));
+        container.setItem(1, ItemRegistry.RESEARCHER_GLASSES.get().getDefaultInstance());
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 this.addSlot(new ResearchTableSlot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
-
         for (int k = 0; k < 9; k++) {
             this.addSlot(new ResearchTableSlot(playerInventory, k, 8 + k * 18, 142));
         }
@@ -128,8 +91,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         if(this.player.level().isClientSide()) {
             PacketDistributor.sendToServer(new UpdateResearchPayload(research.key(), this.containerId));
         }
-        container.setItem(1, research.value().unlockItemStack());
         this.research = research;
+        this.container.setItem(0, research.value().unlockItemStack());
     }
 
 
@@ -160,5 +123,17 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             return isResearchSelected();
         }
 
+    }
+
+    public class ResearchUnlockSlot extends NonInteractiveResultSlot {
+
+        public ResearchUnlockSlot(Container container, int slot, int x, int y) {
+            super(container, slot, x, y);
+        }
+
+        @Override
+        public boolean isActive() {
+            return isResearchSelected() && !Research.playerHasResearchUnlocked(player, research);
+        }
     }
 }
