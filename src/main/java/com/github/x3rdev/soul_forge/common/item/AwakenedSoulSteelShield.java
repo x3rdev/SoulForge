@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.client.renderer.item.AwakenedSoulsteelShieldRenderer;
+import com.github.x3rdev.soul_forge.client.renderer.item.AwakenedSoulSteelShieldRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -32,12 +32,12 @@ public class AwakenedSoulSteelShield extends ShieldItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private AwakenedSoulsteelShieldRenderer renderer = null;
+            private AwakenedSoulSteelShieldRenderer renderer = null;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new AwakenedSoulsteelShieldRenderer();
+                    this.renderer = new AwakenedSoulSteelShieldRenderer();
                 }
                 return renderer;
             }

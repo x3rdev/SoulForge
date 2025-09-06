@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-public class AwakenedSoulsteelSwordRenderer extends GeoItemRenderer<AwakenedSoulSteelSword> {
+public class AwakenedSoulSteelSwordRenderer extends GeoItemRenderer<AwakenedSoulSteelSword> {
 
-    public AwakenedSoulsteelSwordRenderer() {
+    public AwakenedSoulSteelSwordRenderer() {
         super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "awakened_soul_steel_sword")));
         addRenderLayer(new SoulGlowingLayer<>(this));
     }

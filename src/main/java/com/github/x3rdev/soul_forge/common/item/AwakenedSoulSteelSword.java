@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.client.renderer.item.AwakenedSoulsteelSwordRenderer;
+import com.github.x3rdev.soul_forge.client.renderer.item.AwakenedSoulSteelSwordRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -23,12 +23,12 @@ public class AwakenedSoulSteelSword extends SwordItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private AwakenedSoulsteelSwordRenderer renderer = null;
+            private AwakenedSoulSteelSwordRenderer renderer = null;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new AwakenedSoulsteelSwordRenderer();
+                    this.renderer = new AwakenedSoulSteelSwordRenderer();
                 }
                 return renderer;
             }
