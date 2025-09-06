@@ -73,6 +73,8 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addItem(ItemRegistry.DIAMOND_SCYTHE, "Diamond Scythe");
         addItem(ItemRegistry.NETHERITE_SCYTHE, "Netherite Scythe");
         addItem(ItemRegistry.SOULWOOD_STICK, "Soulwood Stick");
+        addItem(ItemRegistry.SOUL_STEEL_SWORD, "Soulsteel Sword");
+        addItem(ItemRegistry.AWAKENED_SOUL_STEEL_SWORD, "Awakened Soulsteel Sword");
 
         // Item Group
         add("itemGroup.soul_forge", "Soul Forge");
