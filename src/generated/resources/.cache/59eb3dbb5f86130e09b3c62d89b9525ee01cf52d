@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-19T18:06:29.2073967	Loot Tables
+// 1.21.1	2025-09-06T18:07:19.8925184	Loot Tables
 f494cf1d21b0fe1009a293c6230c092efcd1e307 data/soul_forge/loot_table/blocks/chiseled_soul_bricks.json
 337b31ce9dbbdb531c075b94d3358a20e4f83dcb data/soul_forge/loot_table/blocks/cracked_soul_bricks.json
 5ad8c0aa597bd4da4f573057a30cb9fdff0302fb data/soul_forge/loot_table/blocks/dark_tomb.json
@@ -19,11 +19,11 @@ ccc356e5139a4f7884fc18d488e72e5a245d854c data/soul_forge/loot_table/blocks/soulw
 c2f93ca70efbd48c4f9f80d3612f0c535bb93050 data/soul_forge/loot_table/blocks/soul_brick_wall.json
 f1a1cca15b86ac6c97c4f00ada58ae41ee28d634 data/soul_forge/loot_table/blocks/soul_candelabra.json
 a0264275e6b4c83995fe5483ee653d26f95a060c data/soul_forge/loot_table/blocks/soul_candlestick.json
+cd8af988b7d8d36b03015245520fda0e436b1026 data/soul_forge/loot_table/blocks/soul_cauldron.json
 86e3057fac3afca205eadb1f8d0a1f03654f3e8a data/soul_forge/loot_table/blocks/soul_chandelier.json
 d97bdd5e4352964e71d6811340081f3be601fc80 data/soul_forge/loot_table/blocks/soul_crystal_block.json
 8c564a4cccb75cd1c929318e6263ddc2f7ef99c0 data/soul_forge/loot_table/blocks/soul_crystal_ore.json
 14341fd1d5baa6fbe21457395907dc377bd6fb20 data/soul_forge/loot_table/blocks/soul_steel_bars.json
-0002ef82ec5d2312c04fbb774ed3781c30d8b169 data/soul_forge/loot_table/blocks/soul_storage.json
 22bc4b0e64dbce765bfccc8fba06408d1758dcb1 data/soul_forge/loot_table/blocks/statue.json
 60264e89515795ef27e2e6ebb3297366a33fc71f data/soul_forge/loot_table/entities/ghost.json
 002313b58a170bb8c5a8404a8ceb1648450fba73 data/soul_forge/loot_table/entities/nergal.json
