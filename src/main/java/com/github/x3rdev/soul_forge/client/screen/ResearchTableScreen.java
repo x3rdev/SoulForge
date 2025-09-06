@@ -157,14 +157,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderUnlockedResearch(GuiGraphics guiGraphics) {
+        guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 52, 108, 52);
+        guiGraphics.blit(SCROLL_LOCATION, leftPos+123, topPos+17, 0, 104, 46, 52);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(0.5F, 0.5F, 1);
         guiGraphics.drawString(this.font, Component.literal("Unlocks"), 2*(leftPos+136)+1, 2*(topPos+22), 0x181d24, false);
         guiGraphics.drawString(this.font, Component.literal("ritual:"), 2*(leftPos+136)+6, 2*(topPos+22)+9, 0x181d24, false);
         guiGraphics.pose().popPose();
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xbababa, false);
-        guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 52, 108, 52);
-        guiGraphics.blit(SCROLL_LOCATION, leftPos+123, topPos+17, 0, 104, 46, 52);
+
         renderResearchTitle(guiGraphics);
         renderResearchDescription(guiGraphics);
         renderScrollBar(guiGraphics);

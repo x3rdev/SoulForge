@@ -151,10 +151,10 @@ public class CommonSetup {
             Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) player));
             if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), player, player.registryAccess())){
                 researchProgress++;
-                if(researchProgress % 2 == 0) {
+                if(researchProgress % 4 == 0) {
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
                 }
-                if (researchProgress == 20) {
+                if (researchProgress == 40) {
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
                     Research.getCachedUnlockableResearch(player, player.registryAccess()).forEach(researchReference -> {
                         if (researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem())) {
@@ -174,7 +174,7 @@ public class CommonSetup {
         Vec3 lookVec = player.getLookAngle().normalize();
 
         List<Entity> entities = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             AABB box = AABB.ofSize(eyePos.add(lookVec.scale(i)), 1, 1, 1);
             entities.addAll(player.level().getEntities(player, box));
         }
