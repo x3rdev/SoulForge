@@ -21,11 +21,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class AwakenedSoulsteelShield extends ShieldItem implements GeoItem {
+public class AwakenedSoulSteelShield extends ShieldItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public AwakenedSoulsteelShield(Properties properties) {
+    public AwakenedSoulSteelShield(Properties properties) {
         super(properties);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
     }

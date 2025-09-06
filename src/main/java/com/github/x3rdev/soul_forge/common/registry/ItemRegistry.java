@@ -75,13 +75,13 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> SOULWOOD_STICK = ITEMS.register("soulwood_stick",
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_STEEL_SWORD = ITEMS.register("soul_steel_sword",
-            () -> new SoulsteelSword(Tiers.NETHERITE, new Item.Properties()));
+            () -> new SoulSteelSword(Tiers.NETHERITE, new Item.Properties()));
     public static final DeferredHolder<Item, Item> AWAKENED_SOUL_STEEL_SWORD = ITEMS.register("awakened_soul_steel_sword",
-            () -> new AwakenedSoulsteelSword(Tiers.NETHERITE, new Item.Properties()));
+            () -> new AwakenedSoulSteelSword(Tiers.NETHERITE, new Item.Properties()));
     public static final DeferredHolder<Item, Item> SOUL_STEEL_SHIELD = ITEMS.register("soul_steel_shield",
-            () -> new SoulsteelShield(new Item.Properties()));
+            () -> new SoulSteelShield(new Item.Properties()));
     public static final DeferredHolder<Item, Item> AWAKENED_SOUL_STEEL_SHIELD = ITEMS.register("awakened_soul_steel_shield",
-            () -> new AwakenedSoulsteelShield(new Item.Properties()));
+            () -> new AwakenedSoulSteelShield(new Item.Properties()));
 
     public static final DeferredHolder<Item, Item> DEBUG_RESEARCH_UNLEARNER = ITEMS.register("debug_research_unlearner",
             DebugResearchUnlearner::new);

@@ -12,11 +12,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class AwakenedSoulsteelSword extends SwordItem implements GeoItem {
+public class AwakenedSoulSteelSword extends SwordItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public AwakenedSoulsteelSword(Tier tier, Properties properties) {
+    public AwakenedSoulSteelSword(Tier tier, Properties properties) {
         super(tier, properties.attributes(SwordItem.createAttributes(tier, 4, -3.4F)));
     }
 

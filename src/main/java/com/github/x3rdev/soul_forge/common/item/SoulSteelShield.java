@@ -1,7 +1,9 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.client.renderer.item.SoulsteelShieldRenderer;
+import com.github.x3rdev.soul_forge.client.renderer.item.SoulSteelShieldRenderer;
+import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,23 +20,24 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class SoulsteelShield extends ShieldItem implements GeoItem {
+public class SoulSteelShield extends ShieldItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SoulsteelShield(Item.Properties properties) {
-        super(properties);
+    public SoulSteelShield(Item.Properties properties) {
+        super(properties
+                .component(DataComponentRegistry.SHIELD_BLOCKING, false));
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
     }
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private SoulsteelShieldRenderer renderer = null;
+            private SoulSteelShieldRenderer renderer = null;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new SoulsteelShieldRenderer();
+                    this.renderer = new SoulSteelShieldRenderer();
                 }
                 return renderer;
             }
@@ -53,9 +56,15 @@ public class SoulsteelShield extends ShieldItem implements GeoItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand);
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(itemstack);
+        stack.set(DataComponentRegistry.SHIELD_BLOCKING, true);
+        return InteractionResultHolder.consume(stack);
+    }
+
+    @Override
+    public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
+        stack.set(DataComponentRegistry.SHIELD_BLOCKING, false);
     }
 
     @Override

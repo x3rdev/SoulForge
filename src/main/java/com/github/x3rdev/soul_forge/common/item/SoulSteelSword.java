@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.client.renderer.item.SoulsteelSwordRenderer;
+import com.github.x3rdev.soul_forge.client.renderer.item.SoulSteelSwordRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -11,23 +11,23 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
-public class SoulsteelSword extends SwordItem implements GeoItem {
+public class SoulSteelSword extends SwordItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SoulsteelSword(Tier tier, Properties properties) {
+    public SoulSteelSword(Tier tier, Properties properties) {
         super(tier, properties.attributes(SwordItem.createAttributes(tier, 4, -3.4F)));
     }
 
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private SoulsteelSwordRenderer renderer = null;
+            private SoulSteelSwordRenderer renderer = null;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new SoulsteelSwordRenderer();
+                    this.renderer = new SoulSteelSwordRenderer();
                 }
                 return renderer;
             }

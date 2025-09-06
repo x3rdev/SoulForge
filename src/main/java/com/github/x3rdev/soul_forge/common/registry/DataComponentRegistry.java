@@ -29,5 +29,8 @@ public class DataComponentRegistry {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> NECRONOMICON_OPEN = DATA_COMPONENTS.registerComponentType("necronomicon_open",
             builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> SHIELD_BLOCKING = DATA_COMPONENTS.registerComponentType("shield_blocking",
+            builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 }
 
