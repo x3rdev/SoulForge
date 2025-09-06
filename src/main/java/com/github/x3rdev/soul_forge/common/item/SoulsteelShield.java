@@ -75,6 +75,6 @@ public class SoulsteelShield extends ShieldItem implements GeoItem {
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
+        return cache;
     }
 }

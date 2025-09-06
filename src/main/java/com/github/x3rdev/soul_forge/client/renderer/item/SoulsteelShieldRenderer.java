@@ -11,6 +11,5 @@ public class SoulsteelShieldRenderer extends GeoItemRenderer<SoulsteelShield> {
 
     public SoulsteelShieldRenderer() {
         super(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul_steel_shield")));
-        addRenderLayer(new SoulGlowingLayer<>(this));
     }
 }
