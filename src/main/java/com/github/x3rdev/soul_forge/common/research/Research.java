@@ -5,9 +5,11 @@ import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -17,6 +19,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -103,6 +106,16 @@ public record Research(ResourceKey<Research> parent, String title, String descri
         return player.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get()).stream()
                 .map(researchResourceKey -> player.level().registryAccess().holder(researchResourceKey).orElseThrow().value().ritualReward())
                 .anyMatch(recipeResourceKey -> recipeResourceKey.orElseThrow().equals(recipe.id()));
+    }
+
+    public static boolean playerHasResearchGlasses(Player player) {
+        //TODO curios compat
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ItemRegistry.RESEARCHER_GLASSES);
+    }
+
+    public static boolean isItemUsedToUnlockNextResearch(ItemStack stack, Player player, RegistryAccess registryAccess) {
+        return Research.getCachedUnlockableResearch(player, registryAccess).stream().anyMatch(
+                researchReference -> researchReference.value().unlockItemStack().is(stack.getItem()));
     }
 
     public static Set<Holder.Reference<Research>> getCachedUnlockableResearch(Player player, RegistryAccess access) {

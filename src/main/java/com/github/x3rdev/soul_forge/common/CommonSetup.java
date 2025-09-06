@@ -146,23 +146,19 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Post event) {
-        Player entity = event.getEntity();
-        if(!entity.level().isClientSide()) {
-            Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) entity));
-
-            if (itemLookingAt.isPresent() &&
-                    Research.getCachedUnlockableResearch(Minecraft.getInstance().player, Minecraft.getInstance().level.registryAccess()).stream().anyMatch(
-                    researchReference -> researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem()))
-            ){
+        Player player = event.getEntity();
+        if(!player.level().isClientSide() && Research.playerHasResearchGlasses(player)) {
+            Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) player));
+            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), player, player.registryAccess())){
                 researchProgress++;
                 if(researchProgress % 2 == 0) {
-                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
                 }
                 if (researchProgress == 20) {
-                    entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
-                    Research.getCachedUnlockableResearch(entity, entity.registryAccess()).forEach(researchReference -> {
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
+                    Research.getCachedUnlockableResearch(player, player.registryAccess()).forEach(researchReference -> {
                         if (researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem())) {
-                            Research.grantResearchToPlayer(((ServerPlayer) entity), researchReference);
+                            Research.grantResearchToPlayer(((ServerPlayer) player), researchReference);
                         }
                     });
                     researchProgress = 0;

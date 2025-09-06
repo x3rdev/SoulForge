@@ -97,21 +97,19 @@ public class ClientSetup {
     @SubscribeEvent
     public static void renderGui(RenderGuiLayerEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
-        int scaledWidth = mc.getWindow().getGuiScaledWidth();
-        int scaledHeight = mc.getWindow().getGuiScaledHeight();
-        Optional<ItemEntity> itemLookingAt = getItemLookingAt(event.getPartialTick().getGameTimeDeltaPartialTick(true));
-        if(itemLookingAt.isPresent() &&
-                Research.getCachedUnlockableResearch(Minecraft.getInstance().player, Minecraft.getInstance().level.registryAccess()).stream().anyMatch(
-                        researchReference -> researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem()))
-        ) {
-            event.getGuiGraphics().drawCenteredString(
-                    mc.font,
-                    Component.translatable("soul_forge.gui.researching"),
-                    scaledWidth/2,
-                    scaledHeight/2+20,
-                    0xFFFFFFFF);
+        if(mc.player != null && Research.playerHasResearchGlasses(mc.player)) {
+            int scaledWidth = mc.getWindow().getGuiScaledWidth();
+            int scaledHeight = mc.getWindow().getGuiScaledHeight();
+            Optional<ItemEntity> itemLookingAt = getItemLookingAt(event.getPartialTick().getGameTimeDeltaPartialTick(true));
+            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), mc.player, mc.player.registryAccess())) {
+                event.getGuiGraphics().drawCenteredString(
+                        mc.font,
+                        Component.translatable("soul_forge.gui.researching"),
+                        scaledWidth / 2,
+                        scaledHeight / 2 + 20,
+                        0xFFFFFFFF);
+            }
         }
-
     }
 
     public static Optional<ItemEntity> getItemLookingAt(float partialTicks) {

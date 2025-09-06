@@ -45,28 +45,29 @@ public abstract class LevelRendererMixin {
     private void renderLevel(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix,
                              CallbackInfo ci, @Local PoseStack poseStack) {
         Minecraft mc = Minecraft.getInstance();
-
-        ClientSetup.getOrCreateOverlayTarget().bindWrite(true);
-        RenderSystem.clear(16640, Minecraft.ON_OSX);
-        MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
-        entityRenderDispatcher.setRenderShadow(false);
-        for (Entity entity : mc.level.entitiesForRendering()) {
-            if(camera.getPosition().distanceToSqr(entity.position()) < 64*64 && shouldHighlightEntity(entity)) {
-                float partialTick = deltaTracker.getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(entity));
-                renderEntity(
-                        entity,
-                        camera.getPosition().x,
-                        camera.getPosition().y,
-                        camera.getPosition().z,
-                        partialTick,
-                        poseStack,
-                        immediate);
+        if(Research.playerHasResearchGlasses(mc.player)) {
+            ClientSetup.getOrCreateOverlayTarget().bindWrite(true);
+            RenderSystem.clear(16640, Minecraft.ON_OSX);
+            MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
+            entityRenderDispatcher.setRenderShadow(false);
+            for (Entity entity : mc.level.entitiesForRendering()) {
+                if (camera.getPosition().distanceToSqr(entity.position()) < 64 * 64 && shouldHighlightEntity(entity)) {
+                    float partialTick = deltaTracker.getGameTimeDeltaPartialTick(!mc.level.tickRateManager().isEntityFrozen(entity));
+                    renderEntity(
+                            entity,
+                            camera.getPosition().x,
+                            camera.getPosition().y,
+                            camera.getPosition().z,
+                            partialTick,
+                            poseStack,
+                            immediate);
+                }
             }
+            entityRenderDispatcher.setRenderShadow(true);
+            immediate.endLastBatch();
+            ClientSetup.getOrCreateOverlayTarget().unbindWrite();
+            mc.getMainRenderTarget().bindWrite(true);
         }
-        entityRenderDispatcher.setRenderShadow(true);
-        immediate.endLastBatch();
-        ClientSetup.getOrCreateOverlayTarget().unbindWrite();
-        mc.getMainRenderTarget().bindWrite(true);
 
     }
 
