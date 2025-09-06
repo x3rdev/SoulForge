@@ -1,9 +1,11 @@
 package com.github.x3rdev.soul_forge.common.item;
 
+import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.renderer.item.SoulSteelShieldRenderer;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,6 +18,7 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -37,7 +40,7 @@ public class SoulSteelShield extends ShieldItem implements GeoItem {
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new SoulSteelShieldRenderer();
+                    this.renderer = new SoulSteelShieldRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul_steel_shield")));
                 }
                 return renderer;
             }

@@ -1,8 +1,10 @@
 package com.github.x3rdev.soul_forge.common.item;
 
+import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.renderer.item.SoulSteelArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
@@ -14,6 +16,7 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -33,7 +36,7 @@ public class SoulSteelArmor extends ArmorItem implements GeoItem {
             @Override
             public @Nullable <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (this.renderer == null) {
-                    this.renderer = new SoulSteelArmorRenderer();
+                    this.renderer = new SoulSteelArmorRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "armor/soul_steel")));
                 }
                 return this.renderer;
             }
