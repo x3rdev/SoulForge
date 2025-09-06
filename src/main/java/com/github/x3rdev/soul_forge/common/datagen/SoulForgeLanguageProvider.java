@@ -62,6 +62,7 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addItem(ItemRegistry.EMPOWERED_SOUL_CRYSTAL, "Empowered Soul Crystal");
         addItem(ItemRegistry.ECTOPLASM, "Ectoplasm");
         addItem(ItemRegistry.MURKY_LENS, "Murky Lens");
+        addItem(ItemRegistry.SOUL_PEARL, "Soul Pearl");
         addItem(ItemRegistry.RESEARCHER_GLASSES, "Researcher Glasses");
         addItem(ItemRegistry.NECRONOMICON, "Necronomicon");
         addItem(ItemRegistry.SCROLL_OF_SHADOWS, "Scroll Of Shadows");

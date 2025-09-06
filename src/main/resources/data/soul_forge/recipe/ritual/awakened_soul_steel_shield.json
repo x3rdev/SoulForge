@@ -1,0 +1,42 @@
+{
+  "type": "soul_forge:ritual",
+  "required_research": "soul_forge:soul_steel_awakening",
+  "center_input": {
+    "item": "minecraft:soul_steel_shield"
+  },
+  "cardinal_inputs": [
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    }
+  ],
+  "diagonal_inputs": [
+    {
+      "item": "soul_forge:soul_pearl"
+    },
+    {
+      "item": "soul_forge:soul_pearl"
+    },
+    {
+      "item": "soul_forge:soul_pearl"
+    },
+    {
+      "item": "soul_forge:soul_pearl"
+    }
+  ],
+  "soul_inputs": {
+    "soul": 30
+  },
+  "result": {
+    "id": "soul_forge:awakened_soul_steel_shield",
+    "count": 1
+  }
+}

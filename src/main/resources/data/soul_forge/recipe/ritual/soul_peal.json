@@ -1,0 +1,30 @@
+{
+  "type": "soul_forge:ritual",
+  "required_research": "soul_forge:soul_pearl",
+  "center_input": {
+    "item": "minecraft:ender_pearl"
+  },
+  "cardinal_inputs": [
+    {
+      "item": "soul_forge:ectoplasm"
+    },
+    {
+      "item": "soul_forge:ectoplasm"
+    },
+    {
+      "item": "soul_forge:ectoplasm"
+    },
+    {
+      "item": "soul_forge:ectoplasm"
+    }
+  ],
+  "diagonal_inputs": [],
+  "soul_inputs": {
+    "soul": 1,
+    "nether_soul": 2
+  },
+  "result": {
+    "id": "soul_forge:soul_pearl",
+    "count": 2
+  }
+}
