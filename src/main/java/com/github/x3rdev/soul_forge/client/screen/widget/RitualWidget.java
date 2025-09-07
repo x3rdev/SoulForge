@@ -4,23 +4,19 @@ import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.compat.jei.SoulForgePlugin;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.runtime.IClickableIngredient;
+import mezz.jei.api.recipe.IRecipeLookup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.fml.ModList;
-import org.jetbrains.annotations.Nullable;
 
 public class RitualWidget extends AbstractWidget {
 
@@ -36,6 +32,9 @@ public class RitualWidget extends AbstractWidget {
         if(isActive()) {
             super.onClick(mouseX, mouseY, button);
             if (ModList.get().isLoaded("jei")) {
+                screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(resourceLocation -> {
+                    SoulForgePlugin.showRecipe(getRitualResultStack(resourceLocation));
+                });
 
             }
         }

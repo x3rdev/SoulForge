@@ -46,7 +46,4 @@ public class SoulSteelShieldRenderer extends GeoItemRenderer<SoulSteelShield> {
         poseStack.popPose();
     }
 
-
-
-
 }
