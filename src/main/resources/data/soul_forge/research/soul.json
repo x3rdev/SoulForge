@@ -1,0 +1,11 @@
+{
+  "parent": "soul_forge:necronomicon",
+  "title": "Souls?",
+  "description": "TODO, this needs to be a translation key",
+  "icon_item_stack": {
+    "id": "soul_forge:soul_bottle"
+  },
+  "unlock_item_stack": {
+    "id": "soul_forge:soul_bottle"
+  }
+}

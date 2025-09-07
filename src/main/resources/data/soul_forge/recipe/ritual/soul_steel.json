@@ -1,0 +1,20 @@
+{
+  "type": "soul_forge:ritual",
+  "required_research": "soul_forge:soul",
+  "center_input": {
+    "item": "minecraft:iron_ingot"
+  },
+  "cardinal_inputs": [
+    {
+      "item": "soul_forge:ectoplasm"
+    }
+  ],
+  "diagonal_inputs": [],
+  "soul_inputs": {
+    "soul": 2
+  },
+  "result": {
+    "id": "soul_forge:soul_steel_ingot",
+    "count": 2
+  }
+}

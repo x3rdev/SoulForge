@@ -1,0 +1,11 @@
+{
+  "parent": "soul_forge:soul",
+  "title": "Soul pearl",
+  "description": "TODO, this needs to be a translation key",
+  "icon_item_stack": {
+    "id": "minecraft:ender_pearl"
+  },
+  "unlock_item_stack": {
+    "id": "minecraft:ender_pearl"
+  }
+}
