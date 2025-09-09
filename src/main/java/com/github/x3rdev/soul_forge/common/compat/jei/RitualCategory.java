@@ -2,7 +2,7 @@ package com.github.x3rdev.soul_forge.common.compat.jei;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.block_entity.SoulCauldronBlockEntity;
-import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
+import com.github.x3rdev.soul_forge.common.entity.Soul;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockItemRegistry;
@@ -175,10 +175,10 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
         guiGraphics.pose().popPose();
     }
 
-    private void renderSoul(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe, int x, int y, EntityType<SoulEntity> entityType, SoulType soulType) {
-        SoulEntity soulEntity = new SoulEntity(entityType, Minecraft.getInstance().level, soulType, true);
+    private void renderSoul(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe, int x, int y, EntityType<Soul> entityType, SoulType soulType) {
+        Soul soulEntity = new Soul(entityType, Minecraft.getInstance().level, soulType, true);
         EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        EntityRenderer<? super SoulEntity> soulEntityRenderer = entityRenderDispatcher.getRenderer(soulEntity);
+        EntityRenderer<? super Soul> soulEntityRenderer = entityRenderDispatcher.getRenderer(soulEntity);
 
         guiGraphics.pose().pushPose();
         guiGraphics.drawString(Minecraft.getInstance().font, Component.literal(String.valueOf(recipe.value().inputSouls().getOrDefault(soulType, 0))), x+8, y-10, 0xFFFFFFFF);

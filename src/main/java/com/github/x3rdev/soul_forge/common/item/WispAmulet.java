@@ -2,7 +2,9 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -13,7 +15,6 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class WispAmulet extends Item {
-    private static final String WISP_UUID_KEY = "wisp_uuid";
 
     public WispAmulet() {
         super(new Properties().component(DataComponentRegistry.WISP_UUID, null));
@@ -30,6 +31,7 @@ public class WispAmulet extends Item {
                 WispEntity wisp = new WispEntity(level, player);
                 wisp.setPos(entity.position().add(2, 0, 2));
                 level.addFreshEntity(wisp);
+                level.playSound(null, wisp, SoundRegistry.WISP_DING.get(), SoundSource.AMBIENT, 1F, 1F);
                 setWispUUID(stack, wisp);
             }
         }

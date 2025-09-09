@@ -10,5 +10,23 @@
     "sounds": [
       "soul_forge:ritual"
     ]
+  },
+  "scythe_shoot": {
+    "subtitle": "sounds.soul_forge.scythe_shoot",
+    "sounds": [
+      "soul_forge:scythe_shoot"
+    ]
+  },
+  "wisp_ding": {
+    "subtitle": "sounds.soul_forge.wisp_ding",
+    "sounds": [
+      "soul_forge:wisp_ding"
+    ]
+  },
+  "wisp_hurt": {
+    "subtitle": "sounds.soul_forge.wisp_hurt",
+    "sounds": [
+      "soul_forge:wisp_hurt"
+    ]
   }
 }

@@ -1,15 +1,10 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.github.x3rdev.soul_forge.common.entity.Soul;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.texture.AnimatableTexture;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
@@ -24,7 +19,7 @@ public class SoulRenderer extends BaseSoulRenderer {
 
     @Nullable
     @Override
-    protected ResourceLocation getTextureOverrideForBone(GeoBone bone, SoulEntity animatable, float partialTick) {
+    protected ResourceLocation getTextureOverrideForBone(GeoBone bone, Soul animatable, float partialTick) {
         if(bone.getName().equals("flame")) {
             AnimatableTexture.setAndUpdate(FLAME_TEXTURE);
             return FLAME_TEXTURE;

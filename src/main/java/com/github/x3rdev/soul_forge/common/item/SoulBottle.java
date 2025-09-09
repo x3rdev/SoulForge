@@ -1,27 +1,19 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.common.block.SoulCauldronBlock;
 import com.github.x3rdev.soul_forge.common.block_entity.SoulCauldronBlockEntity;
-import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
+import com.github.x3rdev.soul_forge.common.entity.Soul;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +98,7 @@ public class SoulBottle extends Item {
         return getSoulType(stack).size() <= SoulCauldronBlockEntity.MAX_CAPACITY-(blockEntity.getSoulCount()*getSoulType(stack).size());
     }
 
-    public boolean tryFillBottle(ItemStack stack, SoulEntity soulEntity, Player player) {
+    public boolean tryFillBottle(ItemStack stack, Soul soulEntity, Player player) {
         SoulType entitySoulType = soulEntity.getSoulType();
         if (canBottleFitSoul(stack, entitySoulType)) {
             setSoulType(stack, entitySoulType);

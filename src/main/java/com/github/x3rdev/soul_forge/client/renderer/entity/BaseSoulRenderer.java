@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
-import com.github.x3rdev.soul_forge.common.entity.SoulEntity;
+import com.github.x3rdev.soul_forge.common.entity.Soul;
 import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,14 +16,14 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.specialty.DynamicGeoEntityRenderer;
 
-public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEntity> {
+public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<Soul> {
 
-    protected BaseSoulRenderer(EntityRendererProvider.Context renderManager, GeoModel<SoulEntity> model) {
+    protected BaseSoulRenderer(EntityRendererProvider.Context renderManager, GeoModel<Soul> model) {
         super(renderManager, model);
     }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, SoulEntity animatable, BakedGeoModel model, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+    public void actuallyRender(PoseStack poseStack, Soul animatable, BakedGeoModel model, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         poseStack.pushPose();
         poseStack.scale(1.5F, 1.5F, 1.5F);
         if(!animatable.isFake()) {
@@ -43,12 +43,12 @@ public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<SoulEnti
     }
 
     @Override
-    public boolean shouldShowName(SoulEntity animatable) {
+    public boolean shouldShowName(Soul animatable) {
         return false;
     }
 
     @Override
-    public RenderType getRenderType(SoulEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public RenderType getRenderType(Soul animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return ShaderRegistry.soul(texture);
     }
 

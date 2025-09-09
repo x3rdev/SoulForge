@@ -3,10 +3,13 @@ package com.github.x3rdev.soul_forge.common.entity;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -73,6 +76,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                     cooldown = 20 * 10;
                     getOwner().heal(3F);
                     triggerAnim("controller", "skill");
+                    playSound(SoundRegistry.WISP_DING.get());
                 }
             }
         } else if (this.tickCount % 30 == 0) {
@@ -102,7 +106,6 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
         }
     }
 
-    //TODO make the player has the item in their baubles, inventory for now
     private boolean ownerExists() {
         return getOwner() != null && level().players().contains(getOwner())
                 && getOwner().getInventory().hasAnyMatching(stack -> stack.is(ItemRegistry.WISP_AMULET.get()));
@@ -131,8 +134,15 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
     }
 
     @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    public boolean hurt(DamageSource source, float pAmount) {
+        this.playHurtSound(source);
         return false;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return SoundRegistry.WISP_HURT.get();
     }
 
     @Override

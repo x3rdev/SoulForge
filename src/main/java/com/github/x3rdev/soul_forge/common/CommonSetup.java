@@ -11,9 +11,7 @@ import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
-import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import com.github.x3rdev.soul_forge.common.research.ResearchTree;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -36,7 +34,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import top.theillusivec4.curios.api.CuriosCapability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +59,13 @@ public class CommonSetup {
     @SubscribeEvent
     public static void createEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
-        event.put(EntityRegistry.GHOST.get(), GhostEntity.createAttributes());
+        event.put(EntityRegistry.GHOST.get(), Ghost.createAttributes());
         event.put(EntityRegistry.NERGAL.get(), NergalEntity.createAttributes());
-        event.put(EntityRegistry.SOUL.get(), SoulEntity.createAttributes());
-        event.put(EntityRegistry.UNDEAD_SOUL.get(), SoulEntity.createAttributes());
-        event.put(EntityRegistry.NETHER_SOUL.get(), SoulEntity.createAttributes());
-        event.put(EntityRegistry.ENDER_SOUL.get(), SoulEntity.createAttributes());
-        event.put(EntityRegistry.DRAGON_SOUL.get(), SoulEntity.createAttributes());
+        event.put(EntityRegistry.SOUL.get(), Soul.createAttributes());
+        event.put(EntityRegistry.UNDEAD_SOUL.get(), Soul.createAttributes());
+        event.put(EntityRegistry.NETHER_SOUL.get(), Soul.createAttributes());
+        event.put(EntityRegistry.ENDER_SOUL.get(), Soul.createAttributes());
+        event.put(EntityRegistry.DRAGON_SOUL.get(), Soul.createAttributes());
     }
 
     @SubscribeEvent
@@ -127,27 +124,27 @@ public class CommonSetup {
     }
 
     private static void dropUndeadSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.UNDEAD_SOUL.get(), level, SoulType.UNDEAD_SOUL);
+        Soul soulEntity = new Soul(EntityRegistry.UNDEAD_SOUL.get(), level, SoulType.UNDEAD_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropNetherSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.NETHER_SOUL.get(), level, SoulType.NETHER_SOUL);
+        Soul soulEntity = new Soul(EntityRegistry.NETHER_SOUL.get(), level, SoulType.NETHER_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropEnderSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.ENDER_SOUL.get(), level, SoulType.ENDER_SOUL);
+        Soul soulEntity = new Soul(EntityRegistry.ENDER_SOUL.get(), level, SoulType.ENDER_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropDragonSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.DRAGON_SOUL.get(), level, SoulType.DRAGON_SOUL);
+        Soul soulEntity = new Soul(EntityRegistry.DRAGON_SOUL.get(), level, SoulType.DRAGON_SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }
     private static void dropNormalSoul(Level level, Vec3 pos) {
-        SoulEntity soulEntity = new SoulEntity(EntityRegistry.SOUL.get(), level, SoulType.SOUL);
+        Soul soulEntity = new Soul(EntityRegistry.SOUL.get(), level, SoulType.SOUL);
         soulEntity.setPos(pos);
         level.addFreshEntity(soulEntity);
     }

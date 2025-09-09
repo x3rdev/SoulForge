@@ -14,6 +14,9 @@ public class SoundRegistry {
 
     public static final DeferredHolder<SoundEvent, SoundEvent> NECRONOMICON_LAUGH = registerSound("necronomicon_laugh");
     public static final DeferredHolder<SoundEvent, SoundEvent> RITUAL = registerSound("ritual");
+    public static final DeferredHolder<SoundEvent, SoundEvent> SCYTHE_SHOOT = registerSound("scythe_shoot");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WISP_DING = registerSound("wisp_ding");
+    public static final DeferredHolder<SoundEvent, SoundEvent> WISP_HURT = registerSound("wisp_hurt");
 
 
     public static DeferredHolder<SoundEvent, SoundEvent> registerSound(String name) {

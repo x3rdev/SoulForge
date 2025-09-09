@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
-import com.github.x3rdev.soul_forge.common.entity.GhostEntity;
+import com.github.x3rdev.soul_forge.common.entity.Ghost;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.server.level.ServerLevel;
@@ -56,7 +56,7 @@ public class SummonGhostsAttack extends ExtendedBehaviour<NergalEntity> {
         float angle = Mth.TWO_PI/count;
         for (int i = 0; i < count; i++) {
             Vec3 spawnPos = entity.position().add(new Vec3(8,0,0).yRot(i*angle));
-            GhostEntity ghostEntity = new GhostEntity(level);
+            Ghost ghostEntity = new Ghost(level);
             ghostEntity.setPos(spawnPos);
             level.addFreshEntity(ghostEntity);
         }

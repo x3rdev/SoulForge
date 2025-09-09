@@ -1,11 +1,12 @@
 package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.client.renderer.item.SoulScytheRenderer;
-import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectileEntity;
+import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectile;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,13 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.SimpleTier;
-import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
@@ -43,10 +39,11 @@ public class SoulScythe extends Scythe {
             player.getCooldowns().addCooldown(this, 40);
         }
         if (!pLevel.isClientSide()) {
-            SoulScytheProjectileEntity projectile = new SoulScytheProjectileEntity(pLevel, pLivingEntity, pStack);
+            SoulScytheProjectile projectile = new SoulScytheProjectile(pLevel, pLivingEntity, pStack);
             projectile.setPos(pLivingEntity.getEyePosition().add(0, -0.30F, 0).add(pLivingEntity.getLookAngle().normalize()));
             projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, 1.0F, 0.05F);
             pLevel.addFreshEntity(projectile);
+            pLevel.playSound(null, projectile.getX(), projectile.getY(), projectile.getZ(), SoundRegistry.SCYTHE_SHOOT, SoundSource.PLAYERS, 1, 1+(pLevel.random.nextFloat()*0.5F));
         }
     }
 

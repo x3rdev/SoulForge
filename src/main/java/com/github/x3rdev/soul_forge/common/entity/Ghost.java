@@ -42,18 +42,18 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<GhostEntity> {
+public class Ghost extends Monster implements GeoEntity, SmartBrainOwner<Ghost> {
 
     protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
     protected static final RawAnimation WALK_ANIM = RawAnimation.begin().thenLoop("walk");
     protected static final RawAnimation ATTACK_ANIM = RawAnimation.begin().thenPlay("attack");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public GhostEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
+    public Ghost(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public GhostEntity(Level level) {
+    public Ghost(Level level) {
         this(EntityRegistry.GHOST.get(), level);
     }
 
@@ -101,16 +101,16 @@ public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<G
     }
 
     @Override
-    public List<? extends ExtendedSensor<? extends GhostEntity>> getSensors() {
+    public List<? extends ExtendedSensor<? extends Ghost>> getSensors() {
         return List.of(
                 new NearbyPlayersSensor<>(),
-                new NearbyLivingEntitySensor<GhostEntity>().setPredicate((target, entity) -> target instanceof Player),
+                new NearbyLivingEntitySensor<Ghost>().setPredicate((target, entity) -> target instanceof Player),
                 new HurtBySensor<>()
         );
     }
 
     @Override
-    public BrainActivityGroup<? extends GhostEntity> getCoreTasks() {
+    public BrainActivityGroup<? extends Ghost> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
                 new LookAtTarget<>(),
                 new MoveToWalkTarget<>()
@@ -118,7 +118,7 @@ public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<G
     }
 
     @Override
-    public BrainActivityGroup<? extends GhostEntity> getIdleTasks() {
+    public BrainActivityGroup<? extends Ghost> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(
                         new TargetOrRetaliate<>(),
@@ -130,7 +130,7 @@ public class GhostEntity extends Monster implements GeoEntity, SmartBrainOwner<G
     }
 
     @Override
-    public BrainActivityGroup<? extends GhostEntity> getFightTasks() {
+    public BrainActivityGroup<? extends Ghost> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),

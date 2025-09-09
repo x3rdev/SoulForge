@@ -21,19 +21,19 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SoulScytheProjectileEntity extends Projectile implements GeoEntity {
+public class SoulScytheProjectile extends Projectile implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final ItemStack stack;
     private boolean returning = false;
     private int age;
 
-    public SoulScytheProjectileEntity(EntityType<? extends Projectile> pEntityType, Level pLevel) {
+    public SoulScytheProjectile(EntityType<? extends Projectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.stack = ItemStack.EMPTY;
     }
 
-    public SoulScytheProjectileEntity(Level level, LivingEntity owner, ItemStack stack) {
+    public SoulScytheProjectile(Level level, LivingEntity owner, ItemStack stack) {
         super(EntityRegistry.SOUL_SCYTHE_PROJECTILE.get(), level);
         setOwner(owner);
         this.stack = stack;

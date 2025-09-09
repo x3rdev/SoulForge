@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectileEntity;
+import com.github.x3rdev.soul_forge.common.entity.SoulScytheProjectile;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -22,7 +22,7 @@ public class DamageTypeRegistry {
         this.damageTypes = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
     }
 
-    public DamageSource scythe(SoulScytheProjectileEntity scytheEntity, Entity owner) {
+    public DamageSource scythe(SoulScytheProjectile scytheEntity, Entity owner) {
         return new DamageSource(this.damageTypes.getHolderOrThrow(scythe), scytheEntity, owner);
     }
 }
