@@ -36,7 +36,7 @@ public final class ResearchTree implements Comparable<ResearchTree> {
 
     private static ResearchTree buildTree() {
         // Creates a map of every research node to each of its children
-        Map<Holder.Reference<Research>, Set<Holder.Reference<Research>>> parentToResearchMap = new HashMap<>();
+        Map<Holder.Reference<Research>, Set<Holder.Reference<Research>>> parentToChildrenMap = new HashMap<>();
         RegistryAccess access = Minecraft.getInstance().level.registryAccess();
         List<Holder.Reference<Research>> activeResearch = access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
                 .listElements()
@@ -45,23 +45,20 @@ public final class ResearchTree implements Comparable<ResearchTree> {
 
         activeResearch.forEach(research -> {
             Holder.Reference<Research> parent = access.holder(research.value().getParent(access).key()).orElseThrow();
-            parentToResearchMap.putIfAbsent(parent, new HashSet<>());
-            parentToResearchMap.get(parent).add(research);
+            parentToChildrenMap.putIfAbsent(parent, new HashSet<>());
+            parentToChildrenMap.get(parent).add(research);
         });
-        ResearchTree tree = new ResearchTree(Research.getEmptyResearch(access));
-        fillChildren(tree, parentToResearchMap);
-        return new ResearchTree(
-                Research.getHeadResearch(access),
-                tree.children
-        );
+        ResearchTree tree = new ResearchTree(Research.getHeadResearch(access));
+        fillChildren(tree, parentToChildrenMap);
+        return tree;
     }
 
-    private static void fillChildren(ResearchTree tree, Map<Holder.Reference<Research>, Set<Holder.Reference<Research>>> parentToResearchMap) {
-        for (Holder.Reference<Research> research : parentToResearchMap.getOrDefault(tree.head, Set.of())) {
+    private static void fillChildren(ResearchTree tree, Map<Holder.Reference<Research>, Set<Holder.Reference<Research>>> parentToChildrenMap) {
+        for (Holder.Reference<Research> research : parentToChildrenMap.getOrDefault(tree.head, Set.of())) {
             tree.children.add(new ResearchTree(research));
         }
         for (ResearchTree researchTree : tree.children) {
-            fillChildren(researchTree, parentToResearchMap);
+            fillChildren(researchTree, parentToChildrenMap);
         }
     }
 

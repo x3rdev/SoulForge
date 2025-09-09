@@ -4,12 +4,14 @@ import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
+import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import net.minecraft.client.Minecraft;
+import com.github.x3rdev.soul_forge.common.research.ResearchTree;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -142,34 +144,47 @@ public class CommonSetup {
         level.addFreshEntity(soulEntity);
     }
 
-    private static int researchProgress = 0;
+    private static int inspectProgress = 0;
 
     @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        if(!player.level().isClientSide() && Research.playerHasResearchGlasses(player)) {
-            Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) player));
-            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), player, player.registryAccess())){
-                researchProgress++;
-                if(researchProgress % 4 == 0) {
-                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
-                }
-                if (researchProgress == 40) {
-                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
-                    Research.getCachedUnlockableResearch(player, player.registryAccess()).forEach(researchReference -> {
-                        if (researchReference.value().unlockItemStack().is(itemLookingAt.get().getItem().getItem())) {
-                            Research.grantResearchToPlayer(((ServerPlayer) player), researchReference);
-                        }
-                    });
-                    researchProgress = 0;
-                }
-            } else{
-                researchProgress = 0;
+        tickContainers(player);
+        tickInspect(player);
+    }
+
+    private static void tickContainers(Player player) {
+        if(!player.level().isClientSide()) {
+            if(player.containerMenu instanceof ResearchTableMenu menu) {
+                menu.tick();
             }
         }
     }
 
-    public static Optional<ItemEntity> getItemLookingAt(ServerPlayer player) {
+    private static void tickInspect(Player player) {
+        if(!player.level().isClientSide() && Research.playerHasResearchGlasses(player)) {
+            Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) player));
+            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), player)){
+                inspectProgress++;
+                if(inspectProgress % 4 == 0) {
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
+                }
+                if (inspectProgress == 40) {
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
+                    Research.getCachedUnlockableResearch(player).forEach(researchReference -> {
+                        if (researchReference.value().unlockIngredient().test(itemLookingAt.get().getItem())) {
+                            Research.grantResearchToPlayer(((ServerPlayer) player), researchReference);
+                        }
+                    });
+                    inspectProgress = 0;
+                }
+            } else{
+                inspectProgress = 0;
+            }
+        }
+    }
+
+    private static Optional<ItemEntity> getItemLookingAt(ServerPlayer player) {
         Vec3 eyePos = player.getEyePosition();
         Vec3 lookVec = player.getLookAngle().normalize();
 

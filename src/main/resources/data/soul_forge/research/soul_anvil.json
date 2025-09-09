@@ -1,11 +1,11 @@
 {
   "parent": "soul_forge:soul",
-  "title": "Soulforge",
-  "description": "TODO, this needs to be a translation key",
+  "title": "Soul Forge",
+  "description": "TODO, this needs to be a translation key why does this not render :(",
   "icon_item_stack": {
-    "id": "soul_forge:soul_steel"
+    "id": "soul_forge:soul_steel_ingot"
   },
-  "unlock_item_stack": {
-    "id": "soul_forge:soul_steel"
+  "unlock_ingredient": {
+    "item": "soul_forge:soul_steel_ingot"
   }
 }

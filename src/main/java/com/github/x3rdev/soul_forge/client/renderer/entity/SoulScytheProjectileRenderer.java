@@ -39,7 +39,8 @@ public class SoulScytheProjectileRenderer extends GeoEntityRenderer<SoulScythePr
     @Override
     public void render(SoulScytheProjectileEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotation((float) (Blaze3D.getTime()*6F)));
+        poseStack.scale(0.5F, 0.5F, 0.5F);
+        poseStack.mulPose(Axis.YP.rotation((float) (Blaze3D.getTime()*8F)));
         poseStack.translate(-0.75, 0.25F, 0.5);
         poseStack.mulPose(Axis.ZP.rotationDegrees(90F));
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);

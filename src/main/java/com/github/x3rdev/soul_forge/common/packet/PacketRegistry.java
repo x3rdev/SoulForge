@@ -22,14 +22,6 @@ public class PacketRegistry {
                         ServerPayloadHandler::handleUpdateResearch
                 )
         );
-        registrar.playToServer(
-                SubmitResearchPayload.TYPE,
-                SubmitResearchPayload.STREAM_CODEC,
-                new DirectionalPayloadHandler<>(
-                        (payload, context) -> {},
-                        ServerPayloadHandler::handleSubmitResearch
-                )
-        );
         registrar.playToClient(
                 SendParticlePayload.TYPE,
                 SendParticlePayload.STREAM_CODEC,

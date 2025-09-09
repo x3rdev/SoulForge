@@ -1,12 +1,12 @@
 {
   "parent": "soul_forge:soul",
-  "title": "New Beginnings",
+  "title": "Empowered Soul Crystal",
   "description": "TODO, this needs to be a translation key",
   "icon_item_stack": {
-    "id": "soul_forge:soul_crystal"
+    "id": "soul_forge:empowered_soul_crystal"
   },
   "ritual_reward": "soul_forge:ritual/empowered_soul_crystal",
-  "unlock_item_stack": {
-    "id": "soul_forge:soul_crystal"
+  "unlock_ingredient": {
+    "item": "soul_forge:soul_crystal"
   }
 }

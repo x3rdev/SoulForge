@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.fml.ModList;
 
+import java.util.Set;
+
 public class RitualWidget extends AbstractWidget {
 
     private final ResearchTableScreen screen;
@@ -31,12 +33,12 @@ public class RitualWidget extends AbstractWidget {
     public void onClick(double mouseX, double mouseY, int button) {
         if(isActive()) {
             super.onClick(mouseX, mouseY, button);
-            if (ModList.get().isLoaded("jei")) {
-                screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(resourceLocation -> {
-                    SoulForgePlugin.showRecipe(getRitualResultStack(resourceLocation));
-                });
-
-            }
+//            if (ModList.get().isLoaded("jei")) {
+//                screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(resourceLocation -> {
+//                    SoulForgePlugin.showRecipe(getRitualResultStack(resourceLocation));
+//                });
+//
+//            }
         }
     }
 
@@ -50,15 +52,15 @@ public class RitualWidget extends AbstractWidget {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(isActive()) {
-            screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(recipeResourceKey -> {
-                guiGraphics.renderFakeItem(getRitualResultStack(recipeResourceKey), getX(), getY());
-                if(isHovered()) {
-                    guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), getX(), getY(), getX() + 16, getY() + 16, 0x66FFFFFF);
-                    if(!ModList.get().isLoaded("jei")) {
-                        guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("JEI not installed"), mouseX, mouseY);
-                    }
-                }
-            });
+//            screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(recipeResourceKey -> {
+//                guiGraphics.renderFakeItem(getRitualResultStack(recipeResourceKey), getX(), getY());
+//                if(isHovered()) {
+//                    guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), getX(), getY(), getX() + 16, getY() + 16, 0x66FFFFFF);
+//                    if(!ModList.get().isLoaded("jei")) {
+//                        guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("JEI not installed"), mouseX, mouseY);
+//                    }
+//                }
+//            });
         }
     }
 

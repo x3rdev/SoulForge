@@ -73,8 +73,8 @@ public abstract class LevelRendererMixin {
 
     private boolean shouldHighlightEntity(Entity entity) {
         if(entity instanceof ItemEntity itemEntity) {
-            return Research.getCachedUnlockableResearch(Minecraft.getInstance().player, Minecraft.getInstance().level.registryAccess()).stream().anyMatch(
-                    researchReference -> researchReference.value().unlockItemStack().is(itemEntity.getItem().getItem())
+            return Research.getCachedUnlockableResearch(Minecraft.getInstance().player).stream().anyMatch(
+                    researchReference -> researchReference.value().unlockIngredient().test(itemEntity.getItem())
             );
         }
         return false;

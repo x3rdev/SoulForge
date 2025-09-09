@@ -1,11 +1,11 @@
 {
   "parent": "soul_forge:soul",
-  "title": "Soul pearl",
+  "title": "Soul Pearl",
   "description": "TODO, this needs to be a translation key",
   "icon_item_stack": {
     "id": "minecraft:ender_pearl"
   },
-  "unlock_item_stack": {
-    "id": "minecraft:ender_pearl"
+  "unlock_ingredient": {
+    "item": "minecraft:ender_pearl"
   }
 }

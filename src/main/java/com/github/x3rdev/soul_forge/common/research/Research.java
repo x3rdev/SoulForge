@@ -9,7 +9,6 @@ import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -22,17 +21,18 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
 
-public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, ItemStack unlockItemStack, Optional<ResourceLocation> ritualReward, boolean inactive) {
+public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, Ingredient unlockIngredient, boolean inactive) {
 
     private static Set<Holder.Reference<Research>> cachedUnlockableResearch;
 
     public static final ResourceKey<Research> EMPTY_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.withDefaultNamespace("empty"));
-    public static final ResourceKey<Research> HEAD_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "head"));
+    public static final ResourceKey<Research> HEAD_RESOURCE_KEY = ResourceKey.create(DatapackRegistry.RESEARCH_KEY, ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "necronomicon"));
 
     public static final Codec<Research> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
@@ -40,8 +40,7 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                     Codec.STRING.fieldOf("title").forGetter(Research::title),
                     Codec.STRING.fieldOf("description").forGetter(Research::description),
                     ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("icon_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::iconItemStack),
-                    ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("unlock_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::unlockItemStack),
-                    ResourceLocation.CODEC.optionalFieldOf("ritual_reward").forGetter(Research::ritualReward),
+                    Ingredient.CODEC.fieldOf("unlock_ingredient").orElse(Ingredient.EMPTY).forGetter(Research::unlockIngredient),
                     Codec.BOOL.fieldOf("inactive").orElse(false).forGetter(Research::inactive)
             ).apply(instance, Research::new)
     );
@@ -52,8 +51,7 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                 ByteBufCodecs.STRING_UTF8.encode(buffer, value.title);
                 ByteBufCodecs.STRING_UTF8.encode(buffer, value.description);
                 ItemStack.STREAM_CODEC.encode(buffer, value.iconItemStack);
-                ItemStack.STREAM_CODEC.encode(buffer, value.unlockItemStack);
-                ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs::optional).encode(buffer, value.ritualReward);
+                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.unlockIngredient);
                 ByteBufCodecs.BOOL.encode(buffer, value.inactive);
             },
             buffer -> {
@@ -61,10 +59,9 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                 String title = ByteBufCodecs.STRING_UTF8.decode(buffer);
                 String description = ByteBufCodecs.STRING_UTF8.decode(buffer);
                 ItemStack iconItemStack = ItemStack.STREAM_CODEC.decode(buffer);
-                ItemStack unlockItemStack = ItemStack.STREAM_CODEC.decode(buffer);
-                Optional<ResourceLocation> ritualReward = ResourceLocation.STREAM_CODEC.apply(ByteBufCodecs::optional).decode(buffer);
+                Ingredient unlockIngredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
                 boolean inactive = ByteBufCodecs.BOOL.decode(buffer);
-                return new Research(decode, title, description, iconItemStack, unlockItemStack, ritualReward, inactive);
+                return new Research(decode, title, description, iconItemStack, unlockIngredient, inactive);
             }
     );
 
@@ -103,9 +100,12 @@ public record Research(ResourceKey<Research> parent, String title, String descri
     }
 
     public static boolean playerHasRitualUnlocked(Player player, RecipeHolder<RitualRecipe> recipe) {
-        return player.getData(DataAttachmentRegistry.UNLOCKED_RESEARCH.get()).stream()
-                .map(researchResourceKey -> player.level().registryAccess().holder(researchResourceKey).orElseThrow().value().ritualReward())
-                .anyMatch(recipeResourceKey -> recipeResourceKey.orElseThrow().equals(recipe.id()));
+        Optional<ResourceKey<Research>> optionalResourceKey = recipe.value().requiredResearch();
+        if(optionalResourceKey.isPresent()) {
+            Holder.Reference<Research> researchReference = player.registryAccess().lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow().get(optionalResourceKey.get()).orElseThrow();
+            return playerHasResearchUnlocked(player, researchReference);
+        }
+        return true; //No required research = ritual unlocked by default
     }
 
     public static boolean playerHasResearchGlasses(Player player) {
@@ -113,14 +113,14 @@ public record Research(ResourceKey<Research> parent, String title, String descri
         return player.getItemBySlot(EquipmentSlot.HEAD).is(ItemRegistry.RESEARCHER_GLASSES);
     }
 
-    public static boolean isItemUsedToUnlockNextResearch(ItemStack stack, Player player, RegistryAccess registryAccess) {
-        return Research.getCachedUnlockableResearch(player, registryAccess).stream().anyMatch(
-                researchReference -> researchReference.value().unlockItemStack().is(stack.getItem()));
+    public static boolean isItemUsedToUnlockNextResearch(ItemStack stack, Player player) {
+        return Research.getCachedUnlockableResearch(player).stream().anyMatch(
+                researchReference -> researchReference.value().unlockIngredient().test(stack));
     }
 
-    public static Set<Holder.Reference<Research>> getCachedUnlockableResearch(Player player, RegistryAccess access) {
+    public static Set<Holder.Reference<Research>> getCachedUnlockableResearch(Player player) {
         if(cachedUnlockableResearch == null) {
-            cachedUnlockableResearch = getUnlockableResearch(player, access);
+            cachedUnlockableResearch = getUnlockableResearch(player);
         }
         return cachedUnlockableResearch;
     }
@@ -129,13 +129,13 @@ public record Research(ResourceKey<Research> parent, String title, String descri
         cachedUnlockableResearch = null;
     }
 
-    public static Set<Holder.Reference<Research>> getUnlockableResearch(Player player, RegistryAccess access) {
+    public static Set<Holder.Reference<Research>> getUnlockableResearch(Player player) {
         Set<Holder.Reference<Research>> result = new HashSet<>();
-        access.lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
+        player.registryAccess().lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow()
                 .listElements()
                 .filter(researchReference -> !researchReference.value().inactive())
                 .forEach(researchReference -> {
-                    if(!playerHasResearchUnlocked(player, researchReference) && playerHasResearchUnlocked(player, researchReference.value().getParent(access))) {
+                    if(!playerHasResearchUnlocked(player, researchReference) && playerHasResearchUnlocked(player, researchReference.value().getParent(player.registryAccess()))) {
                         result.add(researchReference);
                     }
                 });

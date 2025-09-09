@@ -3,9 +3,14 @@
   "title": "Souls?",
   "description": "TODO, this needs to be a translation key",
   "icon_item_stack": {
-    "id": "soul_forge:soul_bottle"
+    "id": "soul_forge:small_soul_bottle"
   },
-  "unlock_item_stack": {
-    "id": "soul_forge:soul_bottle"
-  }
+  "unlock_ingredient": [
+    {
+      "item": "soul_forge:small_soul_bottle"
+    },
+    {
+      "item": "soul_forge:large_soul_bottle"
+    }
+  ]
 }

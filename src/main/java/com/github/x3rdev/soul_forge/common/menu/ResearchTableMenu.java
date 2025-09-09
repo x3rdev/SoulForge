@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,23 +60,14 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
     }
 
-    public void submitResearch() {
-        if(player.level().isClientSide()) throw new IllegalCallerException("SubmitResearch called on client");
-        if(research == null) throw new IllegalArgumentException("Sent SubmitResearch packet while not in research unlock screen");
-        ItemStack unlockStack = research.value().unlockItemStack();
-        int count = unlockStack.getCount();
-        Inventory inventory = player.getInventory();
-        if(inventory.countItem(unlockStack.getItem()) >= count) {
-            for (int i = 0; i < count; i++) {
-                for (int j = 0; j < inventory.getContainerSize(); j++) {
-                    if(inventory.getItem(j).is(unlockStack.getItem())) {
-                        inventory.removeItem(j, 1);
-                    }
-                }
+    public void tick() {
+        if(isResearchSelected()) {
+            ItemStack[] items = research.value().unlockIngredient().getItems();
+            final int timeScale = 20;
+            if(items.length != 0) {
+                int l = (int) (player.level().getGameTime() % (items.length * timeScale));
+                container.setItem(0, items[l/timeScale]);
             }
-            Research.grantResearchToPlayer((ServerPlayer) player, research);
-            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.9F, 0.3F);
-            player.closeContainer();
         }
     }
 
@@ -92,7 +84,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             PacketDistributor.sendToServer(new UpdateResearchPayload(research.key(), this.containerId));
         }
         this.research = research;
-        this.container.setItem(0, research.value().unlockItemStack());
     }
 
 

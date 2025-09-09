@@ -42,7 +42,7 @@ public class EntityRegistry {
             1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulScytheProjectileEntity>> SOUL_SCYTHE_PROJECTILE = ENTITIES.register("soul_scythe_projectile",
             () -> EntityType.Builder.<SoulScytheProjectileEntity>of(SoulScytheProjectileEntity::new, MobCategory.MISC)
-                    .sized(1.5F, 0.5F)
+                    .sized(2F, 0.5F)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("soul_scythe_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<WispEntity>> WISP = ENTITIES.register("wisp",

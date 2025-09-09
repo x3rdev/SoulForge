@@ -177,6 +177,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+58, topPos+35, 176, 0, 13, 13);
         guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+105, topPos+35, 189, 0, 13, 13);
         guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+128, topPos+34, 202, 0, 12, 14);
+        renderResearchTitle(guiGraphics);
         guiGraphics.pose().popPose();
     }
 
@@ -196,7 +197,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         int x = scale*(leftPos+16);
         int y = scale*(topPos+31);
         List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*90);
-        for (int i = topDescriptionLine; i < Math.min(lines.size()-1, topDescriptionLine+MAX_DESCRIPTION_LINES); i++) {
+        for (int i = topDescriptionLine; i < Math.min(lines.size(), topDescriptionLine+MAX_DESCRIPTION_LINES); i++) {
             if(i == Math.min(lines.size()-1, topDescriptionLine+MAX_DESCRIPTION_LINES)-1 && lines.size()-1 > topDescriptionLine+MAX_DESCRIPTION_LINES) {
                 guiGraphics.drawString(font, Component.literal("..."), x, y, 0x181d24, false);
             } else {

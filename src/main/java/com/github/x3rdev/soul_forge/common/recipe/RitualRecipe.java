@@ -3,7 +3,9 @@ package com.github.x3rdev.soul_forge.common.recipe;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.RecipeSerializerRegistry;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -13,8 +15,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public record RitualRecipe(
+        Optional<ResourceKey<Research>> requiredResearch,
         Ingredient centerInput,
         List<Ingredient> cardinalInputs,
         List<Ingredient> diagonalInputs,

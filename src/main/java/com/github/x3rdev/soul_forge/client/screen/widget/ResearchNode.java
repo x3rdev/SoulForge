@@ -81,7 +81,9 @@ public class ResearchNode extends MoveableWidget {
                     }
                 }
             }
-            guiGraphics.renderItem(iconItemStack, 5, 5);
+            if(getNodeRenderState() == NodeRenderState.UNLOCKED) {
+                guiGraphics.renderItem(iconItemStack, 5, 5);
+            }
             if(getNodeRenderState() == NodeRenderState.CAN_BE_UNLOCKED) {
                 int uOffset = isHovered() ? 30 : 0;
                 guiGraphics.innerBlit(LOCATION, -2, -2+30, 1, 1+26, 160, (float) (48+uOffset)/256, (float) (78+uOffset)/256, 0, (float) 26/256, 1.0F, 1.0F, 1.0F, 1.0F);

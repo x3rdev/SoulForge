@@ -101,7 +101,7 @@ public class ClientSetup {
             int scaledWidth = mc.getWindow().getGuiScaledWidth();
             int scaledHeight = mc.getWindow().getGuiScaledHeight();
             Optional<ItemEntity> itemLookingAt = getItemLookingAt(event.getPartialTick().getGameTimeDeltaPartialTick(true));
-            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), mc.player, mc.player.registryAccess())) {
+            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), mc.player)) {
                 event.getGuiGraphics().drawCenteredString(
                         mc.font,
                         Component.translatable("soul_forge.gui.researching"),
