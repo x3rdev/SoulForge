@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.mixin;
 
 import com.github.x3rdev.soul_forge.client.ClientSetup;
+import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -45,7 +46,7 @@ public abstract class LevelRendererMixin {
     private void renderLevel(DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix,
                              CallbackInfo ci, @Local PoseStack poseStack) {
         Minecraft mc = Minecraft.getInstance();
-        if(Research.playerHasResearchGlasses(mc.player)) {
+        if(ResearcherGlasses.playerHasResearcherGlassesEquipped(mc.player)) {
             ClientSetup.getOrCreateOverlayTarget().bindWrite(true);
             RenderSystem.clear(16640, Minecraft.ON_OSX);
             MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(new ByteBufferBuilder(1536));

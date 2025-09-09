@@ -18,6 +18,7 @@ public class SoulForgeClient {
         IEventBus modEventBus = modContainer.getEventBus();
         IEventBus neoEventBus = NeoForge.EVENT_BUS;
 
+        modEventBus.addListener(ClientSetup::clientSetup);
         modEventBus.addListener(ClientSetup::registerRenderers);
         modEventBus.addListener(ClientSetup::registerParticleProvider);
         modEventBus.addListener(ClientSetup::registerShaders);

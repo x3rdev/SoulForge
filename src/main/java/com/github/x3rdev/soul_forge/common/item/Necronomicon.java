@@ -29,6 +29,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -147,7 +148,7 @@ public class Necronomicon extends Item implements GeoItem {
             private NecronomiconRenderer renderer;
 
             @Override
-            public @Nullable BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+            public @NotNull BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null)
                     this.renderer = new NecronomiconRenderer();
 

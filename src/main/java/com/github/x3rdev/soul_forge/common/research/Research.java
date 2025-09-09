@@ -108,11 +108,6 @@ public record Research(ResourceKey<Research> parent, String title, String descri
         return true; //No required research = ritual unlocked by default
     }
 
-    public static boolean playerHasResearchGlasses(Player player) {
-        //TODO curios compat
-        return player.getItemBySlot(EquipmentSlot.HEAD).is(ItemRegistry.RESEARCHER_GLASSES);
-    }
-
     public static boolean isItemUsedToUnlockNextResearch(ItemStack stack, Player player) {
         return Research.getCachedUnlockableResearch(player).stream().anyMatch(
                 researchReference -> researchReference.value().unlockIngredient().test(stack));

@@ -33,7 +33,7 @@ public class RitualWidget extends AbstractWidget {
     public void onClick(double mouseX, double mouseY, int button) {
         if(isActive()) {
             super.onClick(mouseX, mouseY, button);
-//            if (ModList.get().isLoaded("jei")) {
+//            if (JeiCompat) {
 //                screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(resourceLocation -> {
 //                    SoulForgePlugin.showRecipe(getRitualResultStack(resourceLocation));
 //                });
@@ -56,7 +56,7 @@ public class RitualWidget extends AbstractWidget {
 //                guiGraphics.renderFakeItem(getRitualResultStack(recipeResourceKey), getX(), getY());
 //                if(isHovered()) {
 //                    guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), getX(), getY(), getX() + 16, getY() + 16, 0x66FFFFFF);
-//                    if(!ModList.get().isLoaded("jei")) {
+//                    if(!JeiCompat) {
 //                        guiGraphics.renderTooltip(Minecraft.getInstance().font, Component.literal("JEI not installed"), mouseX, mouseY);
 //                    }
 //                }

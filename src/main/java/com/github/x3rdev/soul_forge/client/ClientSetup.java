@@ -5,8 +5,10 @@ import com.github.x3rdev.soul_forge.client.particle.RitualTrailParticle;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
 import com.github.x3rdev.soul_forge.client.renderer.block.*;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
+import com.github.x3rdev.soul_forge.client.renderer.item.ResearcherGlassesRenderer;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
+import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -22,7 +24,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -33,6 +37,11 @@ import java.util.Optional;
 
 
 public class ClientSetup {
+
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        CuriosRendererRegistry.register(ItemRegistry.RESEARCHER_GLASSES.get(), ResearcherGlassesRenderer::new);
+    }
 
     @Nullable
     private static ShaderInstance soulShader;
@@ -97,7 +106,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void renderGui(RenderGuiLayerEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
-        if(mc.player != null && Research.playerHasResearchGlasses(mc.player)) {
+        if(mc.player != null && ResearcherGlasses.playerHasResearcherGlassesEquipped(mc.player)) {
             int scaledWidth = mc.getWindow().getGuiScaledWidth();
             int scaledHeight = mc.getWindow().getGuiScaledHeight();
             Optional<ItemEntity> itemLookingAt = getItemLookingAt(event.getPartialTick().getGameTimeDeltaPartialTick(true));

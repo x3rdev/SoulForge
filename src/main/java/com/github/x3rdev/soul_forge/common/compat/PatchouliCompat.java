@@ -8,8 +8,7 @@ public class PatchouliCompat {
 
     private static boolean patchouliModDetected;
 
-    public static boolean PatchouliIsPresent()
-    {
+    public static boolean PatchouliIsPresent() {
         return patchouliModDetected;
     }
 
@@ -18,8 +17,7 @@ public class PatchouliCompat {
         return PatchouliAPI.get();
     }
 
-    public static void init()
-    {
+    public static void init() {
         patchouliModDetected = ModList.get().isLoaded("patchouli");
     }
 }

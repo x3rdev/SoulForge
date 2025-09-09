@@ -1,8 +1,10 @@
 package com.github.x3rdev.soul_forge.common;
 
+import com.github.x3rdev.soul_forge.common.compat.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
+import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
@@ -34,6 +36,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import top.theillusivec4.curios.api.CuriosCapability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +52,12 @@ public class CommonSetup {
                 BlockEntityRegistry.PEDESTAL.get(),
                 (blockEntity, direction) -> blockEntity.getItemHandler()
         );
+        if(CuriosCompat.CuriosIsPresent()) {
+            CuriosCompat.registerCapabilities(event);
+        }
     }
+
+
 
     @SubscribeEvent
     public static void createEntityAttributes(EntityAttributeCreationEvent event) {
@@ -162,7 +170,7 @@ public class CommonSetup {
     }
 
     private static void tickInspect(Player player) {
-        if(!player.level().isClientSide() && Research.playerHasResearchGlasses(player)) {
+        if(!player.level().isClientSide() && ResearcherGlasses.playerHasResearcherGlassesEquipped(player)) {
             Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) player));
             if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), player)){
                 inspectProgress++;

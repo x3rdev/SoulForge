@@ -21,7 +21,10 @@ public class WispAmulet extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slotId, isSelected);
+        tick(stack, level, entity);
+    }
+
+    public static void tick(ItemStack stack, Level level, Entity entity) {
         if (!level.isClientSide() && entity instanceof Player player) {
             if (!wispValid(stack, (ServerLevel) level)) {
                 WispEntity wisp = new WispEntity(level, player);
@@ -32,19 +35,19 @@ public class WispAmulet extends Item {
         }
     }
 
-    private boolean wispValid(ItemStack stack, ServerLevel level) {
+    private static boolean wispValid(ItemStack stack, ServerLevel level) {
         if (getWispUUID(stack) != null) {
             return level.getEntity(getWispUUID(stack)) != null;
         }
         return false;
     }
 
-    private void setWispUUID(ItemStack stack, WispEntity wisp) {
+    private static void setWispUUID(ItemStack stack, WispEntity wisp) {
         stack.set(DataComponentRegistry.WISP_UUID, wisp.getUUID());
     }
 
     @Nullable
-    private UUID getWispUUID(ItemStack stack) {
+    private static UUID getWispUUID(ItemStack stack) {
         return stack.get(DataComponentRegistry.WISP_UUID);
     }
 }
