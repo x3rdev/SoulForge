@@ -5,6 +5,18 @@
       "soul_forge:necronomicon_laugh"
     ]
   },
+  "nergal_death": {
+    "subtitle": "sounds.soul_forge.nergal_death",
+    "sounds": [
+      "soul_forge:nergal_death"
+    ]
+  },
+  "nergal_hurt": {
+    "subtitle": "sounds.soul_forge.nergal_hurt",
+    "sounds": [
+      "soul_forge:nergal_hurt"
+    ]
+  },
   "nergal_idle": {
     "subtitle": "sounds.soul_forge.nergal_idle",
     "sounds": [

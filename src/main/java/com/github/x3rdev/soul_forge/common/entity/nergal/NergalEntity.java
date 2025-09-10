@@ -191,12 +191,12 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return super.getHurtSound(damageSource);
+        return SoundRegistry.NERGAL_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return super.getDeathSound();
+        return SoundRegistry.NERGAL_DEATH.get();
     }
 
     @Nullable
