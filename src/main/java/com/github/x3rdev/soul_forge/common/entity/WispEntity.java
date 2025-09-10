@@ -58,7 +58,6 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                 .build();
     }
 
-    //TODO make wisp play sound and add particles when it appears/disappears
     @Override
     public void tick() {
         super.tick();
@@ -121,6 +120,16 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
             return owner;
         }
         return null;
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return true;
+    }
+
+    @Override
+    public boolean isInvulnerable() {
+        return true;
     }
 
     @Override

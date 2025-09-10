@@ -2,8 +2,11 @@ package com.github.x3rdev.soul_forge.common.entity.nergal;
 
 import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -31,6 +34,7 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -66,6 +70,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     public Predicate<Entity> attackablePredicate() {
         return entity ->
                 ((entity instanceof Mob) || (entity instanceof Player)) &&
+                !entity.isInvulnerable() &&
                 !entity.getType().equals(this.getType()) &&
                 !entity.getType().equals(EntityRegistry.GHOST.get());
     }
@@ -182,5 +187,21 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     @Override
     public AABB getBoundingBoxForCulling() {
         return super.getBoundingBoxForCulling().inflate(6);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return super.getHurtSound(damageSource);
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return super.getDeathSound();
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundRegistry.NERGAL_IDLE.get();
     }
 }

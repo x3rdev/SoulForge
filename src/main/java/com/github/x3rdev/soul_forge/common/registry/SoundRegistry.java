@@ -13,6 +13,7 @@ public class SoundRegistry {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, SoulForge.MOD_ID);
 
     public static final DeferredHolder<SoundEvent, SoundEvent> NECRONOMICON_LAUGH = registerSound("necronomicon_laugh");
+    public static final DeferredHolder<SoundEvent, SoundEvent> NERGAL_IDLE = registerSound("nergal_idle");
     public static final DeferredHolder<SoundEvent, SoundEvent> RITUAL = registerSound("ritual");
     public static final DeferredHolder<SoundEvent, SoundEvent> SCYTHE_SHOOT = registerSound("scythe_shoot");
     public static final DeferredHolder<SoundEvent, SoundEvent> WISP_DING = registerSound("wisp_ding");

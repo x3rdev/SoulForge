@@ -5,6 +5,12 @@
       "soul_forge:necronomicon_laugh"
     ]
   },
+  "nergal_idle": {
+    "subtitle": "sounds.soul_forge.nergal_idle",
+    "sounds": [
+      "soul_forge:nergal_idle"
+    ]
+  },
   "ritual": {
     "subtitle": "sounds.soul_forge.ritual",
     "sounds": [
