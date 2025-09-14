@@ -17,7 +17,9 @@ import java.util.UUID;
 public class WispAmulet extends Item {
 
     public WispAmulet() {
-        super(new Properties().component(DataComponentRegistry.WISP_UUID, null));
+        super(new Properties()
+                .stacksTo(1)
+                .component(DataComponentRegistry.WISP_UUID, null));
     }
 
     @Override
