@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "soul_forge:soul_crystal"
+    },
+    "I": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+      " I ",
+      " G ",
+      "III"
+  ],
+  "result": {
+      "count": 1,
+      "id": "soul_forge:pedestal"
+   }
+}

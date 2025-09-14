@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "pattern": [
+      " G ",
+      "G G",
+      " G "
+  ],
+  "result": {
+      "count": 1,
+      "id": "soul_forge:small_soul_bottle"
+   }
+}

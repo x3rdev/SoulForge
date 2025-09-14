@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "soul_forge:soulwood_planks"
+    }
+  },
+  "pattern": [
+      "G",
+      "G"
+  ],
+  "result": {
+      "count": 4,
+      "id": "soul_forge:soulwood_stick"
+   }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "soul_forge:soul_steel_ingot"
+    }
+  },
+  "pattern": [
+      "G G",
+      "G G",
+      "GGG"
+  ],
+  "result": {
+      "count": 1,
+      "id": "soul_forge:soul_cauldron"
+   }
+}
