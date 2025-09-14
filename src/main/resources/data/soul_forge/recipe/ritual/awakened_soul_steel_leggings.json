@@ -2,7 +2,7 @@
   "type": "soul_forge:ritual",
   "required_research": "soul_forge:soul_steel_awakening",
   "center_input": {
-    "item": "minecraft:soul_steel_leggings"
+    "item": "soul_forge:soul_steel_leggings"
   },
   "cardinal_inputs": [
     {
