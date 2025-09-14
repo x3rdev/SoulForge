@@ -105,7 +105,7 @@ public record Research(ResourceKey<Research> parent, String title, String descri
             Holder.Reference<Research> researchReference = player.registryAccess().lookup(DatapackRegistry.RESEARCH_KEY).orElseThrow().get(optionalResourceKey.get()).orElseThrow();
             return playerHasResearchUnlocked(player, researchReference);
         }
-        return true; //No required research = ritual unlocked by default
+        return true; //No required research -> ritual unlocked by default
     }
 
     public static boolean isItemUsedToUnlockNextResearch(ItemStack stack, Player player) {

@@ -63,10 +63,9 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public void tick() {
         if(isResearchSelected()) {
             ItemStack[] items = research.value().unlockIngredient().getItems();
-            final int timeScale = 20;
             if(items.length != 0) {
-                int l = (int) (player.level().getGameTime() % (items.length * timeScale));
-                container.setItem(0, items[l/timeScale]);
+                int l = (int) (player.level().getGameTime() / 20 % items.length);
+                container.setItem(0, items[l]);
             }
         }
     }
