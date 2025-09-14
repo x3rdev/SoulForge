@@ -57,7 +57,7 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
 
     @Override
     public Component getTitle() {
-        return Component.literal("ritual category");
+        return Component.translatable("gui.soul_forge.category.soul_anvil");
     }
 
     @Override

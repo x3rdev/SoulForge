@@ -35,7 +35,7 @@ public class SoulAnvilCategory implements IRecipeCategory<RecipeHolder<SoulAnvil
 
     @Override
     public Component getTitle() {
-        return Component.literal("soul anvil category");
+        return Component.translatable("gui.soul_forge.category.soul_anvil");
     }
 
     @Override
@@ -57,8 +57,9 @@ public class SoulAnvilCategory implements IRecipeCategory<RecipeHolder<SoulAnvil
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<SoulAnvilRecipe> soulAnvilRecipeRecipeHolder, IFocusGroup focuses) {
         SoulAnvilRecipe recipe = soulAnvilRecipeRecipeHolder.value();
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+
+        for (int i = 0; i < recipe.gridInput().width(); i++) {
+            for (int j = 0; j < recipe.gridInput().height(); j++) {
                 builder.addInputSlot(23+i*18, 8+j*18).addIngredients(recipe.gridInput().ingredients().get(i + 3 * j));
             }
         }
