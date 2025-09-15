@@ -13,17 +13,17 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class NergalSpawnEntity extends Entity implements GeoEntity {
+public class NergalSpawn extends Entity implements GeoEntity {
 
     private static final RawAnimation ANIMATION = RawAnimation.begin().thenLoop("animation");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public NergalSpawnEntity(EntityType<?> entityType, Level level) {
+    public NergalSpawn(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
 
-    public NergalSpawnEntity(Level level) {
+    public NergalSpawn(Level level) {
         this(EntityRegistry.NERGAL_SPAWN.get(), level);
     }
 

@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.entity.ai;
+package com.github.x3rdev.soul_forge.common.entity.brain;
 
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
 import net.minecraft.resources.ResourceKey;

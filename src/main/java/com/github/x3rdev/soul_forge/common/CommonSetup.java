@@ -3,7 +3,7 @@ package com.github.x3rdev.soul_forge.common;
 import com.github.x3rdev.soul_forge.common.compat.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
+import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
@@ -60,7 +60,7 @@ public class CommonSetup {
     public static void createEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(EntityRegistry.WISP.get(), WispEntity.createAttributes());
         event.put(EntityRegistry.GHOST.get(), Ghost.createAttributes());
-        event.put(EntityRegistry.NERGAL.get(), NergalEntity.createAttributes());
+        event.put(EntityRegistry.NERGAL.get(), Nergal.createAttributes());
         event.put(EntityRegistry.SOUL.get(), Soul.createAttributes());
         event.put(EntityRegistry.UNDEAD_SOUL.get(), Soul.createAttributes());
         event.put(EntityRegistry.NETHER_SOUL.get(), Soul.createAttributes());

@@ -2,7 +2,7 @@ package com.github.x3rdev.soul_forge.client.renderer.entity;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.shader.ShaderRegistry;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
+import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -17,7 +17,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.function.Supplier;
 
-public class NergalRenderer extends GeoEntityRenderer<NergalEntity> {
+public class NergalRenderer extends GeoEntityRenderer<Nergal> {
 
     private final Supplier<Boolean> renderDebugHitbox;
 
@@ -27,15 +27,15 @@ public class NergalRenderer extends GeoEntityRenderer<NergalEntity> {
     }
 
     @Override
-    public void renderFinal(PoseStack poseStack, NergalEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
+    public void renderFinal(PoseStack poseStack, Nergal animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int colour) {
         super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, colour);
         if(renderDebugHitbox.get()) {
-            LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.LINES), animatable.getEntityData().get(NergalEntity.DEBUG_ATTACK_BOX), 1, 1, 1, 1);
+            LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.LINES), animatable.getEntityData().get(Nergal.DEBUG_ATTACK_BOX), 1, 1, 1, 1);
         }
     }
 
     @Override
-    public @Nullable RenderType getRenderType(NergalEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+    public @Nullable RenderType getRenderType(Nergal animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return ShaderRegistry.soul(texture);
     }
 }

@@ -95,7 +95,8 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addEntityType(EntityRegistry.NERGAL_SPAWN, "Nergal Spawn");
 
         // Tooltip
-        add("item.soul_forge.soul_bottle.tooltip", "Contains %s soul(s)");
+        add("item.soul_forge.soul_bottle.tooltip", "Contains %s/%s soul");
+        add("item.soul_forge.soul_bottle.tooltip_plural", "Contains %s/%s souls");
         add("item.soul_forge.soul_bottle.tooltip.empty", "Contains nothing");
 
         //Container

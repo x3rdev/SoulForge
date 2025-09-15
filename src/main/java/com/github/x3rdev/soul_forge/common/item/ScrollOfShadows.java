@@ -1,15 +1,10 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSpawnEntity;
+import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
+import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSpawn;
 import com.github.x3rdev.soul_forge.common.packet.SendParticlePayload;
-import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import com.github.x3rdev.soul_forge.common.scheduler.ServerScheduler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
@@ -19,11 +14,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ScrollOfShadows extends Item {
@@ -49,7 +42,7 @@ public class ScrollOfShadows extends Item {
                         level, player, ClipContext.Fluid.NONE
                 );
                 Vec3 position = blockhitresult.getType().equals(HitResult.Type.MISS) ? livingEntity.position() : blockhitresult.getLocation();
-                NergalSpawnEntity nergalSpawn = new NergalSpawnEntity(level);
+                NergalSpawn nergalSpawn = new NergalSpawn(level);
                 nergalSpawn.setPos(position.add(0, 0.1, 0));
                 level.addFreshEntity(nergalSpawn);
                 for (int i = 0; i < 180; i++) {
@@ -64,7 +57,7 @@ public class ScrollOfShadows extends Item {
                 }
                 ServerScheduler.schedule(
                         () -> {
-                            NergalEntity nergal = new NergalEntity(level);
+                            Nergal nergal = new Nergal(level);
                             nergal.setPos(position);
                             level.addFreshEntity(nergal);
                             LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);

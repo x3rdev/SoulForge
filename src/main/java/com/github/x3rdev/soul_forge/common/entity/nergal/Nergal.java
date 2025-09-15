@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity.nergal;
 
+import com.github.x3rdev.soul_forge.common.entity.nergal.brain.*;
 import com.github.x3rdev.soul_forge.common.registry.EntityDataRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
@@ -45,9 +46,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<NergalEntity> {
+public class Nergal extends Monster implements GeoEntity, SmartBrainOwner<Nergal> {
 
-    public static final EntityDataAccessor<AABB> DEBUG_ATTACK_BOX = SynchedEntityData.defineId(NergalEntity.class, EntityDataRegistry.DEBUG_BOX.get());
+    public static final EntityDataAccessor<AABB> DEBUG_ATTACK_BOX = SynchedEntityData.defineId(Nergal.class, EntityDataRegistry.DEBUG_BOX.get());
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -59,11 +60,11 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
 
     private int ticksAttacking = 0;
 
-    public NergalEntity(EntityType<? extends Monster> entityType, Level level) {
+    public Nergal(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
 
-    public NergalEntity(Level level) {
+    public Nergal(Level level) {
         this(EntityRegistry.NERGAL.get(), level);
     }
 
@@ -118,7 +119,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public List<? extends ExtendedSensor<NergalEntity>> getSensors() {
+    public List<? extends ExtendedSensor<Nergal>> getSensors() {
         return List.of(
                 new NearbyPlayersSensor<>(),
                 new NearbyLivingEntitySensor<>(),
@@ -127,7 +128,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public BrainActivityGroup<NergalEntity> getCoreTasks() {
+    public BrainActivityGroup<Nergal> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
                 new LookAtTarget<>(),
                 new NergalMoveToWalkTarget()
@@ -135,7 +136,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public BrainActivityGroup<NergalEntity> getIdleTasks() {
+    public BrainActivityGroup<Nergal> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<>(
                         new TargetOrRetaliate<>().attackablePredicate(livingEntity -> attackablePredicate().test(livingEntity)),
@@ -147,13 +148,14 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     }
 
     @Override
-    public BrainActivityGroup<NergalEntity> getFightTasks() {
+    public BrainActivityGroup<Nergal> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>(),
                 new SetWalkTargetToAttackTarget<>(),
                 new OneRandomBehaviour<>(
-                    new NergalSwingAttack().cooldownFor(mob -> 80),
-                    new NergalSwipeAttack().cooldownFor(mob -> 80),
+                    new NergalSwingAttack().cooldownFor(entity -> 80),
+                    new NergalSwipeAttack().cooldownFor(entity -> 80),
+                    new NergalScytheThrowAttack().cooldownFor(entity -> 100),
                     new SummonGhostsAttack().cooldownFor(entity -> 160)
                 )
         );
@@ -162,7 +164,7 @@ public class NergalEntity extends Monster implements GeoEntity, SmartBrainOwner<
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "c", 1, state -> {
-            if(state.isMoving()) {
+            if(state.getAnimatable().getDeltaMovement().lengthSqr() > 0.005) {
                 return state.setAndContinue(WALK);
             }
             return state.setAndContinue(IDLE);

@@ -73,7 +73,7 @@ public class SoulBottle extends Item {
             String soulType = formatSoulTypeName(getSoulType(stack));
             tooltipComponents.add(Component.translatable(
                     soulCount == 1 ? "item.soul_forge.soul_bottle.tooltip" : "item.soul_forge.soul_bottle.tooltip_plural"
-                    , soulCount + soulType).withColor(getSoulType(stack).color()));
+                    , soulCount + soulType, capacity).withColor(getSoulType(stack).color()));
         } else {
             tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip.empty").withStyle(ChatFormatting.GRAY));
         }

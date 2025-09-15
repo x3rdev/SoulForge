@@ -2,8 +2,8 @@ package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.entity.*;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalEntity;
-import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSpawnEntity;
+import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
+import com.github.x3rdev.soul_forge.common.entity.nergal.NergalSpawn;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -56,13 +56,13 @@ public class EntityRegistry {
             MobCategory.MONSTER,
             0.6F,
             1.8F);
-    public static final DeferredHolder<EntityType<?>, EntityType<NergalEntity>> NERGAL = registerMob("nergal",
-            NergalEntity::new,
+    public static final DeferredHolder<EntityType<?>, EntityType<Nergal>> NERGAL = registerMob("nergal",
+            Nergal::new,
             MobCategory.MONSTER,
             2.5F,
             4F);
-    public static final DeferredHolder<EntityType<?>, EntityType<NergalSpawnEntity>> NERGAL_SPAWN = ENTITIES.register("nergal_spawn",
-            () -> EntityType.Builder.<NergalSpawnEntity>of(NergalSpawnEntity::new, MobCategory.MISC)
+    public static final DeferredHolder<EntityType<?>, EntityType<NergalSpawn>> NERGAL_SPAWN = ENTITIES.register("nergal_spawn",
+            () -> EntityType.Builder.<NergalSpawn>of(NergalSpawn::new, MobCategory.MISC)
                     .sized(4F, 0.5F)
                     .noSave()
                     .noSummon()

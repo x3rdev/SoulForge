@@ -39,7 +39,7 @@ public class SoulScythe extends Scythe {
             player.getCooldowns().addCooldown(this, 40);
         }
         if (!pLevel.isClientSide()) {
-            SoulScytheProjectile projectile = new SoulScytheProjectile(pLevel, pLivingEntity, pStack);
+            SoulScytheProjectile projectile = new SoulScytheProjectile(pLevel, pLivingEntity);
             projectile.setPos(pLivingEntity.getEyePosition().add(0, -0.30F, 0).add(pLivingEntity.getLookAngle().normalize()));
             projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, 1.0F, 0.05F);
             pLevel.addFreshEntity(projectile);

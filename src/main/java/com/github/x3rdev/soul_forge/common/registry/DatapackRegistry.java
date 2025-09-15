@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
-import com.github.x3rdev.soul_forge.common.entity.ai.MovingHitboxAttackPath;
+import com.github.x3rdev.soul_forge.common.entity.brain.MovingHitboxAttackPath;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

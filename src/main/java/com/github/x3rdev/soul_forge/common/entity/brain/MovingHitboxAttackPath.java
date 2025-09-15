@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.entity.ai;
+package com.github.x3rdev.soul_forge.common.entity.brain;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
