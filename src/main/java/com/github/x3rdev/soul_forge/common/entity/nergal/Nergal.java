@@ -18,6 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -48,7 +49,8 @@ import java.util.function.Predicate;
 
 public class Nergal extends Monster implements GeoEntity, SmartBrainOwner<Nergal> {
 
-    public static final EntityDataAccessor<AABB> DEBUG_ATTACK_BOX = SynchedEntityData.defineId(Nergal.class, EntityDataRegistry.DEBUG_BOX.get());
+    public static final EntityDataAccessor<AABB> DEBUG_ATTACK_BOX = SynchedEntityData.defineId(Nergal.class, EntityDataRegistry.DEBUG_ATTACK_BOX.get());
+    public static final EntityDataAccessor<Boolean> HAS_WALK_TARGET = SynchedEntityData.defineId(Nergal.class, EntityDataRegistry.HAS_WALK_TARGET.get());
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -164,7 +166,7 @@ public class Nergal extends Monster implements GeoEntity, SmartBrainOwner<Nergal
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "c", 1, state -> {
-            if(state.getAnimatable().getDeltaMovement().lengthSqr() > 0.005) {
+            if(state.isMoving() || state.getAnimatable().getEntityData().get(HAS_WALK_TARGET)) {
                 return state.setAndContinue(WALK);
             }
             return state.setAndContinue(IDLE);
@@ -183,7 +185,8 @@ public class Nergal extends Monster implements GeoEntity, SmartBrainOwner<Nergal
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DEBUG_ATTACK_BOX, AABB.INFINITE);
+        builder.define(DEBUG_ATTACK_BOX, AABB.ofSize(Vec3.ZERO, 0, 0, 0));
+        builder.define(HAS_WALK_TARGET, false);
     }
 
     @Override

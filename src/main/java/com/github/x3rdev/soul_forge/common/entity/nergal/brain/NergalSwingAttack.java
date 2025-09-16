@@ -5,6 +5,7 @@ import com.github.x3rdev.soul_forge.common.entity.brain.MovingHitboxAttack;
 import com.github.x3rdev.soul_forge.common.entity.brain.MovingHitboxAttackPath;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -44,14 +45,17 @@ public class NergalSwingAttack extends MovingHitboxAttack<Nergal> {
     }
 
     @Override
-    protected void tick(ServerLevel level, Nergal entity, long gameTime) {
-        super.tick(level, entity, gameTime);
-        entity.incrementTicksAttacking();
-        AABB hurtBox = hurtBox(entity, Math.min(getSwingPath(entity).points().length-1, entity.getTicksAttacking()+4));
-        entity.getEntityData().set(Nergal.DEBUG_ATTACK_BOX, hurtBox);
-        if(entity.getTicksAttacking() > 19 && entity.getTicksAttacking() < 32) {
-            level.getEntities(entity, hurtBox.move(entity.position()), EntitySelector.LIVING_ENTITY_STILL_ALIVE.and(entity.attackablePredicate()))
-                    .forEach(entity::doHurtTarget);
+    protected void tick(ServerLevel level, Nergal nergal, long gameTime) {
+        super.tick(level, nergal, gameTime);
+        nergal.incrementTicksAttacking();
+        AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length-1, nergal.getTicksAttacking()+4));
+        nergal.getEntityData().set(Nergal.DEBUG_ATTACK_BOX, hurtBox);
+        if(nergal.getTicksAttacking() == 19) {
+            nergal.playSound(SoundRegistry.NERGAL_SWING.get());
+        }
+        if(nergal.getTicksAttacking() > 19 && nergal.getTicksAttacking() < 32) {
+            level.getEntities(nergal, hurtBox.move(nergal.position()), EntitySelector.LIVING_ENTITY_STILL_ALIVE.and(nergal.attackablePredicate()))
+                    .forEach(nergal::doHurtTarget);
         }
     }
 

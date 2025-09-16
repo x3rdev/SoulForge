@@ -16,6 +16,8 @@ public class SoundRegistry {
     public static final DeferredHolder<SoundEvent, SoundEvent> NERGAL_DEATH = registerSound("nergal_death");
     public static final DeferredHolder<SoundEvent, SoundEvent> NERGAL_HURT = registerSound("nergal_hurt");
     public static final DeferredHolder<SoundEvent, SoundEvent> NERGAL_IDLE = registerSound("nergal_idle");
+    public static final DeferredHolder<SoundEvent, SoundEvent> NERGAL_SWING = registerSound("nergal_swing");
+    public static final DeferredHolder<SoundEvent, SoundEvent> NERGAL_SWIPE = registerSound("nergal_swipe");
     public static final DeferredHolder<SoundEvent, SoundEvent> RITUAL = registerSound("ritual");
     public static final DeferredHolder<SoundEvent, SoundEvent> SCYTHE_SHOOT = registerSound("scythe_shoot");
     public static final DeferredHolder<SoundEvent, SoundEvent> WISP_DING = registerSound("wisp_ding");

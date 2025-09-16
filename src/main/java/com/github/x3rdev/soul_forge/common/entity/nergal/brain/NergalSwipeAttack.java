@@ -6,6 +6,7 @@ import com.github.x3rdev.soul_forge.common.entity.brain.MovingHitboxAttackPath;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -50,6 +51,9 @@ public class NergalSwipeAttack extends MovingHitboxAttack<Nergal> {
         nergal.incrementTicksAttacking();
         AABB hurtBox = hurtBox(nergal, Math.min(getSwingPath(nergal).points().length - 1, nergal.getTicksAttacking()));
         nergal.getEntityData().set(Nergal.DEBUG_ATTACK_BOX, hurtBox);
+        if(nergal.getTicksAttacking() == 10) {
+            nergal.playSound(SoundRegistry.NERGAL_SWIPE.get());
+        }
         if(nergal.getTicksAttacking() > 10 && nergal.getTicksAttacking() < 20) {
             level.getEntities(nergal, hurtBox.move(nergal.position()), EntitySelector.NO_SPECTATORS.and(entity -> !entity.getType().equals(EntityRegistry.GHOST.get())))
                     .forEach(nergal::doHurtTarget);

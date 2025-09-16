@@ -23,6 +23,18 @@
       "soul_forge:nergal_idle"
     ]
   },
+  "nergal_swing": {
+    "subtitle": "sounds.soul_forge.nergal_swing",
+    "sounds": [
+      "soul_forge:nergal_swing"
+    ]
+  },
+  "nergal_swipe": {
+    "subtitle": "sounds.soul_forge.nergal_swipe",
+    "sounds": [
+      "soul_forge:nergal_swipe"
+    ]
+  },
   "ritual": {
     "subtitle": "sounds.soul_forge.ritual",
     "sounds": [

@@ -1,6 +1,8 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.phys.AABB;
@@ -12,7 +14,7 @@ public class EntityDataRegistry {
 
     public static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA = DeferredRegister.create(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS, SoulForge.MOD_ID);
 
-    public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<AABB>> DEBUG_BOX = ENTITY_DATA.register("debug_box",
+    public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<AABB>> DEBUG_ATTACK_BOX = ENTITY_DATA.register("debug_box",
             () -> EntityDataSerializer.forValueType(StreamCodec.of(
                     (buffer, aabb) -> {
                         buffer.writeVec3(aabb.getMinPosition());
@@ -21,4 +23,6 @@ public class EntityDataRegistry {
                     buffer -> new AABB(buffer.readVec3(), buffer.readVec3())
             )));
 
+    public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Boolean>> HAS_WALK_TARGET = ENTITY_DATA.register("has_walk_target",
+            () -> EntityDataSerializer.forValueType(ByteBufCodecs.BOOL));
 }
