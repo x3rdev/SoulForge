@@ -31,12 +31,9 @@ public class ScrollOfShadows extends Item {
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
         if(livingEntity instanceof Player player) {
             stack.consume(1, livingEntity);
-
-
-
             if (!level.isClientSide()) {
                 BlockHitResult blockhitresult = getPlayerPOVHitResult(
                         level, player, ClipContext.Fluid.NONE
@@ -69,7 +66,6 @@ public class ScrollOfShadows extends Item {
                 );
             }
         }
-        return stack;
     }
 
     @Override
