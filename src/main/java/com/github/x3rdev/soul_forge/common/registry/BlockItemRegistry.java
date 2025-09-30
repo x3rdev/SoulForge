@@ -53,6 +53,8 @@ public class BlockItemRegistry {
             () -> new BlockItem(BlockRegistry.SOULWOOD_LOG.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOULWOOD_PLANKS = BLOCK_ITEMS.register("soulwood_planks",
             () -> new BlockItem(BlockRegistry.SOULWOOD_PLANKS.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, BlockItem> SOULWOOD_STAIRS = BLOCK_ITEMS.register("soulwood_stairs",
+            () -> new BlockItem(BlockRegistry.SOULWOOD_STAIRS.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> PEDESTAL = BLOCK_ITEMS.register("pedestal",
             () -> new GeckoBlock(BlockRegistry.PEDESTAL.get(), new Item.Properties()));
     public static final DeferredHolder<Item, BlockItem> SOUL_CAULDRON = BLOCK_ITEMS.register("soul_cauldron",

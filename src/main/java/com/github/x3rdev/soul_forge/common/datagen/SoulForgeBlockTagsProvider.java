@@ -19,11 +19,15 @@ public class SoulForgeBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(BlockTags.STONE_BRICKS).add(BlockRegistry.SOUL_BRICKS.get());
-        tag(BlockTags.STAIRS).add(BlockRegistry.SOUL_BRICK_STAIRS.get());
+        tag(BlockTags.STAIRS).add(
+                BlockRegistry.SOUL_BRICK_STAIRS.get(),
+                BlockRegistry.SOULWOOD_STAIRS.get()
+        );
         tag(BlockTags.SLABS).add(BlockRegistry.SOUL_BRICK_SLAB.get());
         tag(BlockTags.WALLS).add(BlockRegistry.SOUL_BRICK_WALL.get());
         tag(BlockTags.LOGS).add(BlockRegistry.SOULWOOD_LOG.get());
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_CRYSTAL_ORE.get());
+//        tag(BlockTags.MINEABLE_WITH_AXE).add();
     }
 }
