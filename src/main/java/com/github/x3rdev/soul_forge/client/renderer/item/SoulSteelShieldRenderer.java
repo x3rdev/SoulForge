@@ -1,15 +1,13 @@
 package com.github.x3rdev.soul_forge.client.renderer.item;
 
-import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.renderer.layer.SoulGlowingLayer;
 import com.github.x3rdev.soul_forge.common.item.SoulSteelShield;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
@@ -17,6 +15,7 @@ public class SoulSteelShieldRenderer extends GeoItemRenderer<SoulSteelShield> {
 
     public SoulSteelShieldRenderer(GeoModel<SoulSteelShield> model) {
         super(model);
+        addRenderLayer(new SoulGlowingLayer<>(this));
     }
 
     @Override
