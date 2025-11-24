@@ -27,3 +27,4 @@ jobs:
         with:
           name: soul_forge
           path: build/libs
+          compression-level: 9
