@@ -128,8 +128,8 @@ public class ClientSetup {
         Vec3 lookVec = mc.player.getLookAngle().normalize();
 
         List<Entity> entities = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            AABB box = AABB.ofSize(eyePos.add(lookVec.scale(i)), 1, 1, 1);
+        for (int i = 0; i < 4; i++) {
+            AABB box = AABB.ofSize(eyePos.add(lookVec.scale(i)), 1.25, 1.25, 1.25);
             entities.addAll(mc.level.getEntities(mc.player, box));
         }
         return entities.stream()
