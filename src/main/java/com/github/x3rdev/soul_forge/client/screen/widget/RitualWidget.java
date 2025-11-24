@@ -38,7 +38,9 @@ public class RitualWidget extends AbstractWidget {
             super.onClick(mouseX, mouseY, button);
             if (JeiCompat.JeiIsPresent()) {
                 List<ResourceLocation> recipes = recipesUnlockedByRitual();
-                SoulForgePlugin.showRecipes(recipes);
+                if(!recipes.isEmpty()) {
+                    SoulForgePlugin.showRecipes(recipes);
+                }
 //                screen.getActiveResearch().orElseThrow().value().ritualReward().ifPresent(resourceLocation -> {
 //                    SoulForgePlugin.showRecipe(getRitualResultStack(resourceLocation));
 //                });
@@ -57,13 +59,16 @@ public class RitualWidget extends AbstractWidget {
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(isActive()) {
             ClientLevel level = Minecraft.getInstance().level;
-            ResourceLocation resourceLocation = recipesUnlockedByRitual().get((int) (level.getGameTime() / 20 % recipesUnlockedByRitual().size()));
-            level.getRecipeManager().byKey(resourceLocation).ifPresent(holder -> {
-                guiGraphics.renderFakeItem(holder.value().getResultItem(level.registryAccess()), getX(), getY());
-                if(isHovered()) {
-                    guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), getX(), getY(), getX() + 16, getY() + 16, 0x66FFFFFF);
-                }
-            });
+            List<ResourceLocation> recipesUnlockedByRitual = recipesUnlockedByRitual();
+            if(!recipesUnlockedByRitual.isEmpty()) {
+                ResourceLocation resourceLocation = recipesUnlockedByRitual.get((int) (level.getGameTime() / 20 % recipesUnlockedByRitual.size()));
+                level.getRecipeManager().byKey(resourceLocation).ifPresent(holder -> {
+                    guiGraphics.renderFakeItem(holder.value().getResultItem(level.registryAccess()), getX(), getY());
+                    if (isHovered()) {
+                        guiGraphics.fill(RenderType.guiGhostRecipeOverlay(), getX(), getY(), getX() + 16, getY() + 16, 0x66FFFFFF);
+                    }
+                });
+            }
         }
     }
 
