@@ -58,9 +58,11 @@ public class ScrollOfShadows extends Item {
                             nergal.setPos(position);
                             level.addFreshEntity(nergal);
                             LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(level);
-                            lightningbolt.setVisualOnly(true);
-                            lightningbolt.setPos(position);
-                            level.addFreshEntity(lightningbolt);
+                            if(lightningbolt != null) {
+                                lightningbolt.setVisualOnly(true);
+                                lightningbolt.setPos(position);
+                                level.addFreshEntity(lightningbolt);
+                            }
                         },
                         190
                 );

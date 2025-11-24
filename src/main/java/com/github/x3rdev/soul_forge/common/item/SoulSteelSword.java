@@ -19,7 +19,7 @@ public class SoulSteelSword extends SwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public SoulSteelSword(Tier tier, Properties properties) {
-        super(tier, properties.attributes(SwordItem.createAttributes(tier, 4, -3.4F)));
+        super(tier, properties.attributes(SwordItem.createAttributes(tier, 4, -2.4F)));
     }
 
     @Override

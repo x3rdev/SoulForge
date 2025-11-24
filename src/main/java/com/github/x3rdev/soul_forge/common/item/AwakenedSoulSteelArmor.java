@@ -3,9 +3,11 @@ package com.github.x3rdev.soul_forge.common.item;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.renderer.item.SoulSteelArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -15,8 +17,8 @@ import java.util.function.Consumer;
 
 public class AwakenedSoulSteelArmor extends SoulSteelArmor {
 
-    public AwakenedSoulSteelArmor(Type type, Properties properties) {
-        super(type, properties);
+    public AwakenedSoulSteelArmor(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super(material, type, properties);
     }
 
     @Override

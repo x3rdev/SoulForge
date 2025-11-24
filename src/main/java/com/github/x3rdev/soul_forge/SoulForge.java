@@ -24,6 +24,7 @@ public class SoulForge {
         IEventBus modEventBus = modContainer.getEventBus();
         IEventBus neoEventBus = NeoForge.EVENT_BUS;
 
+        ArmorMaterialRegistry.ARMOR_MATERIALS.register(modEventBus);
         BlockEntityRegistry.BLOCK_ENTITIES.register(modEventBus);
         BlockItemRegistry.BLOCK_ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);

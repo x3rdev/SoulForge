@@ -24,8 +24,8 @@ import java.util.function.Consumer;
 public class SoulSteelArmor extends ArmorItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public SoulSteelArmor(Type type, Properties properties) {
-        super(ArmorMaterials.GOLD, type, properties);
+    public SoulSteelArmor(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super(material, type, properties);
     }
 
     @Override
