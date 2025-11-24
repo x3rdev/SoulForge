@@ -5,31 +5,31 @@
       "a": {
         "item": "soul_forge:soul_steel_ingot"
       },
-        "b": {
-          "item": "soul_forge:soulwood_stick"
-        }
-      },
-      "pattern": [
-        "a",
-        "a",
-        "b"
-      ]
-    },
-    "outer_inputs": [
-      {
-        "item": "soul_forge:empowered_soul_crystal"
-      },
-      {
-        "item": "soul_forge:empowered_soul_crystal"
-      },
-      {
-        "item": "soul_forge:empowered_soul_crystal"
-      },
-      {
-        "item": "soul_forge:empowered_soul_crystal"
+      "b": {
+        "item": "soul_forge:soulwood_stick"
       }
-    ],
-    "result": {
-      "id": "soul_forge:soul_steel_sword"
+    },
+    "pattern": [
+      "a",
+      "a",
+      "b"
+    ]
+  },
+  "outer_inputs": [
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
+    },
+    {
+      "item": "soul_forge:empowered_soul_crystal"
     }
+  ],
+  "result": {
+    "id": "soul_forge:soul_steel_sword"
   }
+}

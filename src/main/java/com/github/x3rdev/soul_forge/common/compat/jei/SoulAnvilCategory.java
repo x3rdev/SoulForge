@@ -60,7 +60,7 @@ public class SoulAnvilCategory implements IRecipeCategory<RecipeHolder<SoulAnvil
 
         for (int i = 0; i < recipe.gridInput().width(); i++) {
             for (int j = 0; j < recipe.gridInput().height(); j++) {
-                builder.addInputSlot(23+i*18, 8+j*18).addIngredients(recipe.gridInput().ingredients().get(i + 3 * j));
+                builder.addInputSlot(23 + i * 18, 8 + j * 18).addIngredients(recipe.gridInput().ingredients().get(i + recipe.gridInput().width() * j));
             }
         }
         builder.addInputSlot(1, 1).addIngredients(recipe.outerInputs().get(0));
