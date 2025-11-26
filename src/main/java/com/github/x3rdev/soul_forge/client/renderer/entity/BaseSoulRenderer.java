@@ -20,6 +20,7 @@ public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<Soul> {
 
     protected BaseSoulRenderer(EntityRendererProvider.Context renderManager, GeoModel<Soul> model) {
         super(renderManager, model);
+
     }
 
     @Override
@@ -60,4 +61,5 @@ public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<Soul> {
         }
         return pair;
     }
+
 }
