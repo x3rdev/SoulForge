@@ -65,13 +65,16 @@ public record Research(ResourceKey<Research> parent, String title, String descri
             }
     );
 
-
     public static Holder.Reference<Research> getEmptyResearch(RegistryAccess access) {
         return access.holder(EMPTY_RESOURCE_KEY).orElseThrow();
     }
 
     public static Holder.Reference<Research> getHeadResearch(RegistryAccess access) {
         return access.holder(HEAD_RESOURCE_KEY).orElseThrow();
+    }
+
+    public static boolean isEmpty(Holder.Reference<Research> researchReference) {
+        return EMPTY_RESOURCE_KEY.equals(researchReference.getKey());
     }
 
     public static void grantResearchToPlayer(ServerPlayer player, Holder.Reference<Research> research) {
