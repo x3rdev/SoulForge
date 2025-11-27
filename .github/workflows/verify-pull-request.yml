@@ -18,14 +18,9 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
       - name: Build with gradle
-        run: ./gradlew build
+        run: ./gradlew build --no-daemon --parallel
       - name: Run tests
-        run: ./gradlew test
-      - name: Stop gradle
-        run: ./gradlew --stop
-#      - name: Upload build
-#        uses: actions/upload-artifact@v4
-#        with:
+        run: ./gradlew test --no-daemon --parallel
 #          name: soul_forge
 #          path: build/libs
 #          compression-level: 9
