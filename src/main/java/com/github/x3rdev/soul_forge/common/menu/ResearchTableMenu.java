@@ -1,6 +1,5 @@
 package com.github.x3rdev.soul_forge.common.menu;
 
-import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
@@ -8,11 +7,7 @@ import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,16 +16,14 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 
 public class ResearchTableMenu extends AbstractContainerMenu {
 
     public final Player player;
     private final Container container;
     private final ContainerLevelAccess access;
-    private @Nullable Holder.Reference<Research> research;
+    private Holder.Reference<Research> research;
 
     //Client
     public ResearchTableMenu(int containerId, Inventory playerInventory, FriendlyByteBuf byteBuf) {
@@ -44,9 +37,11 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     //Server
     public ResearchTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
         super(MenuTypeRegistry.RESEARCH_TABLE.get(), containerId);
-        this.access = access;
-        this.container = new SimpleContainer(2);
         this.player = playerInventory.player;
+        this.container = new SimpleContainer(2);
+        this.access = access;
+        this.research = Research.getEmptyResearch(player.registryAccess());
+
         this.addSlot(new ResearchUnlockSlot(container, 0, 33, 34));
         this.addSlot(new ResearchUnlockSlot(container, 1, 80, 34));
         container.setItem(1, ItemRegistry.RESEARCHER_GLASSES.get().getDefaultInstance());
@@ -71,7 +66,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     public boolean isResearchSelected() {
-        return research != null;
+        return !Research.isEmpty(research);
     }
 
     public ItemStack getNecronomicon() {

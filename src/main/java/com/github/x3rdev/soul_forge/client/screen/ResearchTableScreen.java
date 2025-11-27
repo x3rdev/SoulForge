@@ -3,7 +3,6 @@ package com.github.x3rdev.soul_forge.client.screen;
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.screen.widget.*;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
 import net.minecraft.client.Minecraft;
@@ -38,7 +37,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private double anchorY;
     private int treeDepth;
     private int treeBreadth;
-    private @Nullable Holder.Reference<Research> activeResearch;
+    private Holder.Reference<Research> activeResearch;
     private int topDescriptionLine;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
@@ -56,13 +55,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
-        addRenderableWidget(new RitualWidget(leftPos+138, topPos+35, this));
+        this.activeResearch = Research.getEmptyResearch(menu.player.registryAccess());
+        addRenderableWidget(new ClickableRitualWidget(leftPos+138, topPos+35, this));
+        addRenderableWidget(new ResearchTableBackButton(leftPos+138, topPos+5, this));
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(inspectScreenActive()) {
-            int descriptionLineCount = this.font.split(Component.literal(getActiveResearch().orElseThrow().value().description()), 2*90).size();
+            int descriptionLineCount = this.font.split(Component.literal(getActiveResearch().value().description()), 2*90).size();
             topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
@@ -149,7 +150,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderInspectScreen(GuiGraphics guiGraphics) {
-        if(Research.playerHasResearchUnlocked(Minecraft.getInstance().player, getActiveResearch().orElseThrow())) {
+        if(Research.playerHasResearchUnlocked(Minecraft.getInstance().player, getActiveResearch())) {
             renderUnlockedResearch(guiGraphics);
         } else {
             renderLockedResearch(guiGraphics);
@@ -241,15 +242,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     public boolean treeScreenActive() {
-        return getActiveResearch().isEmpty(); //If we have not selected a research, do default stuff
+        return Research.isEmpty(getActiveResearch()); //If we have not selected a research, do default stuff
     }
 
     public boolean inspectScreenActive() {
-        return getActiveResearch().isPresent(); //If we have selected a research, we should render new bg and do new behavior
+        return !Research.isEmpty(getActiveResearch()); //If we have selected a research, we should render new bg and do new behavior
     }
 
-    public Optional<Holder.Reference<Research>> getActiveResearch() {
-        return Optional.ofNullable(activeResearch);
+    public Holder.Reference<Research> getActiveResearch() {
+        return activeResearch;
     }
 
     public void setActiveResearch(Holder.Reference<Research> research) {

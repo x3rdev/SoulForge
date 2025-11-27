@@ -1,10 +1,8 @@
 package com.github.x3rdev.soul_forge.client.screen.widget;
 
-import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.compat.jei.JeiCompat;
 import com.github.x3rdev.soul_forge.common.compat.jei.SoulForgePlugin;
-import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.client.Minecraft;
@@ -16,18 +14,16 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-public class RitualWidget extends AbstractWidget {
+public class ClickableRitualWidget extends AbstractWidget {
 
     private final ResearchTableScreen screen;
 
-    public RitualWidget(int x, int y, ResearchTableScreen screen) {
+    public ClickableRitualWidget(int x, int y, ResearchTableScreen screen) {
         super(x, y, 16, 16, Component.literal("ritual"));
         this.screen = screen;
     }
@@ -78,7 +74,7 @@ public class RitualWidget extends AbstractWidget {
             return level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.RITUAL.get()).stream()
                     .filter(recipeRecipeHolder -> {
                         if (recipeRecipeHolder.value().requiredResearch().isPresent()) {
-                            return Objects.equals(screen.getActiveResearch().get().getKey(), recipeRecipeHolder.value().requiredResearch().get());
+                            return Objects.equals(screen.getActiveResearch().getKey(), recipeRecipeHolder.value().requiredResearch().get());
                         }
                         return false;
                     })
@@ -90,7 +86,7 @@ public class RitualWidget extends AbstractWidget {
 
     @Override
     public boolean isActive() {
-        return super.isActive() && screen.inspectScreenActive() && Research.playerHasResearchUnlocked(Minecraft.getInstance().player, screen.getActiveResearch().orElseThrow());
+        return super.isActive() && screen.inspectScreenActive() && Research.playerHasResearchUnlocked(Minecraft.getInstance().player, screen.getActiveResearch());
     }
 
     @Override
