@@ -30,6 +30,6 @@ void main() {
         float factor = 0.8;
         vec3 lum = vec3(0.299, 0.587, 0.114);
         vec3 gray = vec3(dot(lum, baseColor.rgb));
-        fragColor = vec4(mix(baseColor.rgb, gray, factor), baseColor.a);
+        fragColor = vec4(mix(baseColor.rgb, gray, factor), 1.0F);
     }
 }
