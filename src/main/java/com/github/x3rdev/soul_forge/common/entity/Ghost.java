@@ -66,6 +66,7 @@ public class Ghost extends Monster implements GeoEntity, SmartBrainOwner<Ghost> 
                 .add(Attributes.FOLLOW_RANGE, 35F)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0.0F)
                 .add(Attributes.GRAVITY, 0.02F)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.4F)
                 .build();
     }
 
