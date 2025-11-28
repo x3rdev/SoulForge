@@ -29,14 +29,7 @@ public abstract class BaseSoulRenderer extends DynamicGeoEntityRenderer<Soul> {
         poseStack.scale(1.5F, 1.5F, 1.5F);
         if(!animatable.isFake()) {
             poseStack.translate(0, 0.15 * Mth.sin((float) (Blaze3D.getTime()) + animatable.hashCode()) + 0.5, 0);
-//            Vec3 soulToPlayer = animatable.getPosition(partialTick).vectorTo(Minecraft.getInstance().player.getPosition(partialTick));
-//            float xRot = (float) Mth.atan2(soulToPlayer.horizontalDistance(), soulToPlayer.y);
-//            float yRot = (float) Mth.atan2(soulToPlayer.x, soulToPlayer.z);
-//
-//            poseStack.mulPose(Axis.YP.rotation(yRot));
-//            poseStack.mulPose(Axis.XP.rotation(xRot-Mth.HALF_PI));
             poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-
         }
         poseStack.translate(0, -0.5, 0);
         super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);

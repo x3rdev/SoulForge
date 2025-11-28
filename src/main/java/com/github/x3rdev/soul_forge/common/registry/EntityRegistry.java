@@ -20,26 +20,26 @@ public class EntityRegistry {
             MobCategory.MISC,
             0.5F,
             1.25F);
-    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> UNDEAD_SOUL = registerMob("undead_soul",
-            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.UNDEAD_SOUL),
-            MobCategory.MISC,
-            0.5F,
-            1.25F);
-    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> NETHER_SOUL = registerMob("nether_soul",
-            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.NETHER_SOUL),
-            MobCategory.MISC,
-            0.5F,
-            1.25F);
-    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> ENDER_SOUL = registerMob("ender_soul",
-            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.ENDER_SOUL),
-            MobCategory.MISC,
-            0.5F,
-            1.25F);
-    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> DRAGON_SOUL = registerMob("dragon_soul",
-            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.DRAGON_SOUL),
-            MobCategory.MISC,
-            0.75F,
-            1.25F);
+//    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> UNDEAD_SOUL = registerMob("undead_soul",
+//            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.UNDEAD_SOUL),
+//            MobCategory.MISC,
+//            0.5F,
+//            1.25F);
+//    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> NETHER_SOUL = registerMob("nether_soul",
+//            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.NETHER_SOUL),
+//            MobCategory.MISC,
+//            0.5F,
+//            1.25F);
+//    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> ENDER_SOUL = registerMob("ender_soul",
+//            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.ENDER_SOUL),
+//            MobCategory.MISC,
+//            0.5F,
+//            1.25F);
+//    public static final DeferredHolder<EntityType<?>, EntityType<Soul>> DRAGON_SOUL = registerMob("dragon_soul",
+//            (pEntityType, pLevel) -> new Soul(pEntityType, pLevel, SoulType.DRAGON_SOUL),
+//            MobCategory.MISC,
+//            0.75F,
+//            1.25F);
     public static final DeferredHolder<EntityType<?>, EntityType<SoulScytheProjectile>> SOUL_SCYTHE_PROJECTILE = ENTITIES.register("soul_scythe_projectile",
             () -> EntityType.Builder.<SoulScytheProjectile>of(SoulScytheProjectile::new, MobCategory.MISC)
                     .sized(2F, 0.5F)
