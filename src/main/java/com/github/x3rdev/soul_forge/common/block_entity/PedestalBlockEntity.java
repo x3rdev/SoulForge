@@ -97,17 +97,23 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 blockEntity.stopRitual();
                 return;
             }
-            if(blockEntity.isMasterPedestal() && blockEntity.getRitualTicks() < RITUAL_DURATION-20 && blockEntity.getRitualTicks() % 3 == 0) {
-                Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), blockEntity.buildRitualInput(), level);
-                if (!recipe.isPresent()) {
-                    level.playSound(null, blockEntity.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
-                    blockEntity.stopRitual();
-                    for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
-                        level.getBlockEntity(blockEntity.getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
-                                .stopRitual();
+            if(blockEntity.getRitualTicks() < RITUAL_DURATION-20 && blockEntity.getRitualTicks() % 3 == 0) {
+                if (blockEntity.isMasterPedestal()) {
+                    Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), blockEntity.buildRitualInput(), level);
+                    if (!recipe.isPresent()) {
+                        level.playSound(null, blockEntity.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
+                        blockEntity.stopRitual();
+                        for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                            level.getBlockEntity(blockEntity.getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).ifPresent(PedestalBlockEntity::stopRitual);
+                        }
+                    }
+                } else {
+                    if(level.getBlockEntity(blockEntity.ritualParentPos, BlockEntityRegistry.PEDESTAL.get()).isEmpty()) {
+                        blockEntity.stopRitual();
                     }
                 }
             }
+
         }
     }
 
@@ -201,7 +207,11 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     }
 
     private ItemStack getItemOnOtherPedestal(Vec3i offset) {
-        return this.level.getBlockEntity(this.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow().getTheItem();
+        Optional<PedestalBlockEntity> blockEntity = this.level.getBlockEntity(this.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get());
+        if(blockEntity.isPresent()) {
+            return blockEntity.get().getTheItem();
+        }
+        return ItemStack.EMPTY;
     }
 
     private Map<SoulType, Integer> getAvailableSouls() {
