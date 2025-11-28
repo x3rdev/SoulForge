@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.Vec3;
@@ -77,23 +78,22 @@ public abstract class LevelRendererMixin {
     }
 
     private boolean shouldRenderParticle(Camera camera, Entity entity) {
-        Vec3 lookingAt = new Vec3(camera.getLookVector().x, camera.getLookVector().y, camera.getLookVector().z);
+        Vec3 cameraLookVec = new Vec3(camera.getLookVector());
         Vec3 pos = camera.getPosition();
-        Vec3 ePos = entity.getPosition(camera.getPartialTickTime());
+        Vec3 entityPos = entity.getPosition(camera.getPartialTickTime());
         // entity center defined as origin
-        Vec3 relativePos = new Vec3(pos.x - ePos.x, pos.y - ePos.y - 0.25, pos.z - ePos.z).scale(-1);
+        Vec3 relativePos = new Vec3(pos.x - entityPos.x, pos.y - entityPos.y - 0.25, pos.z - entityPos.z).scale(-1);
 
-        return minDistance(lookingAt, relativePos) < sqr(0.125) * 3;
+        return minDistance(cameraLookVec, relativePos) < Mth.square(0.125) * 3;
     }
 
     // lv = camera viewing vector, t = translation (relative position to target entity)
-    private double minDistance(Vec3 lv, Vec3 t) {
-        double arg = -1 * (lv.x * t.x + lv.y * t.y + lv.z * t.z) / (lv.x * lv.x + lv.y * lv.y + lv.z * lv.z);
+    private double minDistance(Vec3 cameraLookVec, Vec3 vecToTarget) {
+        double arg = -1 * (cameraLookVec.x * vecToTarget.x + cameraLookVec.y * vecToTarget.y + cameraLookVec.z * vecToTarget.z) /
+                (Mth.square(cameraLookVec.x) + Mth.square(cameraLookVec.y) + Mth.square(cameraLookVec.z));
         // returns minimally sized sphere around entity which contains the viewing vector
-        return sqr(lv.x * arg + t.x) + sqr(lv.y * arg + t.y) + sqr(lv.z * arg + t.z);
+
+        return Mth.square(cameraLookVec.x * arg + vecToTarget.x) + Mth.square(cameraLookVec.y * arg + vecToTarget.y) + Mth.square(cameraLookVec.z * arg + vecToTarget.z);
     }
 
-    private double sqr(double arg) {
-        return arg * arg;
-    }
 }
