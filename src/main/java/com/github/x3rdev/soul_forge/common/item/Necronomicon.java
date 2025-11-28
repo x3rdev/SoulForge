@@ -9,12 +9,14 @@ import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.PlainTextContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -127,19 +129,6 @@ public class Necronomicon extends Item implements GeoItem {
         }
 
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
-    }
-
-    @SubscribeEvent
-    public static void screenClosing(ScreenEvent.Closing event) {
-        if(PatchouliCompat.PatchouliIsPresent() && ItemRegistry.NECRONOMICON.getId().equals(PatchouliCompat.getAPI().getOpenBookGui())) {
-            for (InteractionHand value : InteractionHand.values()) {
-                ItemStack stack = Minecraft.getInstance().player.getItemInHand(value);
-                if(stack.is(ItemRegistry.NECRONOMICON.get())) {
-                    stack.set(DataComponentRegistry.NECRONOMICON_OPEN, false);
-                    ((Necronomicon) stack.getItem()).triggerAnim(event.getScreen().getMinecraft().player, GeoItem.getId(stack), "c", "closing");
-                }
-            }
-        }
     }
 
     @Override
