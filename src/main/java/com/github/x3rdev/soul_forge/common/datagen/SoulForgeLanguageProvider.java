@@ -39,7 +39,7 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addBlock(BlockRegistry.SOULWOOD_PLANKS, "Soulwood Planks");
         addBlock(BlockRegistry.SOULWOOD_STAIRS, "Soulwood Stairs");
         addBlock(BlockRegistry.PEDESTAL, "Pedestal");
-        addBlock(BlockRegistry.SOUL_CAULDRON, "Soul Storage");
+        addBlock(BlockRegistry.SOUL_CAULDRON, "Soul Cauldron");
         addBlock(BlockRegistry.RESEARCH_TABLE, "Research Table");
         addBlock(BlockRegistry.SOUL_ANVIL, "Soul Anvil");
 
