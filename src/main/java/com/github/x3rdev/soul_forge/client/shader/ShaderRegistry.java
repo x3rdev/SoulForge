@@ -2,6 +2,8 @@ package com.github.x3rdev.soul_forge.client.shader;
 
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.client.ClientSetup;
+import com.github.x3rdev.soul_forge.common.compat.IrisCompat;
+import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -17,11 +19,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ShaderRegistry {
 
-    //TODO if shaders running, default to rendertype_entity something emissive
     public static RenderType soul(ResourceLocation location) {
-//        if(IrisCompat.irisModPresent()) {
-//            return RenderType.eyes(location);
-//        }
+        if(ModCompatibility.irisModPresent()) {
+            return RenderType.eyes(location);
+        }
         return Internal.soul(location);
     }
 
