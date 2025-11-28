@@ -63,10 +63,10 @@ public class CommonSetup {
         event.put(EntityRegistry.GHOST.get(), Ghost.createAttributes());
         event.put(EntityRegistry.NERGAL.get(), Nergal.createAttributes());
         event.put(EntityRegistry.SOUL.get(), Soul.createAttributes());
-        event.put(EntityRegistry.UNDEAD_SOUL.get(), Soul.createAttributes());
-        event.put(EntityRegistry.NETHER_SOUL.get(), Soul.createAttributes());
-        event.put(EntityRegistry.ENDER_SOUL.get(), Soul.createAttributes());
-        event.put(EntityRegistry.DRAGON_SOUL.get(), Soul.createAttributes());
+//        event.put(EntityRegistry.UNDEAD_SOUL.get(), Soul.createAttributes());
+//        event.put(EntityRegistry.NETHER_SOUL.get(), Soul.createAttributes());
+//        event.put(EntityRegistry.ENDER_SOUL.get(), Soul.createAttributes());
+//        event.put(EntityRegistry.DRAGON_SOUL.get(), Soul.createAttributes());
     }
 
     @SubscribeEvent
@@ -99,22 +99,22 @@ public class CommonSetup {
         if(!level.isClientSide() && event.getSource().getEntity() instanceof Player player) {
             ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
             if(stack.getItem() instanceof Scythe) {
-                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
-                    dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                    return;
-                }
-                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_NETHER_SOUL)) {
-                    dropNetherSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                    return;
-                }
-                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_ENDER_SOUL)) {
-                    dropEnderSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                    return;
-                }
-                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_DRAGON_SOUL)) {
-                    dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
-                    return;
-                }
+//                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
+//                    dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+//                    return;
+//                }
+//                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_NETHER_SOUL)) {
+//                    dropNetherSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+//                    return;
+//                }
+//                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_ENDER_SOUL)) {
+//                    dropEnderSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+//                    return;
+//                }
+//                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_DRAGON_SOUL)) {
+//                    dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+//                    return;
+//                }
                 dropNormalSoul(level, event.getEntity().position().add(0, 1.25F, 0));
             }
         }
@@ -124,26 +124,26 @@ public class CommonSetup {
         return entity.getType().is(tagKey);
     }
 
-    private static void dropUndeadSoul(Level level, Vec3 pos) {
-        Soul soulEntity = new Soul(EntityRegistry.UNDEAD_SOUL.get(), level, SoulType.UNDEAD_SOUL);
-        soulEntity.setPos(pos);
-        level.addFreshEntity(soulEntity);
-    }
-    private static void dropNetherSoul(Level level, Vec3 pos) {
-        Soul soulEntity = new Soul(EntityRegistry.NETHER_SOUL.get(), level, SoulType.NETHER_SOUL);
-        soulEntity.setPos(pos);
-        level.addFreshEntity(soulEntity);
-    }
-    private static void dropEnderSoul(Level level, Vec3 pos) {
-        Soul soulEntity = new Soul(EntityRegistry.ENDER_SOUL.get(), level, SoulType.ENDER_SOUL);
-        soulEntity.setPos(pos);
-        level.addFreshEntity(soulEntity);
-    }
-    private static void dropDragonSoul(Level level, Vec3 pos) {
-        Soul soulEntity = new Soul(EntityRegistry.DRAGON_SOUL.get(), level, SoulType.DRAGON_SOUL);
-        soulEntity.setPos(pos);
-        level.addFreshEntity(soulEntity);
-    }
+//    private static void dropUndeadSoul(Level level, Vec3 pos) {
+//        Soul soulEntity = new Soul(EntityRegistry.UNDEAD_SOUL.get(), level, SoulType.UNDEAD_SOUL);
+//        soulEntity.setPos(pos);
+//        level.addFreshEntity(soulEntity);
+//    }
+//    private static void dropNetherSoul(Level level, Vec3 pos) {
+//        Soul soulEntity = new Soul(EntityRegistry.NETHER_SOUL.get(), level, SoulType.NETHER_SOUL);
+//        soulEntity.setPos(pos);
+//        level.addFreshEntity(soulEntity);
+//    }
+//    private static void dropEnderSoul(Level level, Vec3 pos) {
+//        Soul soulEntity = new Soul(EntityRegistry.ENDER_SOUL.get(), level, SoulType.ENDER_SOUL);
+//        soulEntity.setPos(pos);
+//        level.addFreshEntity(soulEntity);
+//    }
+//    private static void dropDragonSoul(Level level, Vec3 pos) {
+//        Soul soulEntity = new Soul(EntityRegistry.DRAGON_SOUL.get(), level, SoulType.DRAGON_SOUL);
+//        soulEntity.setPos(pos);
+//        level.addFreshEntity(soulEntity);
+//    }
     private static void dropNormalSoul(Level level, Vec3 pos) {
         Soul soulEntity = new Soul(EntityRegistry.SOUL.get(), level, SoulType.SOUL);
         soulEntity.setPos(pos);

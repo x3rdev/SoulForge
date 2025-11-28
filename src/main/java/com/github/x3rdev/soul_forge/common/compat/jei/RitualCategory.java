@@ -155,10 +155,10 @@ public class RitualCategory implements IRecipeCategory<RecipeHolder<RitualRecipe
     private void renderCauldron(GuiGraphics guiGraphics, RecipeHolder<RitualRecipe> recipe) {
         guiGraphics.pose().pushPose();
         renderSoul(guiGraphics, recipe, 40, 30, EntityRegistry.SOUL.get(), SoulType.SOUL);
-        renderSoul(guiGraphics, recipe, 40+28, 30, EntityRegistry.UNDEAD_SOUL.get(), SoulType.UNDEAD_SOUL);
-        renderSoul(guiGraphics, recipe, 40+28*2, 30, EntityRegistry.NETHER_SOUL.get(), SoulType.NETHER_SOUL);
-        renderSoul(guiGraphics, recipe, 40+28*3, 30, EntityRegistry.ENDER_SOUL.get(), SoulType.ENDER_SOUL);
-        renderSoul(guiGraphics, recipe, 40+28*4, 30, EntityRegistry.DRAGON_SOUL.get(), SoulType.DRAGON_SOUL);
+//        renderSoul(guiGraphics, recipe, 40+28, 30, EntityRegistry.UNDEAD_SOUL.get(), SoulType.UNDEAD_SOUL);
+//        renderSoul(guiGraphics, recipe, 40+28*2, 30, EntityRegistry.NETHER_SOUL.get(), SoulType.NETHER_SOUL);
+//        renderSoul(guiGraphics, recipe, 40+28*3, 30, EntityRegistry.ENDER_SOUL.get(), SoulType.ENDER_SOUL);
+//        renderSoul(guiGraphics, recipe, 40+28*4, 30, EntityRegistry.DRAGON_SOUL.get(), SoulType.DRAGON_SOUL);
         guiGraphics.pose().popPose();
 
         SoulCauldronBlockEntity blockEntity = new SoulCauldronBlockEntity(BlockPos.ZERO, BlockRegistry.SOUL_CAULDRON.get().defaultBlockState());

@@ -85,10 +85,10 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
 
         // Entity
         addEntityType(EntityRegistry.SOUL, "Soul");
-        addEntityType(EntityRegistry.UNDEAD_SOUL, "Undead Soul");
-        addEntityType(EntityRegistry.NETHER_SOUL, "Nether Soul");
-        addEntityType(EntityRegistry.ENDER_SOUL, "Ender Soul");
-        addEntityType(EntityRegistry.DRAGON_SOUL, "Dragon Soul");
+//        addEntityType(EntityRegistry.UNDEAD_SOUL, "Undead Soul");
+//        addEntityType(EntityRegistry.NETHER_SOUL, "Nether Soul");
+//        addEntityType(EntityRegistry.ENDER_SOUL, "Ender Soul");
+//        addEntityType(EntityRegistry.DRAGON_SOUL, "Dragon Soul");
         addEntityType(EntityRegistry.SOUL_SCYTHE_PROJECTILE, "Soul Scythe");
         addEntityType(EntityRegistry.WISP, "Wisp");
         addEntityType(EntityRegistry.GHOST, "Ghost");

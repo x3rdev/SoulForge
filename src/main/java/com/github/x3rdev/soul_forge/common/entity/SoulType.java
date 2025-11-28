@@ -8,10 +8,11 @@ import net.minecraft.network.codec.StreamCodec;
 public enum SoulType {
     EMPTY("empty", 0, 0xFFFFFF),
     SOUL("soul", 1, 0x98caff),
-    UNDEAD_SOUL("undead_soul", 1, 0xb9ff98),
-    NETHER_SOUL("nether_soul", 1, 0xf98d1b),
-    ENDER_SOUL("ender_soul", 1, 0xb398ff),
-    DRAGON_SOUL("dragon_soul", 20, 0x611a75);
+//    UNDEAD_SOUL("undead_soul", 1, 0xb9ff98),
+//    NETHER_SOUL("nether_soul", 1, 0xf98d1b),
+//    ENDER_SOUL("ender_soul", 1, 0xb398ff),
+//    DRAGON_SOUL("dragon_soul", 20, 0x611a75)
+    ;
 
     public static final Codec<SoulType> CODEC = Codec.STRING.xmap(
             SoulType::getSoulTypeForString,

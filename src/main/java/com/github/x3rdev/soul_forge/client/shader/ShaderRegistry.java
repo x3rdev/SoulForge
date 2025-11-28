@@ -20,9 +20,10 @@ import net.minecraft.resources.ResourceLocation;
 public class ShaderRegistry {
 
     public static RenderType soul(ResourceLocation location) {
-        if(ModCompatibility.irisModPresent()) {
-            return RenderType.eyes(location);
-        }
+        if(ModCompatibility.irisModPresent() && IrisCompat.areShadersLoaded()) {
+                return RenderType.eyes(location);
+            }
+
         return Internal.soul(location);
     }
 
