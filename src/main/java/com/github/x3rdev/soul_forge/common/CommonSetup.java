@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common;
 
-import com.github.x3rdev.soul_forge.common.compat.CuriosCompat;
+import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
+import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
@@ -49,7 +50,7 @@ public class CommonSetup {
                 BlockEntityRegistry.PEDESTAL.get(),
                 (blockEntity, direction) -> blockEntity.getItemHandler()
         );
-        if(CuriosCompat.CuriosIsPresent()) {
+        if(ModCompatibility.curiosModPresent()) {
             CuriosCompat.registerCapabilities(event);
         }
     }
