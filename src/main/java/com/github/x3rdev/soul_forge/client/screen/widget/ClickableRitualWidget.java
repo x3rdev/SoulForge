@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge.client.screen.widget;
 
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
-import com.github.x3rdev.soul_forge.common.compat.jei.JeiCompat;
+import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.jei.SoulForgePlugin;
 import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
@@ -32,7 +32,7 @@ public class ClickableRitualWidget extends AbstractWidget {
     public void onClick(double mouseX, double mouseY, int button) {
         if(isActive()) {
             super.onClick(mouseX, mouseY, button);
-            if (JeiCompat.JeiIsPresent()) {
+            if (ModCompatibility.jeiModPresent()) {
                 List<ResourceLocation> recipes = recipesUnlockedByRitual();
                 if(!recipes.isEmpty()) {
                     SoulForgePlugin.showRecipes(recipes);

@@ -1,9 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
-import com.github.x3rdev.soul_forge.common.compat.CuriosCompat;
-import com.github.x3rdev.soul_forge.common.compat.PatchouliCompat;
-import com.github.x3rdev.soul_forge.common.compat.jei.JeiCompat;
+import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
@@ -53,8 +51,6 @@ public class SoulForge {
         neoEventBus.addListener(CommonSetup::playerLoggedIn);
         neoEventBus.addListener(CommonSetup::playerTickEvent);
 
-        CuriosCompat.init();
-        JeiCompat.init();
-        PatchouliCompat.init();
+        ModCompatibility.init();
     }
 }

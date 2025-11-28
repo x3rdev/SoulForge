@@ -19,6 +19,9 @@ public class ShaderRegistry {
 
     //TODO if shaders running, default to rendertype_entity something emissive
     public static RenderType soul(ResourceLocation location) {
+//        if(IrisCompat.irisModPresent()) {
+//            return RenderType.eyes(location);
+//        }
         return Internal.soul(location);
     }
 

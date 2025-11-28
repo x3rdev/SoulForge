@@ -36,6 +36,7 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="patchouli"
 mandatory=false
+type="optional"
 versionRange="${patchouli_version_range}"
 ordering="NONE"
 side="BOTH"

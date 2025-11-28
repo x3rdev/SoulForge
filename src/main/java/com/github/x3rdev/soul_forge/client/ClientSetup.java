@@ -5,15 +5,19 @@ import com.github.x3rdev.soul_forge.client.particle.RitualTrailParticle;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
 import com.github.x3rdev.soul_forge.client.renderer.block.*;
 import com.github.x3rdev.soul_forge.client.renderer.entity.*;
-import com.github.x3rdev.soul_forge.client.renderer.item.ResearcherGlassesRenderer;
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
+import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
+import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
-import com.github.x3rdev.soul_forge.common.registry.*;
+import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.network.chat.Component;
@@ -26,7 +30,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -40,7 +43,9 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        CuriosRendererRegistry.register(ItemRegistry.RESEARCHER_GLASSES.get(), ResearcherGlassesRenderer::new);
+        if(ModCompatibility.curiosModPresent()) {
+            CuriosCompat.registerCuriosRenderers();
+        }
     }
 
     @Nullable

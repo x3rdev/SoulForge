@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.mixin;
 
+import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.PatchouliCompat;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
@@ -22,7 +23,7 @@ public abstract class MinecraftMixin {
         if(Minecraft.getInstance().player == null) {
             return;
         }
-        if(PatchouliCompat.PatchouliIsPresent() && ItemRegistry.NECRONOMICON.getId().equals(PatchouliCompat.getAPI().getOpenBookGui()) && guiScreen == null) {
+        if(ModCompatibility.patchouliModPresent() && ItemRegistry.NECRONOMICON.getId().equals(PatchouliCompat.getAPI().getOpenBookGui()) && guiScreen == null) {
             for (InteractionHand value : InteractionHand.values()) {
                 ItemStack stack = Minecraft.getInstance().player.getItemInHand(value);
                 if(stack.is(ItemRegistry.NECRONOMICON.get())) {
