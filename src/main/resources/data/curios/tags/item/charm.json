@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": ["soul_forge:wisp_amulet"]
+  "values": [
+    "soul_forge:wisp_amulet",
+    "soul_forge:soul_magnet"
+  ]
 }

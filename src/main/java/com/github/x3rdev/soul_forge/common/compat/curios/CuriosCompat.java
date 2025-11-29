@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.compat.curios;
 
 import com.github.x3rdev.soul_forge.client.renderer.item.ResearcherGlassesRenderer;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
+import com.github.x3rdev.soul_forge.common.item.SoulMagnet;
 import com.github.x3rdev.soul_forge.common.item.WispAmulet;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -56,6 +57,21 @@ public class CuriosCompat {
                     }
                 },
                 ItemRegistry.RESEARCHER_GLASSES.get()
+        );
+        event.registerItem(
+                CuriosCapability.ITEM,
+                (stack, context) -> new ICurio() {
+                    @Override
+                    public ItemStack getStack() {
+                        return stack;
+                    }
+
+                    @Override
+                    public void curioTick(SlotContext slotContext) {
+                        SoulMagnet.tick(stack, slotContext.entity().level(), slotContext.entity());
+                    }
+                },
+                ItemRegistry.SOUL_MAGNET.get()
         );
     }
 
