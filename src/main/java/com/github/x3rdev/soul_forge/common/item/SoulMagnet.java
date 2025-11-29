@@ -47,6 +47,9 @@ public class SoulMagnet extends Item {
                     Vec3 soulToPlayer = soul.position().vectorTo(player.position().add(0,0.5,0)).normalize().scale(0.6);
                     for (ItemStack soulContainerStack : soulContainers) {
                         tryPickupSoul(level, player, soul, soulContainerStack, soulToPlayer);
+                        if (soul.isRemoved()) {
+                            break;
+                        }
                     }
                 }
             }
@@ -59,18 +62,18 @@ public class SoulMagnet extends Item {
             boolean filled = soulContainer.tryFillBottle(soulContainerStack, soul, player);
             if(filled) {
                 level.playSound(null, soul.getX(), soul.getY(), soul.getZ(), SoundEvents.FOX_TELEPORT, SoundSource.PLAYERS);
-                for (int i = 0; i < 10; i++) {
-                    PacketDistributor.sendToPlayersTrackingEntity(soul,
-                            new SendParticlePayload(ParticleRegistry.SOUL_PARTICLE.get(),
-                                    soul.getX()+(level.random.nextFloat()-0.5)*0.3,
-                                    soul.getY()+(level.random.nextFloat()-0.5)*0.3,
-                                    soul.getZ()+(level.random.nextFloat()-0.5)*0.3,
-                                    soulToPlayer.x()+(level.random.nextFloat()-0.5)*0.075,
-                                    soulToPlayer.y()+(level.random.nextFloat()-0.5)*0.075,
-                                    soulToPlayer.z()+(level.random.nextFloat()-0.5)*0.075
-                            )
+                SendParticlePayload[] payloads = new SendParticlePayload[10];
+                for (int i = 0; i < payloads.length; i++) {
+                    payloads[i] = new SendParticlePayload(ParticleRegistry.SOUL_PARTICLE.get(),
+                            soul.getX()+(level.random.nextFloat()-0.5)*0.3,
+                            soul.getY()+(level.random.nextFloat()-0.5)*0.3,
+                            soul.getZ()+(level.random.nextFloat()-0.5)*0.3,
+                            soulToPlayer.x()+(level.random.nextFloat()-0.5)*0.075,
+                            soulToPlayer.y()+(level.random.nextFloat()-0.5)*0.075,
+                            soulToPlayer.z()+(level.random.nextFloat()-0.5)*0.075
                     );
                 }
+                PacketDistributor.sendToPlayersTrackingEntity(soul, payloads[0], payloads);
                 soul.remove(Entity.RemovalReason.KILLED);
             }
         }
