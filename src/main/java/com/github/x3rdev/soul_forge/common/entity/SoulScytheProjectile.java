@@ -43,7 +43,7 @@ public class SoulScytheProjectile extends Projectile implements GeoEntity {
         if (this.level().isClientSide || (owner == null || !owner.isRemoved()) && this.level().hasChunkAt(this.blockPosition()) && this.age++ < 200) {
             super.tick();
             level().getEntities(this, this.getBoundingBox().inflate(0.25F)).forEach(entity -> {
-                if (entity != getOwner()) {
+                if (entity != getOwner() && entity.isAttackable()) {
                     entity.hurt(new DamageTypeRegistry(level().registryAccess()).scythe(this, owner), 8);
                 }
             });

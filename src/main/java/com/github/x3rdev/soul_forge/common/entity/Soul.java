@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
-import com.github.x3rdev.soul_forge.common.item.SoulBottle;
+import com.github.x3rdev.soul_forge.common.item.SoulContainer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -89,7 +89,7 @@ public class Soul extends LivingEntity implements GeoEntity {
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof SoulBottle soulBottleItem) {
+        if (stack.getItem() instanceof SoulContainer soulBottleItem) {
             boolean bottleFilled = soulBottleItem.tryFillBottle(stack, this, player);
             if (bottleFilled) {
                 this.remove(RemovalReason.DISCARDED);

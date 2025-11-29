@@ -18,11 +18,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import java.util.List;
 import java.util.Optional;
 
-public class SoulBottle extends Item {
+public class SoulContainer extends Item {
 
     private final int capacity;
 
-    public SoulBottle(int capacity) {
+    public SoulContainer(int capacity) {
         super(new Properties()
                 .component(DataComponentRegistry.STORED_SOUL_TYPE.get(), SoulType.EMPTY)
                 .component(DataComponentRegistry.STORED_SOUL_COUNT.get(), 0)
@@ -72,19 +72,19 @@ public class SoulBottle extends Item {
             int soulCount = getSoulCount(stack);
             String soulType = formatSoulTypeName(getSoulType(stack));
             tooltipComponents.add(Component.translatable(
-                    soulCount == 1 ? "item.soul_forge.soul_bottle.tooltip" : "item.soul_forge.soul_bottle.tooltip_plural"
+                    soulCount == 1 ? "item.soul_forge.soul_container.tooltip" : "item.soul_forge.soul_container.tooltip_plural"
                     , soulCount + soulType, capacity).withColor(getSoulType(stack).color()));
         } else {
-            tooltipComponents.add(Component.translatable("item.soul_forge.soul_bottle.tooltip.empty").withStyle(ChatFormatting.GRAY));
+            tooltipComponents.add(Component.translatable("item.soul_forge.soul_container.tooltip.empty").withStyle(ChatFormatting.GRAY));
         }
     }
 
     public boolean tryEmptyBottle(ItemStack stack, SoulCauldronBlockEntity soulStorage, Player player) {
         SoulType bottleSoulType = getSoulType(stack);
         SoulType storageSoulType = soulStorage.getSoulType();
-        if(!bottleSoulType.isEmpty() && (storageSoulType.isEmpty() || bottleSoulType.equals(storageSoulType)) && bottleSoulTypeFitsInStorage(stack, soulStorage)) {
+        if(!bottleSoulType.isEmpty() && (storageSoulType.isEmpty() || bottleSoulType.equals(storageSoulType)) && bottleSoulTypeFitsInCauldron(stack, soulStorage)) {
             soulStorage.setSoulType(bottleSoulType);
-            while (bottleSoulTypeFitsInStorage(stack, soulStorage) && getSoulCount(stack) > 0) {
+            while (bottleSoulTypeFitsInCauldron(stack, soulStorage) && getSoulCount(stack) > 0) {
                 soulStorage.setSoulCount(soulStorage.getSoulCount()+1);
                 setSoulCount(stack, getSoulCount(stack)-1);
             }
@@ -94,7 +94,7 @@ public class SoulBottle extends Item {
         return false;
     }
 
-    private boolean bottleSoulTypeFitsInStorage(ItemStack stack, SoulCauldronBlockEntity blockEntity) {
+    private boolean bottleSoulTypeFitsInCauldron(ItemStack stack, SoulCauldronBlockEntity blockEntity) {
         return getSoulType(stack).size() <= SoulCauldronBlockEntity.MAX_CAPACITY-(blockEntity.getSoulCount()*getSoulType(stack).size());
     }
 
@@ -150,8 +150,12 @@ public class SoulBottle extends Item {
         stack.set(DataComponentRegistry.STORED_SOUL_COUNT, soulCount);
     }
 
-    private int getSoulCount(ItemStack stack) {
+    public int getSoulCount(ItemStack stack) {
         return stack.get(DataComponentRegistry.STORED_SOUL_COUNT);
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     private String formatSoulTypeName(SoulType type) {
