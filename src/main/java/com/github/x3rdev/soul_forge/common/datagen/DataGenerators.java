@@ -21,9 +21,11 @@ public final class DataGenerators {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(event.includeServer(), new SoulForgeBlockTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        SoulForgeBlockTagsProvider blockTagsProvider = new SoulForgeBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new SoulForgeDatapackProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new SoulForgeEntityTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new SoulForgeItemTagsProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeClient(), new SoulForgeLanguageProvider(packOutput));
         generator.addProvider(event.includeServer(), new SoulForgeLootTableProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new SoulForgeRecipeProvider(packOutput, lookupProvider));

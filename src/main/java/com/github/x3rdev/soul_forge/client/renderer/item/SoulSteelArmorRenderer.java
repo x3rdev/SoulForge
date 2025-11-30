@@ -9,8 +9,10 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class SoulSteelArmorRenderer extends GeoArmorRenderer<SoulSteelArmor> {
-    public SoulSteelArmorRenderer(GeoModel<SoulSteelArmor> model) {
+    public SoulSteelArmorRenderer(GeoModel<SoulSteelArmor> model, boolean awakened) {
         super(model);
-        addRenderLayer(new SoulGlowingLayer<>(this));
+        if(awakened) {
+            addRenderLayer(new SoulGlowingLayer<>(this));
+        }
     }
 }

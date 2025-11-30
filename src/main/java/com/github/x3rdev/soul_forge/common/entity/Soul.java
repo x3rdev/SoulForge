@@ -24,12 +24,12 @@ import java.util.List;
 public class Soul extends LivingEntity implements GeoEntity {
     private static final EntityDataAccessor<String> DATA_SOUL_TYPE = SynchedEntityData.defineId(Soul.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final boolean fake;
+    private final boolean renderOnly;
 
-    public Soul(EntityType<Soul> pEntityType, Level pLevel, SoulType soulType, boolean fake) {
+    public Soul(EntityType<Soul> pEntityType, Level pLevel, SoulType soulType, boolean renderOnly) {
         super(pEntityType, pLevel);
         this.entityData.set(DATA_SOUL_TYPE, soulType.toString());
-        this.fake = fake;
+        this.renderOnly = renderOnly;
     }
 
     public Soul(EntityType<Soul> pEntityType, Level pLevel, SoulType soulType) {
@@ -108,8 +108,8 @@ public class Soul extends LivingEntity implements GeoEntity {
         return SoulType.EMPTY;
     }
 
-    public boolean isFake() {
-        return fake;
+    public boolean isRenderOnly() {
+        return renderOnly;
     }
 
     @Override

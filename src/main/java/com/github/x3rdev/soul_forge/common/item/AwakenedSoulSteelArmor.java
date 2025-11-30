@@ -29,7 +29,7 @@ public class AwakenedSoulSteelArmor extends SoulSteelArmor {
             @Override
             public @Nullable <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (this.renderer == null) {
-                    this.renderer = new SoulSteelArmorRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "armor/awakened_soul_steel")));
+                    this.renderer = new SoulSteelArmorRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "armor/awakened_soul_steel")), true);
                 }
                 return this.renderer;
             }

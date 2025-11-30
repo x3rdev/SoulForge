@@ -5,6 +5,7 @@ import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -57,7 +58,7 @@ public class SoulForgeRecipeProvider extends RecipeProvider {
                 .pattern("aa ")
                 .pattern("b a")
                 .pattern("b  ")
-                .define('a', Items.STONE)
+                .define('a', ItemTags.STONE_TOOL_MATERIALS)
                 .define('b', ItemRegistry.SOULWOOD_STICK.get())
                 .unlockedBy("has_stone", has(Items.STONE))
                 .save(recipeOutput);

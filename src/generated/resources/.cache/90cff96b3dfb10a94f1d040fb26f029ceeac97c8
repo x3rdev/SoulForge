@@ -1,0 +1,13 @@
+// 1.21.1	2025-11-29T14:13:57.9421961	Tags for minecraft:item mod id soul_forge
+57d8fae716b2448e189a37a0d02d9dd0b422cf10 data/c/tags/item/tools.json
+57d8fae716b2448e189a37a0d02d9dd0b422cf10 data/minecraft/tags/item/breaks_decorated_pots.json
+7418957debc4fc37fe947230e1c336b064de4090 data/minecraft/tags/item/chest_armor.json
+57d8fae716b2448e189a37a0d02d9dd0b422cf10 data/minecraft/tags/item/enchantable/durability.json
+a2f6c59f893616965b1fd3fe8c99dba560431679 data/minecraft/tags/item/enchantable/fire_aspect.json
+57d8fae716b2448e189a37a0d02d9dd0b422cf10 data/minecraft/tags/item/enchantable/vanishing.json
+57d8fae716b2448e189a37a0d02d9dd0b422cf10 data/minecraft/tags/item/enchantable/weapon.json
+21a392395f03522985f6ed9f2cf03ad8279daca6 data/minecraft/tags/item/foot_armor.json
+fde98c0b27ebb9cb6007a87162003060a76a635c data/minecraft/tags/item/head_armor.json
+6ae09dcf1638ea134d64cfb44a777b70c89039c4 data/minecraft/tags/item/leg_armor.json
+962d47252d668ca3df60c88550a8ce3de18e0d4c data/minecraft/tags/item/scythes.json
+2e7253bf29e49fe6aa453dfc1fa5e2ac7cb194ab data/minecraft/tags/item/swords.json
