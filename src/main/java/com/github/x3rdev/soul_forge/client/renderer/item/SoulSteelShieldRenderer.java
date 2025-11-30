@@ -13,9 +13,11 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class SoulSteelShieldRenderer extends GeoItemRenderer<SoulSteelShield> {
 
-    public SoulSteelShieldRenderer(GeoModel<SoulSteelShield> model) {
+    public SoulSteelShieldRenderer(GeoModel<SoulSteelShield> model, boolean awakened) {
         super(model);
-        addRenderLayer(new SoulGlowingLayer<>(this));
+        if(awakened) {
+            addRenderLayer(new SoulGlowingLayer<>(this));
+        }
     }
 
     @Override

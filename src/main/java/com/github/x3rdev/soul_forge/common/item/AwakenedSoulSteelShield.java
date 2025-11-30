@@ -23,7 +23,7 @@ public class AwakenedSoulSteelShield extends SoulSteelShield {
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new SoulSteelShieldRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "awakened_soul_steel_shield")));
+                    this.renderer = new SoulSteelShieldRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "awakened_soul_steel_shield")), true);
                 }
                 return renderer;
             }

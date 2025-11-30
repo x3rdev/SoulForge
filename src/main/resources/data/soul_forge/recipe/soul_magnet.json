@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "soul_forge:soul_crystal_block"
+    }
+  },
+  "pattern": [
+    "GG ",
+    "GG ",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "soul_forge:soul_magnet"
+  }
+}

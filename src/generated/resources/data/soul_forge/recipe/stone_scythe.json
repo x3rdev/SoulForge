@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "a": {
-      "item": "minecraft:stone"
+      "tag": "minecraft:stone_tool_materials"
     },
     "b": {
       "item": "soul_forge:soulwood_stick"

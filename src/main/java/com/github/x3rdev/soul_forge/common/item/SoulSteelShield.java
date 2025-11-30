@@ -40,7 +40,7 @@ public class SoulSteelShield extends ShieldItem implements GeoItem {
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new SoulSteelShieldRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul_steel_shield")));
+                    this.renderer = new SoulSteelShieldRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul_steel_shield")), false);
                 }
                 return renderer;
             }

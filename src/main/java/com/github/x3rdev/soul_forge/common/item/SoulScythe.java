@@ -11,7 +11,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.SimpleTier;
@@ -21,7 +23,7 @@ import java.util.function.Consumer;
 
 public class SoulScythe extends Scythe {
 
-    public static final Tier SOUL_SCYTHE_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 1738, 0, 5, 15, () -> Ingredient.of(ItemRegistry.SOUL_STEEL_INGOT.get()));
+    public static final Tier SOUL_SCYTHE_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 1738, 0.7F, 5.5F, 15, () -> Ingredient.of(ItemRegistry.SOUL_STEEL_INGOT.get()));
 
     public SoulScythe() {
         super(SOUL_SCYTHE_TIER, new Properties());

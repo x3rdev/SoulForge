@@ -2,7 +2,6 @@ package com.github.x3rdev.soul_forge.common.entity;
 
 import com.github.x3rdev.soul_forge.common.registry.DamageTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -43,7 +41,7 @@ public class SoulScytheProjectile extends Projectile implements GeoEntity {
         if (this.level().isClientSide || (owner == null || !owner.isRemoved()) && this.level().hasChunkAt(this.blockPosition()) && this.age++ < 200) {
             super.tick();
             level().getEntities(this, this.getBoundingBox().inflate(0.25F)).forEach(entity -> {
-                if (entity != getOwner()) {
+                if (entity != getOwner() && entity.isAttackable()) {
                     entity.hurt(new DamageTypeRegistry(level().registryAccess()).scythe(this, owner), 8);
                 }
             });

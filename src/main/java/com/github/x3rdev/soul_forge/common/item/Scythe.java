@@ -2,8 +2,11 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.client.renderer.item.ScytheRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.enchantment.Enchantment;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -17,7 +20,7 @@ public class Scythe extends SwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public Scythe(Tier tier, Properties properties) {
-        super(tier, properties.attributes(SwordItem.createAttributes(tier, 4, -3.4F)));
+        super(tier, properties.attributes(SwordItem.createAttributes(tier, 4, -3.0F)));
     }
 
     @Override

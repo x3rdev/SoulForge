@@ -1,18 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "key": {
-    "G": {
+  "ingredients": [
+    {
+      "item": "soul_forge:soul_crystal"
+    },
+    {
+      "item": "soul_forge:soul_crystal"
+    },
+    {
+      "item": "soul_forge:soul_crystal"
+    },
+    {
       "item": "soul_forge:soul_crystal"
     }
-  },
-  "pattern": [
-      "GG ",
-      "GG ",
-      "   "
   ],
   "result": {
-      "count": 1,
-      "id": "soul_forge:soul_crystal_block"
-   }
+    "count": 1,
+    "id": "soul_forge:soul_crystal_block"
+  }
 }

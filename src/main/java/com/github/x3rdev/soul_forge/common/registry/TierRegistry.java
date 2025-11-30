@@ -13,7 +13,7 @@ public class TierRegistry {
             BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
             2510,
             9.0F,
-            4.0F,
+            3.0F,
             16,
             () -> Ingredient.of(ItemRegistry.SOUL_STEEL_INGOT.get())
     );
@@ -22,7 +22,7 @@ public class TierRegistry {
             BlockTags.INCORRECT_FOR_NETHERITE_TOOL,
             2670,
             9.0F,
-            4.5F,
+            4.0F,
             16,
             () -> Ingredient.of(ItemRegistry.SOUL_STEEL_INGOT.get())
     );

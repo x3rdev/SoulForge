@@ -1,6 +1,6 @@
 package com.github.x3rdev.soul_forge.common.entity;
 
-import com.github.x3rdev.soul_forge.common.item.SoulBottle;
+import com.github.x3rdev.soul_forge.common.item.SoulContainer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,12 +24,12 @@ import java.util.List;
 public class Soul extends LivingEntity implements GeoEntity {
     private static final EntityDataAccessor<String> DATA_SOUL_TYPE = SynchedEntityData.defineId(Soul.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final boolean fake;
+    private final boolean renderOnly;
 
-    public Soul(EntityType<Soul> pEntityType, Level pLevel, SoulType soulType, boolean fake) {
+    public Soul(EntityType<Soul> pEntityType, Level pLevel, SoulType soulType, boolean renderOnly) {
         super(pEntityType, pLevel);
         this.entityData.set(DATA_SOUL_TYPE, soulType.toString());
-        this.fake = fake;
+        this.renderOnly = renderOnly;
     }
 
     public Soul(EntityType<Soul> pEntityType, Level pLevel, SoulType soulType) {
@@ -89,7 +89,7 @@ public class Soul extends LivingEntity implements GeoEntity {
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof SoulBottle soulBottleItem) {
+        if (stack.getItem() instanceof SoulContainer soulBottleItem) {
             boolean bottleFilled = soulBottleItem.tryFillBottle(stack, this, player);
             if (bottleFilled) {
                 this.remove(RemovalReason.DISCARDED);
@@ -108,8 +108,8 @@ public class Soul extends LivingEntity implements GeoEntity {
         return SoulType.EMPTY;
     }
 
-    public boolean isFake() {
-        return fake;
+    public boolean isRenderOnly() {
+        return renderOnly;
     }
 
     @Override

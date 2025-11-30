@@ -10,8 +10,10 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class SoulSteelSwordRenderer extends GeoItemRenderer<SoulSteelSword> {
 
-    public SoulSteelSwordRenderer(GeoModel<SoulSteelSword> model) {
+    public SoulSteelSwordRenderer(GeoModel<SoulSteelSword> model, boolean awakened) {
         super(model);
-        addRenderLayer(new SoulGlowingLayer<>(this));
+        if(awakened) {
+            addRenderLayer(new SoulGlowingLayer<>(this));
+        }
     }
 }

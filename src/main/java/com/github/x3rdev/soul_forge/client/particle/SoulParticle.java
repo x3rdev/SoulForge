@@ -8,12 +8,22 @@ import javax.annotation.Nullable;
 
 public class SoulParticle extends TextureSheetParticle {
 
-    protected SoulParticle(ClientLevel level, double x, double y, double z, SpriteSet spriteSet, double xSpeed, double ySpeed, double zSpeed) {
+    private final SpriteSet sprites;
+
+    protected SoulParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites, double xSpeed, double ySpeed, double zSpeed) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
-        this.gravity = -0.2f;
         this.lifetime = 30;
-        this.friction = 0.7f;
-        this.setSpriteFromAge(spriteSet);
+        this.sprites = sprites;
+        this.setSpriteFromAge(this.sprites);
+        this.xd = xSpeed;
+        this.yd = ySpeed;
+        this.zd = zSpeed;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.setSpriteFromAge(sprites);
     }
 
     @Override

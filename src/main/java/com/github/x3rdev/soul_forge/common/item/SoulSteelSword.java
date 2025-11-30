@@ -30,7 +30,7 @@ public class SoulSteelSword extends SwordItem implements GeoItem {
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new SoulSteelSwordRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul_steel_sword")));
+                    this.renderer = new SoulSteelSwordRenderer(new DefaultedItemGeoModel<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "soul_steel_sword")), false);
                 }
                 return renderer;
             }
