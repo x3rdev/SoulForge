@@ -102,5 +102,8 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
 
         //Container
         add("container.soul_forge.soul_anvil", "Soul Anvil");
+
+        //Enchantment
+        add("enchantment.soul_forge.reaping", "Reaping");
     }
 }

@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
+import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.mojang.logging.LogUtils;
@@ -28,6 +29,7 @@ public class SoulForge {
         BlockRegistry.BLOCKS.register(modEventBus);
         DataAttachmentRegistry.DATA_ATTACHMENT_TYPES.register(modEventBus);
         DataComponentRegistry.DATA_COMPONENTS.register(modEventBus);
+        EnchantmentEffectsRegistry.ENTITY_ENCHANTMENT_EFFECTS.register(modEventBus);
         EntityDataRegistry.ENTITY_DATA.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
         FoliagePlacerTypeRegistry.FOLIAGE_PLACER_TYPES.register(modEventBus);
