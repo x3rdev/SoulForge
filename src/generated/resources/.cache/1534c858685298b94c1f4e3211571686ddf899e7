@@ -1,6 +1,7 @@
 // 1.21.1	2025-09-30T12:05:07.6538068	Tags for minecraft:block mod id soul_forge
 27efc39ba74120f4abab38b9630784c8888ccb06 data/minecraft/tags/block/logs.json
-0584ca3e9b62a7733cd7eaf808b29eaf66370c5c data/minecraft/tags/block/mineable/pickaxe.json
+35d7600101bc1e70e38481b9647727c1ebfcfda3 data/minecraft/tags/block/mineable/axe.json
+38aa999b50db1e1efa4aa3d546f91bb2e9559e26 data/minecraft/tags/block/mineable/pickaxe.json
 ee07a2d5340189786db610a3a4dc7fb1d1bbf4d5 data/minecraft/tags/block/slabs.json
 b712b38bb18d3f2a5dd80f5e848c71f4d664f123 data/minecraft/tags/block/stairs.json
 d4b4571eb86147600fe6aaf02dc5256e056f000c data/minecraft/tags/block/stone_bricks.json

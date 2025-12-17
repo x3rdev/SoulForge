@@ -28,6 +28,21 @@ public class SoulForgeBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.LOGS).add(BlockRegistry.SOULWOOD_LOG.get());
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_CRYSTAL_ORE.get());
-//        tag(BlockTags.MINEABLE_WITH_AXE).add();
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_BRICKS.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_BRICK_STAIRS.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_BRICK_SLAB.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.CHISELED_SOUL_BRICKS.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_BRICK_WALL.get());
+        tag(BlockTags.MINEABLE_WITH_AXE).add(BlockRegistry.SOULWOOD_LOG.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_BRICK_COLUMN.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_BRICK_DOOR.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_STEEL_BARS.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.STATUE.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_CRYSTAL_BLOCK.get());
+        tag(BlockTags.MINEABLE_WITH_AXE).add(BlockRegistry.SOULWOOD_PLANKS.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.PEDESTAL.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_CAULDRON.get());
+        tag(BlockTags.MINEABLE_WITH_AXE).add(BlockRegistry.RESEARCH_TABLE.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.SOUL_ANVIL.get());
     }
 }

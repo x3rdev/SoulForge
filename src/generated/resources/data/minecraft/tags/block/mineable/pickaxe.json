@@ -1,5 +1,17 @@
 {
   "values": [
-    "soul_forge:soul_crystal_ore"
+    "soul_forge:soul_crystal_ore",
+    "soul_forge:soul_bricks",
+    "soul_forge:soul_brick_stairs",
+    "soul_forge:soul_brick_slab",
+    "soul_forge:soul_brick_wall",
+    "soul_forge:soul_brick_column",
+    "soul_forge:soul_brick_door",
+    "soul_forge:soul_steel_bars",
+    "soul_forge:statue",
+    "soul_forge:soul_crystal_block",
+    "soul_forge:pedestal",
+    "soul_forge:soul_cauldron",
+    "soul_forge:soul_anvil"
   ]
 }
