@@ -3,6 +3,7 @@ package com.github.x3rdev.soul_forge.common;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
+import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
 import com.github.x3rdev.soul_forge.common.entity.*;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
@@ -11,8 +12,10 @@ import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
+import com.github.x3rdev.soul_forge.common.registry.EnchantmentEffectsRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,6 +25,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
@@ -98,7 +102,8 @@ public class CommonSetup {
         Level level = event.getEntity().level();
         if(!level.isClientSide() && event.getSource().getEntity() instanceof Player player) {
             ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if(stack.getItem() instanceof Scythe) {
+            int reapingLevel = stack.getEnchantmentLevel(level.registryAccess().lookup(Registries.ENCHANTMENT).get().getOrThrow(EnchantmentBootstrap.REAPING));
+            if(stack.getItem() instanceof Scythe || reapingLevel > 0) {
 //                if(isEntityTypeInTag(event.getEntity(), SoulForgeEntityTagsProvider.DROPS_UNDEAD_SOUL)) {
 //                    dropUndeadSoul(level, event.getEntity().position().add(0, 1.25F, 0));
 //                    return;
@@ -115,7 +120,7 @@ public class CommonSetup {
 //                    dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
 //                    return;
 //                }
-                dropNormalSoul(level, event.getEntity().position().add(0, 1.25F, 0));
+                dropNormalSoul(level, event.getEntity().position().add(0, 0.25F, 0));
             }
         }
     }

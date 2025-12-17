@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.datagen;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
 import com.github.x3rdev.soul_forge.common.worldgen.BiomeModifierBootstrap;
 import com.github.x3rdev.soul_forge.common.worldgen.ConfiguredFeatureBootstrap;
 import com.github.x3rdev.soul_forge.common.worldgen.PlacedFeatureBootstrap;
@@ -19,7 +20,8 @@ public class SoulForgeDatapackProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierBootstrap::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatureBootstrap::bootstrap)
-            .add(Registries.PLACED_FEATURE, PlacedFeatureBootstrap::bootstrap);
+            .add(Registries.PLACED_FEATURE, PlacedFeatureBootstrap::bootstrap)
+            .add(Registries.ENCHANTMENT, EnchantmentBootstrap::bootstrap);
 
     public SoulForgeDatapackProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of(SoulForge.MOD_ID));
