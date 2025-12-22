@@ -57,7 +57,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         this.treeBreadth = researchTree.pixelBreadth();
         this.activeResearch = Research.getEmptyResearch(menu.player.registryAccess());
         addRenderableWidget(new ClickableRitualWidget(leftPos+138, topPos+35, this));
-        addRenderableWidget(new ResearchTableBackButton(leftPos+138, topPos+5, this));
+        addRenderableWidget(new ResearchTableBackButton(leftPos+148, topPos+5, this));
     }
 
     @Override
