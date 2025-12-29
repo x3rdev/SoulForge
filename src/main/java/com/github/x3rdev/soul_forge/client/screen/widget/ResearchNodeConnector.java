@@ -22,7 +22,7 @@ public class ResearchNodeConnector extends MoveableWidget {
     private final int maxY;
 
     public ResearchNodeConnector(int x, int y, ResearchTableScreen screen, Holder.Reference<Research> research, int dirX, int dirY, int minX, int minY, int maxX, int maxY) {
-        super(x, y, 0, 0, Component.literal("test"));
+        super(x, y, 0, 0, Component.literal("connector"));
         this.screen = screen;
         this.research = research;
         this.dirX = dirX;

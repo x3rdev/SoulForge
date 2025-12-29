@@ -34,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.ServerChatEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -214,4 +215,8 @@ public class CommonSetup {
                 .min((o1, o2) -> (int) (o1.distanceToSqr(player) - o2.distanceToSqr(player)));
     }
 
+    @SubscribeEvent
+    public static void serverChatEvent(ServerChatEvent event) {
+
+    }
 }

@@ -70,7 +70,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     private ItemStack item;
     private boolean ritualActive;
     private int ritualTicks;
-    private BlockPos ritualParentPos;
+    private @Nullable BlockPos ritualParentPos;
+    private @Nullable Player ritualInitiator;
 
     public PedestalBlockEntity(BlockPos pos, BlockState blockState) {
         super(BlockEntityRegistry.PEDESTAL.get(), pos, blockState);
@@ -157,7 +158,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
             if(recipe.isPresent()) {
                 if(playerHasRitualUnlocked(player, necronomiconStack, recipe.get())) {
-                    startRitual(null);
+                    startRitual(null, player);
                 } else {
                     level.playSound(null, this.getBlockPos(), SoundEvents.ARMOR_STAND_HIT, SoundSource.BLOCKS);
                     Necronomicon.whisper(player, Component.literal("You're knowledge is... insufficient"));
@@ -251,22 +252,24 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         return this.ritualActive;
     }
 
-    public void startRitual(BlockPos ritualParentPos) {
+    public void startRitual(BlockPos ritualParentPos, Player player) {
         this.ritualActive = true;
         setRitualParentPos(ritualParentPos);
         if(ritualParentPos == null) {
             level.playSound(null, getBlockPos(), SoundRegistry.RITUAL.get(), SoundSource.BLOCKS);
             for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
                 level.getBlockEntity(getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
-                        .startRitual(getBlockPos());
+                        .startRitual(getBlockPos(), player);
             }
         }
+        this.ritualInitiator = player;
         this.setChanged();
     }
 
     public void stopRitual() {
         this.ritualActive = false;
         this.ritualTicks = 0;
+        this.ritualInitiator = null;
         this.setChanged();
     }
 
@@ -308,6 +311,9 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         if(tag.get("ritualParentPos") != null) {
             this.ritualParentPos = BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("ritualParentPos")).getOrThrow();
         }
+        if(tag.get("ritualInitiator") != null) {
+            this.ritualInitiator = this.level.getPlayerByUUID(tag.getUUID("ritualInitiator"));
+        }
     }
 
     @Override
@@ -320,6 +326,9 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         tag.putInt("ritualTicks", ritualTicks);
         if(ritualParentPos != null) {
             tag.put("ritualParentPos", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, ritualParentPos).getOrThrow());
+        }
+        if(ritualInitiator != null) {
+            tag.putUUID("ritualInitiator", ritualInitiator.getUUID());
         }
     }
 
