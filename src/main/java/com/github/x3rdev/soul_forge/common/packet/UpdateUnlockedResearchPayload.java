@@ -10,16 +10,16 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
-public record UpdateResearchPayload(ResourceKey<Research> research, int containerId) implements CustomPacketPayload {
+public record UpdateUnlockedResearchPayload(ResourceKey<Research> research, int containerId) implements CustomPacketPayload {
 
-    public static final CustomPacketPayload.Type<UpdateResearchPayload> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "update_research"));
+    public static final CustomPacketPayload.Type<UpdateUnlockedResearchPayload> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "update_research"));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, UpdateResearchPayload> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, UpdateUnlockedResearchPayload> STREAM_CODEC = StreamCodec.composite(
             ResourceKey.streamCodec(DatapackRegistry.RESEARCH_KEY),
-            UpdateResearchPayload::research,
+            UpdateUnlockedResearchPayload::research,
             ByteBufCodecs.VAR_INT,
-            UpdateResearchPayload::containerId,
-            UpdateResearchPayload::new
+            UpdateUnlockedResearchPayload::containerId,
+            UpdateUnlockedResearchPayload::new
     );
 
     @Override

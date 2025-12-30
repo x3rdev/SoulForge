@@ -87,9 +87,10 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void playerClone(PlayerEvent.Clone event) {
-        if (event.isWasDeath() && event.getOriginal().hasData(DataAttachmentRegistry.UNLOCKED_RESEARCH)) {
-            event.getEntity().setData(DataAttachmentRegistry.UNLOCKED_RESEARCH, event.getOriginal().getData(DataAttachmentRegistry.UNLOCKED_RESEARCH));
-        }
+        //TODO this even handler is most likely unnecessary, but double check before removing
+//        if (event.isWasDeath() && event.getOriginal().hasData(DataAttachmentRegistry.UNLOCKED_RESEARCH)) {
+//            event.getEntity().setData(DataAttachmentRegistry.UNLOCKED_RESEARCH, event.getOriginal().getData(DataAttachmentRegistry.UNLOCKED_RESEARCH));
+//        }
     }
 
     @SubscribeEvent

@@ -24,8 +24,6 @@ public class WordStoneButton extends AbstractWidget {
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(isActive()) {
             this.setX(screen.getGuiLeft()+7+screen.getStoneX(index));
-
-
             guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX(), getY(), 176, 20, 2, 12);
             int offset = 0;
             String word = screen.getMenu().getStoneWord(index);

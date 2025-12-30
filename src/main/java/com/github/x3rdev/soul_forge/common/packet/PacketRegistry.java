@@ -14,14 +14,7 @@ public class PacketRegistry {
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
-        registrar.playToServer(
-                UpdateResearchPayload.TYPE,
-                UpdateResearchPayload.STREAM_CODEC,
-                new DirectionalPayloadHandler<>(
-                        (payload, context) -> {},
-                        ServerPayloadHandler::handleUpdateResearch
-                )
-        );
+
         registrar.playToClient(
                 SendParticlePayload.TYPE,
                 SendParticlePayload.STREAM_CODEC,
@@ -44,6 +37,22 @@ public class PacketRegistry {
                 new DirectionalPayloadHandler<>(
                         (payload, context) -> {},
                         ServerPayloadHandler::handleStartSoulAnvil
+                )
+        );
+        registrar.playToServer(
+                UpdateUnlockedResearchPayload.TYPE,
+                UpdateUnlockedResearchPayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        (payload, context) -> {},
+                        ServerPayloadHandler::handleUpdateResearch
+                )
+        );
+        registrar.playToServer(
+                SendWordStoneSeedPayload.TYPE,
+                SendWordStoneSeedPayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        ClientPayloadHandler::handleUpdateWordStoneSeedData,
+                        (payload, context) -> {}
                 )
         );
     }

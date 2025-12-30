@@ -18,6 +18,14 @@ public class DataAttachmentRegistry {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<List<ResourceKey<Research>>>> UNLOCKED_RESEARCH = DATA_ATTACHMENT_TYPES.register(
             "research", () -> AttachmentType.builder(() -> List.<ResourceKey<Research>>of())
                     .serialize(Codec.list(ResourceKey.codec(DatapackRegistry.RESEARCH_KEY)))
+                    .copyOnDeath()
+                    .build()
+    );
+
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> WORD_STONE_SEED = DATA_ATTACHMENT_TYPES.register(
+            "word_stone_seed", () -> AttachmentType.builder(() -> 0)
+                    .serialize(Codec.INT)
+                    .copyOnDeath()
                     .build()
     );
 }

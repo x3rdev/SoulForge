@@ -1,10 +1,14 @@
 package com.github.x3rdev.soul_forge.common.packet.handler;
 
+import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendParticlePayload;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
+import com.github.x3rdev.soul_forge.common.packet.SendWordStoneSeedPayload;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ClientPayloadHandler {
@@ -25,6 +29,12 @@ public class ClientPayloadHandler {
         context.enqueueWork(() -> {
             context.player().setData(DataAttachmentRegistry.UNLOCKED_RESEARCH, ImmutableList.copyOf(payload.keys()));
             Research.clearCache();
+        });
+    }
+
+    public static void handleUpdateWordStoneSeedData(SendWordStoneSeedPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            context.player().setData(DataAttachmentRegistry.WORD_STONE_SEED, payload.seed());
         });
     }
 }

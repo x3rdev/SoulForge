@@ -1,7 +1,8 @@
 package com.github.x3rdev.soul_forge.common.menu;
 
-import com.github.x3rdev.soul_forge.common.packet.UpdateResearchPayload;
+import com.github.x3rdev.soul_forge.common.packet.UpdateUnlockedResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
+import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
@@ -83,13 +84,16 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
     public void setActiveResearch(Holder.Reference<Research> research) {
         if(this.player.level().isClientSide()) {
-            PacketDistributor.sendToServer(new UpdateResearchPayload(research.key(), this.containerId));
+            PacketDistributor.sendToServer(new UpdateUnlockedResearchPayload(research.key(), this.containerId));
         }
         this.research = research;
     }
 
     public void pickWord(int index) {
-
+        if(this.player.level().isClientSide()) {
+            PacketDistributor.sendToServer(new UpdateUnlockedResearchPayload(research.key(), this.containerId));
+        }
+        this.research = research;
     }
 
     public String getStoneWord(int index) {
@@ -99,16 +103,16 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public void selectNewWords() {
         words.clear();
         for (int i = 0; i < STONE_COUNT; i++) {
-            words.add(WORDS[Math.floorMod(nextInt(getSeed()+i), WORDS.length)]);
+            words.add(WORDS[nextInt(getWordStoneSeed()+i, WORDS.length)]);
         }
     }
 
-    public int getSeed() {
-        return 10;
+    public int getWordStoneSeed() {
+        return player.getData(DataAttachmentRegistry.WORD_STONE_SEED);
     }
 
-    private int nextInt(int i) {
-        return i * 1664525 + 1013904223;
+    private int nextInt(int i, int mod) { //Just a simple "randomizing" function
+        return Math.floorMod(i * 1664525 + 1013904223, mod);
     }
 
     @Override
