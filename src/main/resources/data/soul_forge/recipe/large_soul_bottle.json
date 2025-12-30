@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "E": {
-      "item": "minecraft:ender_pearl"
+      "item": "soul_forge:soul_pearl"
     },
     "G": {
       "item": "minecraft:glass"
@@ -16,6 +16,6 @@
   ],
   "result": {
       "count": 1,
-      "id": "soul_forge:small_soul_bottle"
+      "id": "soul_forge:large_soul_bottle"
    }
 }

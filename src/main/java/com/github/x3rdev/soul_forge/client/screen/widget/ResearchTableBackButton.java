@@ -14,14 +14,14 @@ public class ResearchTableBackButton extends AbstractWidget {
     private final ResearchTableScreen screen;
 
     public ResearchTableBackButton(int x, int y, ResearchTableScreen screen) {
-        super(x, y, 20, 9, Component.literal("back"));
+        super(x, y, 20, 10, Component.literal("back"));
         this.screen = screen;
     }
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(isActive()) {
-            guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX(), getY(), 214, 0, getWidth(), getHeight());
+            guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX(), getY(), 214, isHovered() ? 10 : 0, getWidth(), getHeight());
         }
     }
 

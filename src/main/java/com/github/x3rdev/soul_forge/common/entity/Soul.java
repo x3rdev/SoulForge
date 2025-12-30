@@ -45,8 +45,11 @@ public class Soul extends LivingEntity implements GeoEntity {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if(source.getDirectEntity() != null && source.getDirectEntity().getType().equals(EntityType.PLAYER)) {
-            for (int i = 0; i < 10; i++) {
-                level().addParticle(ParticleTypes.POOF, getX(), getY(), getZ(), Math.random()-0.5F, Math.random()-0.5F, Math.random()-0.5F);
+            for (int i = 0; i < 20; i++) {
+                double d0 = this.random.nextGaussian() * 0.02;
+                double d1 = this.random.nextGaussian() * 0.02;
+                double d2 = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(ParticleTypes.POOF, this.getRandomX(1.0), this.getRandomY(), this.getRandomZ(1.0), d0, d1, d2);
             }
             this.remove(RemovalReason.KILLED);
             return true;

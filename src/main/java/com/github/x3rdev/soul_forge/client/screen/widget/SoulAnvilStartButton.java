@@ -20,15 +20,20 @@ public class SoulAnvilStartButton extends Button {
 
     @Override
     public void onClick(double mouseX, double mouseY) {
-        if(screen.getMenu().canPressHammer()) {
+        if(isActive()) {
             super.onClick(mouseX, mouseY);
         }
     }
 
     @Override
     public void playDownSound(SoundManager handler) {
-        if(screen.getMenu().canPressHammer()) {
+        if(isActive()) {
             super.playDownSound(handler);
         }
+    }
+
+    @Override
+    public boolean isActive() {
+        return super.isActive() && screen.getMenu().canPressHammer();
     }
 }

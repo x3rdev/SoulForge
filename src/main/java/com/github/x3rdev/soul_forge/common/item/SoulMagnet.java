@@ -44,7 +44,7 @@ public class SoulMagnet extends Item {
             if(!soulContainers.isEmpty()) {
                 List<Soul> souls = level.getEntities(EntityTypeTest.forClass(Soul.class), player.getBoundingBox().inflate(magnet.range, 1, magnet.range), e -> !e.isRemoved());
                 for (Soul soul : souls) {
-                    Vec3 soulToPlayer = soul.position().vectorTo(player.position().add(0,0.5,0)).normalize().scale(0.6);
+                    Vec3 soulToPlayer = soul.position().vectorTo(player.position().add(0,1,0)).normalize().scale(0.6);
                     for (ItemStack soulContainerStack : soulContainers) {
                         tryPickupSoul(level, player, soul, soulContainerStack, soulToPlayer);
                         if (soul.isRemoved()) {

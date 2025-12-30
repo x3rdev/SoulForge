@@ -20,8 +20,7 @@
   ],
   "diagonal_inputs": [],
   "soul_inputs": {
-    "soul": 1,
-    "nether_soul": 2
+    "soul": 4
   },
   "result": {
     "id": "soul_forge:soul_pearl",

@@ -6,21 +6,24 @@ import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.research.ResearchTree;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.EnchantmentNames;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
     public static final ResourceLocation INSPECT_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_inspect.png");
@@ -39,6 +42,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private int treeBreadth;
     private Holder.Reference<Research> activeResearch;
     private int topDescriptionLine;
+    private List<WordStoneButton> stones;
+    private Set<Character> discoveredChars;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -57,7 +62,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         this.treeBreadth = researchTree.pixelBreadth();
         this.activeResearch = Research.getEmptyResearch(menu.player.registryAccess());
         addRenderableWidget(new ClickableRitualWidget(leftPos+138, topPos+35, this));
-        addRenderableWidget(new ResearchTableBackButton(leftPos+138, topPos+5, this));
+        addRenderableWidget(new ResearchTableBackButton(leftPos+148, topPos+4, this));
+        stones = new ArrayList<>();
+        discoveredChars = new HashSet<>();
+        for(int i = 0; i < ResearchTableMenu.STONE_COUNT; i++) {
+            WordStoneButton widget = new WordStoneButton(this, i);
+            addRenderableWidget(widget);
+            stones.add(widget);
+        }
+
     }
 
     @Override
@@ -67,10 +80,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
-    }
-
-    public ItemStack getNecronomicon() {
-        return getMenu().getItems().getFirst();
     }
 
     private void addResearchTreeWidgets(ResearchTree tree, int lastX, int lastY, int offsetX, int offsetY) {
@@ -174,11 +183,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     private void renderLockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
-        guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 0, 161, 52);
-        guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+58, topPos+35, 176, 0, 13, 13);
-        guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+105, topPos+35, 189, 0, 13, 13);
-        guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos+128, topPos+34, 202, 0, 12, 14);
-        renderResearchTitle(guiGraphics);
+        String text = "test abcd some string blah blah blah mysterious text that should light up";
+        guiGraphics.drawWordWrap(this.font, Component.literal(text).withStyle(EnchantmentNames.ROOT_STYLE), leftPos+16, topPos+20, 143,0x181d24);
         guiGraphics.pose().popPose();
     }
 
@@ -258,5 +264,18 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         this.menu.setActiveResearch(research);
     }
 
+    public void pickWord(int index) {
 
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public int getStoneX(int index) {
+        if(index == 0) {
+            return 0;
+        }
+        return getStoneX(index-1)+font.width(getMenu().getStoneWord(index-1))+1+2+2+2;
+    }
 }

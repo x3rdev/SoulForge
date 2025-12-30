@@ -79,6 +79,7 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addItem(ItemRegistry.AWAKENED_SOUL_STEEL_SWORD, "Awakened Soulsteel Sword");
         addItem(ItemRegistry.SOUL_STEEL_SHIELD, "Soulsteel Shield");
         addItem(ItemRegistry.AWAKENED_SOUL_STEEL_SHIELD, "Awakened Soulsteel Shield");
+        addItem(ItemRegistry.SOUL_MAGNET, "Soul Magnet");
 
         // Item Group
         add("itemGroup.soul_forge", "Soul Forge");

@@ -2,9 +2,11 @@ package com.github.x3rdev.soul_forge.common;
 
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
-import com.github.x3rdev.soul_forge.common.datagen.SoulForgeEntityTagsProvider;
 import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
-import com.github.x3rdev.soul_forge.common.entity.*;
+import com.github.x3rdev.soul_forge.common.entity.Ghost;
+import com.github.x3rdev.soul_forge.common.entity.Soul;
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
@@ -12,9 +14,9 @@ import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
-import com.github.x3rdev.soul_forge.common.registry.EnchantmentEffectsRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
+import com.github.x3rdev.soul_forge.common.scheduler.ServerScheduler;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -25,7 +27,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
@@ -33,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.ServerChatEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -120,7 +122,10 @@ public class CommonSetup {
 //                    dropDragonSoul(level, event.getEntity().position().add(0, 1.25F, 0));
 //                    return;
 //                }
-                dropNormalSoul(level, event.getEntity().position().add(0, 0.25F, 0));
+                ServerScheduler.schedule(() -> {
+                    dropNormalSoul(level, event.getEntity().position().add(0, 0.25F, 0));
+                }, 1);
+
             }
         }
     }
@@ -210,4 +215,8 @@ public class CommonSetup {
                 .min((o1, o2) -> (int) (o1.distanceToSqr(player) - o2.distanceToSqr(player)));
     }
 
+    @SubscribeEvent
+    public static void serverChatEvent(ServerChatEvent event) {
+
+    }
 }

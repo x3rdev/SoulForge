@@ -14,7 +14,8 @@ public class SoulParticle extends TextureSheetParticle {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.lifetime = 30;
         this.sprites = sprites;
-        this.friction = 0.3F;
+        this.friction = 0.1F;
+        this.gravity = 0;
         this.setSpriteFromAge(this.sprites);
         this.xd = xSpeed;
         this.yd = ySpeed;

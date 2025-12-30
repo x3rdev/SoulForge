@@ -13,17 +13,24 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ResearchTableMenu extends AbstractContainerMenu {
+
+    public static final String[] WORDS = {"map","silver","node","pulse","grid","ember","cloud","axis","vector","stone","loop","signal","frame","byte","cache","logic","thread","kernel","stack","flux","jazz","quick","box","wizard","nymph","xenon","book", "short", "poor"};
+    public static final int STONE_COUNT = 4;
 
     public final Player player;
     private final Container container;
     private final ContainerLevelAccess access;
+    private final List<String> words;
     private Holder.Reference<Research> research;
+
 
     //Client
     public ResearchTableMenu(int containerId, Inventory playerInventory, FriendlyByteBuf byteBuf) {
@@ -38,13 +45,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public ResearchTableMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access) {
         super(MenuTypeRegistry.RESEARCH_TABLE.get(), containerId);
         this.player = playerInventory.player;
-        this.container = new SimpleContainer(2);
+        this.container = new SimpleContainer(1);
         this.access = access;
         this.research = Research.getEmptyResearch(player.registryAccess());
+        this.words = new ArrayList<>();
 
-        this.addSlot(new ResearchUnlockSlot(container, 0, 33, 34));
-        this.addSlot(new ResearchUnlockSlot(container, 1, 80, 34));
-        container.setItem(1, ItemRegistry.RESEARCHER_GLASSES.get().getDefaultInstance());
+        this.addSlot(new AncientTabletSlot(container, 0, 152, 57));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 this.addSlot(new ResearchTableSlot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -53,15 +59,17 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         for (int k = 0; k < 9; k++) {
             this.addSlot(new ResearchTableSlot(playerInventory, k, 8 + k * 18, 142));
         }
+
+        selectNewWords();
     }
 
     public void tick() {
         if(isResearchSelected()) {
-            ItemStack[] items = research.value().unlockIngredient().getItems();
-            if(items.length != 0) {
-                int l = (int) (player.level().getGameTime() / 20 % items.length);
-                container.setItem(0, items[l]);
-            }
+//            ItemStack[] items = research.value().unlockIngredient().getItems();
+//            if(items.length != 0) {
+//                int l = (int) (player.level().getGameTime() / 20 % items.length);
+//                container.setItem(0, items[l]);
+//            }
         }
     }
 
@@ -69,8 +77,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         return !Research.isEmpty(research);
     }
 
-    public ItemStack getNecronomicon() {
-        return getItems().getFirst();
+    public ItemStack getTabletStack() {
+        return container.getItem(0);
     }
 
     public void setActiveResearch(Holder.Reference<Research> research) {
@@ -80,6 +88,28 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.research = research;
     }
 
+    public void pickWord(int index) {
+
+    }
+
+    public String getStoneWord(int index) {
+        return words.get(index);
+    }
+
+    public void selectNewWords() {
+        words.clear();
+        for (int i = 0; i < STONE_COUNT; i++) {
+            words.add(WORDS[Math.floorMod(nextInt(getSeed()+i), WORDS.length)]);
+        }
+    }
+
+    public int getSeed() {
+        return 10;
+    }
+
+    private int nextInt(int i) {
+        return i * 1664525 + 1013904223;
+    }
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
@@ -89,7 +119,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-//        this.access.execute((level, pos) -> this.clearContainer(player, this.container));
+        this.access.execute((level, pos) -> this.clearContainer(player, this.container));
     }
 
     @Override
@@ -110,15 +140,20 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
     }
 
-    public class ResearchUnlockSlot extends NonInteractiveResultSlot {
+    public class AncientTabletSlot extends Slot {
 
-        public ResearchUnlockSlot(Container container, int slot, int x, int y) {
+        public AncientTabletSlot(Container container, int slot, int x, int y) {
             super(container, slot, x, y);
         }
 
         @Override
         public boolean isActive() {
             return isResearchSelected() && !Research.playerHasResearchUnlocked(player, research);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.is(ItemRegistry.ANCIENT_TABLET);
         }
     }
 }
