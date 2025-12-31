@@ -15,7 +15,7 @@ public class WordStoneButton extends AbstractWidget {
     private final int index;
 
     public WordStoneButton(ResearchTableScreen screen, int index) {
-        super(0, screen.getGuiTop()+58, 0, 12, Component.literal("word stone button"));
+        super(0, screen.getGuiTop()+57, 0, 12, Component.literal("word stone button"));
         this.screen = screen;
         this.index = index;
     }
@@ -24,19 +24,19 @@ public class WordStoneButton extends AbstractWidget {
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(isActive()) {
             this.setX(screen.getGuiLeft()+7+screen.getStoneX(index));
-            guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX(), getY(), 176, 20, 2, 12);
+            guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX(), getY(), 176, 20, 2, 16);
             int offset = 0;
             String word = screen.getMenu().getStoneWord(index);
             int wordWidth = screen.getFont().width(word)+1;
             this.setWidth(wordWidth);
             while (wordWidth > 0) {
                 int sub = Math.min(wordWidth, 22);
-                guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX()+2+offset, getY(), 178, 20, sub, 12);
+                guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX()+2+offset, getY(), 178, 20, sub, 16);
                 wordWidth-=sub;
                 offset+=sub;
             }
-            guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX()+offset+2, getY(), 200, 20, 2, 12);
-            guiGraphics.drawString(screen.getFont(), Component.literal(word), getX()+3, getY()+2, isHovered() ? 0x98caff : 0xbababa, false);
+            guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX()+offset+2, getY(), 200, 20, 2, 16);
+            guiGraphics.drawString(screen.getFont(), Component.literal(word), getX()+3, getY()+4, isHovered() ? 0x98caff : 0xbababa, false);
         }
     }
 
@@ -49,7 +49,7 @@ public class WordStoneButton extends AbstractWidget {
     public void onClick(double mouseX, double mouseY) {
         if(isActive()) {
             super.onClick(mouseX, mouseY);
-            screen.pickWord(this.index);
+            screen.getMenu().pickWord(this.index);
         }
     }
 

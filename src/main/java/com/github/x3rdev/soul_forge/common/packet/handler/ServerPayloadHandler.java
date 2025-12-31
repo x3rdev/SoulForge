@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.packet.handler;
 
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.menu.SoulAnvilMenu;
+import com.github.x3rdev.soul_forge.common.packet.PickWordPayload;
 import com.github.x3rdev.soul_forge.common.packet.StartSoulAnvilPayload;
 import com.github.x3rdev.soul_forge.common.packet.UpdateUnlockedResearchPayload;
 import net.minecraft.core.RegistryAccess;
@@ -25,6 +26,15 @@ public class ServerPayloadHandler {
             RegistryAccess registryAccess = context.player().level().registryAccess();
             if(containerMenu.containerId == payload.containerId() && containerMenu instanceof ResearchTableMenu researchTableMenu) {
                 researchTableMenu.setActiveResearch(registryAccess.holder(payload.research()).orElseThrow());
+            }
+        });
+    }
+
+    public static void handlePickWord(PickWordPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            AbstractContainerMenu containerMenu = context.player().containerMenu;
+            if(containerMenu.containerId == payload.containerId() && containerMenu instanceof ResearchTableMenu researchTableMenu) {
+                researchTableMenu.pickWord(payload.index());
             }
         });
     }

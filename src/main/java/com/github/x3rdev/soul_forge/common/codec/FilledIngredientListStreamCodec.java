@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.recipe;
+package com.github.x3rdev.soul_forge.common.codec;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
