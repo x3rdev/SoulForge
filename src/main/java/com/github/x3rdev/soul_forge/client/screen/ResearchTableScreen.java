@@ -29,7 +29,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public static final ResourceLocation INSPECT_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_inspect.png");
     public static final ResourceLocation SCROLL_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_scrolls.png");
     public static final ResourceLocation TREE_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_tree.png");
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/block/soulwood_planks.png");
+    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/souls_background.png");
     public static final int DRAGGABLE_WINDOW_WIDTH = 160;
     public static final int DRAGGABLE_WINDOW_HEIGHT = 142;
     public static final int ICON_SIZE = 26;
@@ -240,7 +240,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         if(treeScreenActive()) {
             guiGraphics.blit(TREE_SCREEN_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
-            guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + 16, 0, -Mth.floor(anchorX), -Mth.floor(anchorY), DRAGGABLE_WINDOW_WIDTH, DRAGGABLE_WINDOW_HEIGHT, 16, 16);
+            guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + 16, 0, -Mth.floor(anchorX), -Mth.floor(anchorY), DRAGGABLE_WINDOW_WIDTH, DRAGGABLE_WINDOW_HEIGHT, 32, 32);
         }
         if(inspectScreenActive()){
             guiGraphics.blit(INSPECT_SCREEN_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
