@@ -1,5 +1,7 @@
 package com.github.x3rdev.soul_forge.common.recipe;
 
+import com.github.x3rdev.soul_forge.common.codec.FilledIngredientListCodec;
+import com.github.x3rdev.soul_forge.common.codec.FilledIngredientListStreamCodec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;

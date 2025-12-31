@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.recipe;
 
+import com.github.x3rdev.soul_forge.common.codec.FilledIngredientListCodec;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.registry.DatapackRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;

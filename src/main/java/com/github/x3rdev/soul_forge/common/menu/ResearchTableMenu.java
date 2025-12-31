@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common.menu;
 
+import com.github.x3rdev.soul_forge.common.packet.PickWordPayload;
 import com.github.x3rdev.soul_forge.common.packet.UpdateUnlockedResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
@@ -8,6 +9,7 @@ import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,8 +20,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ResearchTableMenu extends AbstractContainerMenu {
 
@@ -31,6 +32,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final List<String> words;
     private Holder.Reference<Research> research;
+    private Set<Character> discoveredChars;
 
 
     //Client
@@ -50,6 +52,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.access = access;
         this.research = Research.getEmptyResearch(player.registryAccess());
         this.words = new ArrayList<>();
+        this.discoveredChars = new HashSet<>();
 
         this.addSlot(new AncientTabletSlot(container, 0, 152, 57));
         for (int i = 0; i < 3; i++) {
@@ -91,9 +94,19 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
     public void pickWord(int index) {
         if(this.player.level().isClientSide()) {
-            PacketDistributor.sendToServer(new UpdateUnlockedResearchPayload(research.key(), this.containerId));
+            PacketDistributor.sendToServer(new PickWordPayload(index, this.containerId));
         }
-        this.research = research;
+        String stoneWord = getStoneWord(index);
+        for(int i = 0; i < stoneWord.length(); i++) {
+            discoveredChars.add(stoneWord.charAt(i));
+        }
+        if(!this.player.level().isClientSide()) {
+            Map<ResourceKey<Research>, List<Character>> data = player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS);
+            HashMap<ResourceKey<Research>, List<Character>> copy = new HashMap<>(data);
+            copy.put(this.research.key(), discoveredChars.stream().toList());
+            player.setData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS, copy);
+        }
+
     }
 
     public String getStoneWord(int index) {

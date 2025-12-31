@@ -1,4 +1,4 @@
-package com.github.x3rdev.soul_forge.common.recipe;
+package com.github.x3rdev.soul_forge.common.codec;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.datafixers.util.Unit;
@@ -23,9 +23,9 @@ public class FilledIngredientListCodec implements Codec<List<Ingredient>> {
 
     @Override
     public <T> DataResult<Pair<List<Ingredient>, T>> decode(DynamicOps<T> ops, T input) {
-        return ops.getList(input).setLifecycle(Lifecycle.stable()).flatMap((stream) -> {
+        return ops.getList(input).setLifecycle(Lifecycle.stable()).flatMap((consumer) -> {
             final DecoderState<T> decoder = new DecoderState(ops);
-            stream.accept(decoder::accept);
+            consumer.accept(decoder::accept);
             return decoder.build();
         });
     }

@@ -43,7 +43,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private Holder.Reference<Research> activeResearch;
     private int topDescriptionLine;
     private List<WordStoneButton> stones;
-    private Set<Character> discoveredChars;
 
     public ResearchTableScreen(ResearchTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -64,7 +63,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         addRenderableWidget(new ClickableRitualWidget(leftPos+138, topPos+35, this));
         addRenderableWidget(new ResearchTableBackButton(leftPos+148, topPos+4, this));
         stones = new ArrayList<>();
-        discoveredChars = new HashSet<>();
         for(int i = 0; i < ResearchTableMenu.STONE_COUNT; i++) {
             WordStoneButton widget = new WordStoneButton(this, i);
             addRenderableWidget(widget);
@@ -184,7 +182,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private void renderLockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         String text = "test abcd some string blah blah blah mysterious text that should light up";
-        guiGraphics.drawWordWrap(this.font, Component.literal(text).withStyle(EnchantmentNames.ROOT_STYLE), leftPos+16, topPos+20, 143,0x181d24);
+        guiGraphics.drawWordWrap(this.font, Component.literal(text).withStyle(EnchantmentNames.ROOT_STYLE), leftPos+16, topPos+20, 145,0x181d24);
         guiGraphics.pose().popPose();
     }
 
@@ -262,10 +260,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public void setActiveResearch(Holder.Reference<Research> research) {
         this.activeResearch = research;
         this.menu.setActiveResearch(research);
-    }
-
-    public void pickWord(int index) {
-
     }
 
     public Font getFont() {
