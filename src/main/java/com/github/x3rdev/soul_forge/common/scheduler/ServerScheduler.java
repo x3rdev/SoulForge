@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentMap;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = SoulForge.MOD_ID)
 public final class ServerScheduler {
 
-    static final ConcurrentMap<Integer, List<Runnable>> SERVER_SCHEDULE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<Integer, List<Runnable>> SERVER_SCHEDULE = new ConcurrentHashMap<>();
 
     private ServerScheduler() {
 
@@ -24,13 +24,14 @@ public final class ServerScheduler {
 
     public static void schedule(Runnable task, int delay) {
         SERVER_SCHEDULE.compute(ServerLifecycleHooks.getCurrentServer().getTickCount() + delay,
-                (integer, runnables) -> {
-                    if(runnables == null) {
-                        runnables = new ObjectArrayList<>();
-                    }
-                    runnables.add(task);
-                    return runnables;
-                });
+            (integer, runnables) -> {
+                if(runnables == null) {
+                    runnables = new ObjectArrayList<>();
+                }
+                runnables.add(task);
+                return runnables;
+            }
+        );
     }
 
     @SubscribeEvent
