@@ -128,6 +128,10 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         return Math.floorMod(i * 1664525 + 1013904223, mod);
     }
 
+    public boolean isCharDiscovered(char c) {
+        return discoveredChars.contains(c);
+    }
+
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         return ItemStack.EMPTY;
