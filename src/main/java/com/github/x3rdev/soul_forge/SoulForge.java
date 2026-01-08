@@ -5,6 +5,7 @@ import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
+import com.github.x3rdev.soul_forge.common.research.WordList;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -52,6 +53,8 @@ public class SoulForge {
         neoEventBus.addListener(CommonSetup::playerClone);
         neoEventBus.addListener(CommonSetup::playerLoggedIn);
         neoEventBus.addListener(CommonSetup::playerTickEvent);
+
+        modEventBus.addListener(WordList::registerDataMapTypes);
 
         ModCompatibility.init();
     }
