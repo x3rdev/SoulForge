@@ -24,7 +24,6 @@ import java.util.Random;
 public class AncientTablet extends Item {
     List<String> words = new ArrayList<>();
 
-    static Random random;
     boolean hasData;
     long randomSeed;
 
@@ -89,42 +88,25 @@ public class AncientTablet extends Item {
 
         List<String> words = new ArrayList<>();
         // assign words to tablet
-        Random random1 = new Random(seedValue);
+        Random random = new Random(seedValue);
         // shifted binomial distribution (produces 3 to 8 words)
         // words : 0  1  2  3  4  5  6  7  8  9 10
         // chance: 0  0  0  1  5 10 10  5  1  0  0 (out of 32)
-        int tries = cumulative(5, random1.nextInt() % 32) + 3;
+        int tries = cumulative(5, random.nextInt() % 32) + 3;
         for (int i = 0; i < tries; i++) {
-            switch (rollRarity(Math.abs(random1.nextInt()))) {
-                case EPIC:
-                    words.add(epicWords.get(random1.nextInt(epicWords.size())));
-                    break;
-                case RARE:
-                    words.add(rareWords.get(random1.nextInt(rareWords.size())));
-                    break;
-                case UNCOMMON:
-                    words.add(uncommonWords.get(random1.nextInt(uncommonWords.size())));
-                    break;
-                default:
-                    words.add(commonWords.get(random1.nextInt(commonWords.size())));
+            float roll = random.nextFloat();
+            if(roll < 1/40F) {
+                words.add(epicWords.get(random.nextInt(epicWords.size())));
+            } else if(roll < 4/40F) {
+                words.add(rareWords.get(random.nextInt(rareWords.size())));
+            } else if(roll < 13/40F) {
+                words.add(uncommonWords.get(random.nextInt(uncommonWords.size())));
+            } else {
+                words.add(commonWords.get(random.nextInt(commonWords.size())));
             }
         }
 
         return words;
-    }
-
-    // each tier is three times less likely than the previous
-    private static Rarity rollRarity(int seed) {
-        if (seed % 40 < 1) {  // 1/40 chance
-            return Rarity.EPIC;
-        }
-        if (seed % 40 < 4) {  // 3/40 chance
-            return Rarity.RARE;
-        }
-        if (seed % 40 < 13) { // 9/40 chance
-            return Rarity.UNCOMMON;
-        }
-        return Rarity.COMMON; // 27/40 chance
     }
 
     private static int cumulative(int n, int i) {
