@@ -23,7 +23,6 @@ public class SoulForgeDataMapProvider extends DataMapProvider {
 
     @Override
     protected void gather() {
-        SoulForge.LOGGER.info("Loading data maps");
         List<String> common = new ArrayList<>();
         List<String> uncommon = new ArrayList<>();
         List<String> rare = new ArrayList<>();

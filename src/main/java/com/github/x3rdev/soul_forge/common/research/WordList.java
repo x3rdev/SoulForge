@@ -34,4 +34,29 @@ public record WordList(List<String> common, List<String> uncommon, List<String> 
     public static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
         event.register(WordList.DATA_MAP_TYPE);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        s.append("Common: [");
+        stringFrom(s, common);
+        s.append("Uncommon: [");
+        stringFrom(s, uncommon);
+        s.append("Rare: [");
+        stringFrom(s, rare);
+        s.append("Epic: [");
+        stringFrom(s, epic);
+        return s.toString();
+    }
+
+    private void stringFrom(StringBuilder s, List<String> uncommon) {
+        for (int i = 0; i < uncommon.size(); i++) {
+            s.append(uncommon.get(i));
+            if (i == uncommon.size() - 1) {
+                s.append("]\n");
+                break;
+            }
+            s.append(", ");
+        }
+    }
 }
