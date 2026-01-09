@@ -29,5 +29,6 @@ public final class DataGenerators {
         generator.addProvider(event.includeClient(), new SoulForgeLanguageProvider(packOutput));
         generator.addProvider(event.includeServer(), new SoulForgeLootTableProvider(packOutput, lookupProvider));
         generator.addProvider(event.includeServer(), new SoulForgeRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new SoulForgeDataMapProvider(packOutput, lookupProvider));
     }
 }

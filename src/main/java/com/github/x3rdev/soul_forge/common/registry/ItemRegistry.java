@@ -85,7 +85,7 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> SOUL_MAGNET = ITEMS.register("soul_magnet",
             () -> new SoulMagnet(new Item.Properties(), 2.5F));
     public static final DeferredHolder<Item, Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
-            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+            AncientTablet::new);
 
     public static final DeferredHolder<Item, Item> DEBUG_RESEARCH_UNLEARNER = ITEMS.register("debug_research_unlearner",
             DebugResearchUnlearner::new);
