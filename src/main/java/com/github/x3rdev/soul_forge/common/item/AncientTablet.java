@@ -120,8 +120,43 @@ public class AncientTablet extends Item {
         return InteractionResultHolder.sidedSuccess(itemstack, !level.isClientSide());
     }
 
+    // static stateless method for generating word lists given an itemstack and seed value
+    public static List<String> generateWordListFromSeed(ItemStack itemstack, int seedValue) {
+        // set word list for new tablet
+        WordList wordList = itemstack.getItem().builtInRegistryHolder().getData(WordList.DATA_MAP_TYPE);
+        List<String> commonWords = wordList.common();
+        List<String> uncommonWords = wordList.uncommon();
+        List<String> rareWords = wordList.rare();
+        List<String> epicWords = wordList.epic();
+
+        List<String> words = new ArrayList<>();
+        // assign words to tablet
+        Random random1 = new Random(seedValue);
+        // shifted binomial distribution (produces 3 to 8 words)
+        // words : 0  1  2  3  4  5  6  7  8  9 10
+        // chance: 0  0  0  1  5 10 10  5  1  0  0 (out of 32)
+        int tries = cumulative(5, random1.nextInt() % 32) + 3;
+        for (int i = 0; i < tries; i++) {
+            switch (rollRarity(Math.abs(random1.nextInt()))) {
+                case EPIC:
+                    words.add(epicWords.get(random1.nextInt(epicWords.size())));
+                    break;
+                case RARE:
+                    words.add(rareWords.get(random1.nextInt(rareWords.size())));
+                    break;
+                case UNCOMMON:
+                    words.add(uncommonWords.get(random1.nextInt(uncommonWords.size())));
+                    break;
+                default:
+                    words.add(commonWords.get(random1.nextInt(commonWords.size())));
+            }
+        }
+
+        return words;
+    }
+
     // each tier is three times less likely than the previous
-    private Rarity rollRarity(int seed) {
+    private static Rarity rollRarity(int seed) {
         if (seed % 40 < 1) {  // 1/40 chance
             return Rarity.EPIC;
         }
@@ -134,7 +169,7 @@ public class AncientTablet extends Item {
         return Rarity.COMMON; // 27/40 chance
     }
 
-    private int cumulative(int n, int i) {
+    private static int cumulative(int n, int i) {
         int sum = 0;
         for (int k = 0; k <= i; k++) {
             sum += combination(n, k);
@@ -143,7 +178,7 @@ public class AncientTablet extends Item {
         return n;
     }
 
-    private int combination(int n, int i) {
+    private static int combination(int n, int i) {
         int nCk = 1;
         for (int k = 0; k < i; k++) {
             nCk = nCk * (n - k) / (k + 1);
