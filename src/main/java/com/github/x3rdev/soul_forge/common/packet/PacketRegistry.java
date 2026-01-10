@@ -68,14 +68,5 @@ public class PacketRegistry {
                         ServerPayloadHandler::handleUpdateResearch
                 )
         );
-        registrar.playToClient(
-                SendWordStoneSeedPayload.TYPE,
-                SendWordStoneSeedPayload.STREAM_CODEC,
-                new DirectionalPayloadHandler<>(
-                        ClientPayloadHandler::handleUpdateWordStoneSeedData,
-                        (payload, context) -> {}
-                )
-        );
     }
-
 }

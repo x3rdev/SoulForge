@@ -37,16 +37,6 @@ public class ClientPayloadHandler {
         });
     }
 
-    public static void handleUpdateWordStoneSeedData(SendWordStoneSeedPayload payload, IPayloadContext context) {
-        context.enqueueWork(() -> {
-            context.player().setData(DataAttachmentRegistry.WORD_STONE_SEED, payload.seed());
-            AbstractContainerMenu containerMenu = context.player().containerMenu;
-            if(containerMenu.containerId == payload.containerId() && containerMenu instanceof ResearchTableMenu researchTableMenu) {
-                researchTableMenu.selectNewWords();
-            }
-        });
-    }
-
     public static void handleSendDiscoveredChars(SendDiscoveredCharsPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             Map<ResourceKey<Research>, List<Character>> data = new HashMap<>(context.player().getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS));

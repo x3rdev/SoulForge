@@ -1,7 +1,6 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.common.codec.AncientTabletWordListCodecs;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.UUIDUtil;
@@ -13,9 +12,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.UUID;
 
-import static com.github.x3rdev.soul_forge.common.codec.AncientTabletWordListCodecs.WORD_LIST_CODEC;
-import static com.github.x3rdev.soul_forge.common.codec.AncientTabletWordListCodecs.WORD_LIST_STREAM_CODEC;
-
 public class DataComponentRegistry {
 
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SoulForge.MOD_ID);
@@ -24,7 +20,7 @@ public class DataComponentRegistry {
             builder -> builder.persistent(SoulType.CODEC).networkSynchronized(SoulType.STREAM_CODEC));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> STORED_SOUL_COUNT = DATA_COMPONENTS.registerComponentType("stored_soul_count",
-            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<UUID>> WISP_UUID = DATA_COMPONENTS.registerComponentType("wisp_uuid",
             builder -> builder.persistent(UUIDUtil.CODEC).networkSynchronized(UUIDUtil.STREAM_CODEC));
@@ -35,7 +31,7 @@ public class DataComponentRegistry {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> SHIELD_BLOCKING = DATA_COMPONENTS.registerComponentType("shield_blocking",
             builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<AncientTabletWordListCodecs>> ANCIENT_TABLET_WORDS = DATA_COMPONENTS.registerComponentType("ancient_tablet_words",
-            builder -> builder.persistent(WORD_LIST_CODEC).networkSynchronized(WORD_LIST_STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ANCIENT_TABLET_SEED = DATA_COMPONENTS.registerComponentType("ancient_tablet_seed",
+            builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
 }
 

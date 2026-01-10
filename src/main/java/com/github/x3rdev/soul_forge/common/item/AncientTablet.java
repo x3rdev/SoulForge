@@ -1,19 +1,14 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.common.codec.AncientTabletWordListCodecs;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import com.github.x3rdev.soul_forge.common.research.WordList;
-import com.github.x3rdev.soul_forge.common.world.AncientTabletIncrementer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.server.IntegratedServer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
+import com.github.x3rdev.soul_forge.common.world.AncientTabletCounter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
@@ -22,63 +17,38 @@ import java.util.List;
 import java.util.Random;
 
 public class AncientTablet extends Item {
-    List<String> words = new ArrayList<>();
-
-    boolean hasData;
-    long randomSeed;
 
     public AncientTablet() {
         super(new Item.Properties()
                 .rarity(Rarity.UNCOMMON)
                 .stacksTo(1)
-                .component(DataComponentRegistry.ANCIENT_TABLET_WORDS, new AncientTabletWordListCodecs(0, false))
+                .component(DataComponentRegistry.ANCIENT_TABLET_SEED, -1)
         );
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack itemstack = player.getItemInHand(usedHand);
-        this.hasData = itemstack.get(DataComponentRegistry.ANCIENT_TABLET_WORDS).hasData();
-        InteractionResultHolder<ItemStack> result = generateWords(level, itemstack);
-        if (!level.isClientSide()) System.out.println(itemstack.get(DataComponentRegistry.ANCIENT_TABLET_WORDS));
-        return result;
-    }
-
-    public static long getWorldSeed(Level level) {
-        long seed = 0;
-        MinecraftServer server = Minecraft.getInstance().level.getServer();
-        IntegratedServer singlePlayerServer = Minecraft.getInstance().getSingleplayerServer();
-        if (server != null) seed = server.getWorldData().worldGenOptions().seed() % 16777216;
-        else if (singlePlayerServer != null) seed = singlePlayerServer.getWorldData().worldGenOptions().seed() % 16777216;
-        return seed;
-    }
-
-    public static DimensionDataStorage getDataStorage(Level level) {
-        DimensionDataStorage dataStorage = null;
-        MinecraftServer server = Minecraft.getInstance().level.getServer();
-        IntegratedServer singlePlayerServer = Minecraft.getInstance().getSingleplayerServer();
-        if (server != null) dataStorage = server.getLevel(level.dimension()).getDataStorage();
-        else if (singlePlayerServer != null) dataStorage = singlePlayerServer.getLevel(level.dimension()).getDataStorage();
-        return dataStorage;
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        int ancient_tablet_seed = stack.get(DataComponentRegistry.ANCIENT_TABLET_SEED);
+        tooltipComponents.add(Component.translatable("item.soul_forge.ancient_tablet.tooltip",
+                ancient_tablet_seed == -1 ? "???" : ancient_tablet_seed));
     }
 
     // if the tablet is meant to be readable before being used (such as from a research table), this method
     // can be called as long as the level is not null (hence why this logic isn't in the constructor)
-    public InteractionResultHolder<ItemStack> generateWords(Level level, ItemStack itemstack) {
-        // skip if tablet words have been loaded already
-        if (hasData || level.isClientSide()) return InteractionResultHolder.sidedSuccess(itemstack, !level.isClientSide());
+    public void generateTabletSeed(ServerLevel level, ItemStack itemstack) {
+        DimensionDataStorage dataStorage = level.getServer().overworld().getDataStorage();
+        AncientTabletCounter incrementer = dataStorage.computeIfAbsent(
+                new SavedData.Factory<>(
+                        AncientTabletCounter::create,
+                        AncientTabletCounter::load),
+                "ancient_tablet_incrementer");
 
-        DimensionDataStorage dataStorage = getDataStorage(level);
-        AncientTabletIncrementer incrementer = dataStorage.computeIfAbsent(new SavedData.Factory<>(AncientTabletIncrementer::create, AncientTabletIncrementer::load), "");
-        this.randomSeed = (getWorldSeed(level) + incrementer.getSequencerPosition()) % 16777216;
-        this.words = generateWordListFromSeed(itemstack, (int) this.randomSeed);
+        itemstack.set(DataComponentRegistry.ANCIENT_TABLET_SEED, incrementer.getCount());
 
-        itemstack.set(DataComponentRegistry.ANCIENT_TABLET_WORDS, new AncientTabletWordListCodecs(this.randomSeed, true));
         incrementer.increment();
-        return InteractionResultHolder.sidedSuccess(itemstack, !level.isClientSide());
     }
 
-    // static stateless method for generating word lists given an itemstack and seed value
-    public static List<String> generateWordListFromSeed(ItemStack itemstack, int seedValue) {
+    public List<String> getTabletWordList(ItemStack itemstack, int seed) {
         // set word list for new tablet
         WordList wordList = itemstack.getItem().builtInRegistryHolder().getData(WordList.DATA_MAP_TYPE);
         List<String> commonWords = wordList.common();
@@ -88,7 +58,7 @@ public class AncientTablet extends Item {
 
         List<String> words = new ArrayList<>();
         // assign words to tablet
-        Random random = new Random(seedValue);
+        Random random = new Random(seed);
         // shifted binomial distribution (produces 3 to 8 words)
         // words : 0  1  2  3  4  5  6  7  8  9 10
         // chance: 0  0  0  1  5 10 10  5  1  0  0 (out of 32)
@@ -125,4 +95,5 @@ public class AncientTablet extends Item {
         }
         return nCk;
     }
+
 }

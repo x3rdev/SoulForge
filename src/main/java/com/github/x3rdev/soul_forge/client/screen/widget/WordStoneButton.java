@@ -42,7 +42,10 @@ public class WordStoneButton extends AbstractWidget {
 
     @Override
     public int getWidth() {
-        return screen.getFont().width(screen.getMenu().getStoneWord(index))+1+2+2;
+        if(this.isActive()) {
+            return screen.getFont().width(screen.getMenu().getStoneWord(index))+1+2+2;
+        }
+        return 0;
     }
 
     @Override

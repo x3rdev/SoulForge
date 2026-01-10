@@ -1,13 +1,11 @@
 package com.github.x3rdev.soul_forge.common.menu;
 
+import com.github.x3rdev.soul_forge.common.item.AncientTablet;
 import com.github.x3rdev.soul_forge.common.packet.PickWordPayload;
 import com.github.x3rdev.soul_forge.common.packet.SendDiscoveredCharsPayload;
 import com.github.x3rdev.soul_forge.common.packet.SendWordStoneSeedPayload;
 import com.github.x3rdev.soul_forge.common.packet.UpdateUnlockedResearchPayload;
-import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
-import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
-import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
-import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
+import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
@@ -28,13 +26,11 @@ import java.util.*;
 
 public class ResearchTableMenu extends AbstractContainerMenu {
 
-    public static final String[] WORDS = {"map","silver","node","pulse","grid","ember","cloud","axis","vector","stone","loop","signal","frame","byte","cache","logic","thread","kernel","stack","flux","jazz","quick","box","wizard","nymph","xenon","book", "short", "poor"};
     public static final int STONE_COUNT = 4;
 
     public final Player player;
     private final Container container;
     private final ContainerLevelAccess access;
-    private final List<String> words;
     private Holder.Reference<Research> research;
 
     //Client
@@ -53,7 +49,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         this.container = new SimpleContainer(1);
         this.access = access;
         this.research = Research.getEmptyResearch(player.registryAccess());
-        this.words = new ArrayList<>();
 
         this.addSlot(new AncientTabletSlot(container, 0, 152, 57));
         for (int i = 0; i < 3; i++) {
@@ -64,8 +59,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         for (int k = 0; k < 9; k++) {
             this.addSlot(new ResearchTableSlot(playerInventory, k, 8 + k * 18, 142));
         }
-
-        selectNewWords();
 
 
     }
@@ -90,7 +83,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
     public void setActiveResearch(Holder.Reference<Research> research) {
         if(this.player.level().isClientSide()) {
-            PacketDistributor.sendToServer(new UpdateUnlockedResearchPayload(research.key(), this.containerId));
+            PacketDistributor.sendToServer(
+                    new UpdateUnlockedResearchPayload(research.key(), this.containerId));
         } else {
             PacketDistributor.sendToPlayer((ServerPlayer) this.player,
                     new SendDiscoveredCharsPayload(research.getKey(), this.player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS).getOrDefault(research.key(), new ArrayList<>())));
@@ -110,7 +104,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
         data.put(this.research.key(), characters.stream().toList());
         player.setData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS, data);
-        container.getItem(0).shrink(1);
+        getTabletStack().shrink(1);
         if(!this.player.level().isClientSide()) {
             PacketDistributor.sendToPlayer(((ServerPlayer) player), new SendDiscoveredCharsPayload(this.research.key(), player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS)
                             .getOrDefault(this.research.key(), new ArrayList<>())));
@@ -121,22 +115,12 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     public String getStoneWord(int index) {
-        return words.get(index);
-    }
-
-    public void selectNewWords() {
-        words.clear();
-        for (int i = 0; i < STONE_COUNT; i++) {
-            words.add(WORDS[nextInt(getWordStoneSeed()+i, WORDS.length)]);
-        }
+        ItemStack stack = container.getItem(0);
+        return ((AncientTablet) stack.getItem()).getTabletWordList(stack, getWordStoneSeed()).get(index);
     }
 
     public int getWordStoneSeed() {
-        return player.getData(DataAttachmentRegistry.WORD_STONE_SEED);
-    }
-
-    private int nextInt(int i, int mod) { //Just a simple "randomizing" function
-        return Math.floorMod(i * 1664525 + 1013904223, mod);
+        return getTabletStack().getOrDefault(DataComponentRegistry.ANCIENT_TABLET_SEED, -1);
     }
 
     public boolean isCharDiscovered(char c) {
