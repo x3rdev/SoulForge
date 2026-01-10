@@ -230,11 +230,9 @@ public class CommonSetup {
     @SubscribeEvent
     public static void entityAttackEvent(LivingIncomingDamageEvent event) {
         if (isUndead(event.getSource().getEntity()) && event.getEntity() instanceof Player player) {
-            Inventory inventory = player.getInventory();
-            Difficulty difficulty = player.level().getDifficulty();
-            for (ItemStack item : inventory.items) {
+            for (ItemStack item : player.getInventory().items) {
                 if (item.getItem() instanceof OccultNecklace) {
-                    event.setAmount(event.getAmount() - difficultyMultiplier(difficulty));
+                    event.setAmount(event.getAmount() - difficultyMultiplier(player.level().getDifficulty()));
                     break;
                 }
             }
