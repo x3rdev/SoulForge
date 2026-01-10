@@ -8,6 +8,7 @@ import com.github.x3rdev.soul_forge.common.entity.Soul;
 import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
+import com.github.x3rdev.soul_forge.common.item.OccultNecklace;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
@@ -22,9 +23,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -38,6 +42,8 @@ import net.neoforged.neoforge.event.ServerChatEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -219,5 +225,46 @@ public class CommonSetup {
     @SubscribeEvent
     public static void serverChatEvent(ServerChatEvent event) {
 
+    }
+
+    @SubscribeEvent
+    public static void entityAttackEvent(LivingIncomingDamageEvent event) {
+        if (isUndead(event.getSource().getEntity()) && event.getEntity() instanceof Player player) {
+            Inventory inventory = player.getInventory();
+            Difficulty difficulty = player.level().getDifficulty();
+            for (ItemStack item : inventory.items) {
+                if (item.getItem() instanceof OccultNecklace) {
+                    event.setAmount(event.getAmount() - difficultyMultiplier(difficulty));
+                    break;
+                }
+            }
+        }
+    }
+
+    private static float difficultyMultiplier(Difficulty difficulty) {
+        return switch (difficulty) {
+            case Difficulty.EASY -> 0.5f;
+            case Difficulty.HARD -> 1f;
+            case Difficulty.NORMAL -> 1.5f;
+            default -> 0f;
+        };
+    }
+
+    private static boolean isUndead(Entity e) {
+        if (e instanceof LivingEntity entity) {
+            switch (entity) {
+                case Zombie zombie -> {
+                    return true;
+                }
+                case AbstractSkeleton skeleton -> {
+                    return true;
+                }
+                case Zoglin zoglin -> {
+                    return true;
+                }
+                default -> {}
+            }
+        }
+        return false;
     }
 }

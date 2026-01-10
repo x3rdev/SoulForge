@@ -53,7 +53,7 @@ public class SoulForge {
         neoEventBus.addListener(CommonSetup::playerClone);
         neoEventBus.addListener(CommonSetup::playerLoggedIn);
         neoEventBus.addListener(CommonSetup::playerTickEvent);
-
+        neoEventBus.addListener(CommonSetup::entityAttackEvent);
         modEventBus.addListener(WordList::registerDataMapTypes);
 
         ModCompatibility.init();
