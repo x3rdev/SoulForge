@@ -16,6 +16,7 @@ import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.ItemRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.github.x3rdev.soul_forge.common.scheduler.ServerScheduler;
 import net.minecraft.core.registries.Registries;
@@ -23,7 +24,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -45,6 +45,8 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -228,22 +230,21 @@ public class CommonSetup {
     @SubscribeEvent
     public static void entityAttackEvent(LivingIncomingDamageEvent event) {
         if (isUndead(event.getSource().getEntity()) && event.getEntity() instanceof Player player) {
-            for (ItemStack item : player.getInventory().items) {
-                if (item.getItem() instanceof OccultNecklace) {
-                    event.setAmount(event.getAmount() - difficultyMultiplier(player.level().getDifficulty()));
-                    break;
+            if (ModCompatibility.curiosModPresent()) {
+                Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
+                if (curiosInventory.isPresent() && curiosInventory.get().isEquipped(ItemRegistry.OCCULT_NECKLACE.get())) {
+                    event.setAmount(Math.max(event.getAmount() - 1.5f, 0));
+                }
+            }
+            else {
+                for (ItemStack item : player.getInventory().items) {
+                    if (item.getItem() instanceof OccultNecklace) {
+                        event.setAmount(Math.max(event.getAmount() - 1.5f, 0));
+                        break;
+                    }
                 }
             }
         }
-    }
-
-    private static float difficultyMultiplier(Difficulty difficulty) {
-        return switch (difficulty) {
-            case Difficulty.EASY -> 0.5f;
-            case Difficulty.HARD -> 1f;
-            case Difficulty.NORMAL -> 1.5f;
-            default -> 0f;
-        };
     }
 
     private static boolean isUndead(Entity e) {
