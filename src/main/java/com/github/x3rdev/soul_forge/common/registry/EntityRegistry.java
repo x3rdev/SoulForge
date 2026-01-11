@@ -68,6 +68,10 @@ public class EntityRegistry {
                     .noSummon()
                     .build("nergal_spawn"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<Spark>> SPARK = ENTITIES.register(
+            "spark", () -> EntityType.Builder.of(Spark::createSpark, MobCategory.MISC).sized(0.25f, 0.25f).build("spark")
+    );
+
 
     public static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> entity, MobCategory mobCategory, float width, float height) {
         return ENTITIES.register(name,

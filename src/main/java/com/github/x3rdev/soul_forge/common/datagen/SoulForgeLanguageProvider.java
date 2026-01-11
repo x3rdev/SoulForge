@@ -82,6 +82,8 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addItem(ItemRegistry.SOUL_MAGNET, "Soul Magnet");
         addItem(ItemRegistry.ANCIENT_TABLET, "Ancient Tablet");
         addItem(ItemRegistry.OCCULT_NECKLACE, "Occult Necklace");
+        addItem(ItemRegistry.LINEAR_ACTUATOR, "Linear Actuator");
+        addItem(ItemRegistry.WAND_OF_SPARKING, "Wand of Sparking");
 
         // Item Group
         add("itemGroup.soul_forge", "Soul Forge");
@@ -97,6 +99,7 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         addEntityType(EntityRegistry.GHOST, "Ghost");
         addEntityType(EntityRegistry.NERGAL, "Nergal");
         addEntityType(EntityRegistry.NERGAL_SPAWN, "Nergal Spawn");
+        addEntityType(EntityRegistry.SPARK, "Spark");
 
         // Tooltip
         add("item.soul_forge.soul_container.tooltip", "Contains %s/%s soul");

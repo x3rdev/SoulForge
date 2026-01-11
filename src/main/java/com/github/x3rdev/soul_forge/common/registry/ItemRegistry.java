@@ -88,6 +88,10 @@ public class ItemRegistry {
             AncientTablet::new);
     public static final DeferredHolder<Item, Item> OCCULT_NECKLACE = ITEMS.register("occult_necklace",
             () -> new OccultNecklace(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> LINEAR_ACTUATOR = ITEMS.register("linear_actuator",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking",
+            () -> new WandOfSparking(new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> DEBUG_RESEARCH_UNLEARNER = ITEMS.register("debug_research_unlearner",
             DebugResearchUnlearner::new);
