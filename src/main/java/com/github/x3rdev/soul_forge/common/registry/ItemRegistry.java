@@ -92,6 +92,8 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties()));
     public static final DeferredHolder<Item, Item> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking",
             () -> new WandOfSparking(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> WINGS = ITEMS.register("wings",
+            () -> new WingItem(new Item.Properties().stacksTo(1), 0.16f));
 
     public static final DeferredHolder<Item, Item> DEBUG_RESEARCH_UNLEARNER = ITEMS.register("debug_research_unlearner",
             DebugResearchUnlearner::new);

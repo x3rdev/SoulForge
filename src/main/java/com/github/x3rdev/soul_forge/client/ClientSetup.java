@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.client;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.client.keymapping.KeyMappings;
 import com.github.x3rdev.soul_forge.client.particle.RitualTrailParticle;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
 import com.github.x3rdev.soul_forge.client.renderer.block.*;
@@ -10,6 +11,7 @@ import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
+import com.github.x3rdev.soul_forge.common.item.WingItem;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
@@ -19,6 +21,7 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -156,4 +159,18 @@ public class ClientSetup {
         return overlayTarget;
     }
 
+    @SubscribeEvent
+    public static void clientTickEvent(ClientTickEvent.Post event) {
+        if (KeyMappings.KEY_FLY.get().isDown()) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null && player.getInventory().getArmor(2 /* chest */).getItem() instanceof WingItem item && !player.isFallFlying()) {
+                Vec3 lookingAt = player.getLookAngle().scale(item.acceleration * 0.5);
+                player.setDeltaMovement(
+                        player.getDeltaMovement().x + lookingAt.x,
+                        player.getDeltaMovement().y + item.acceleration * 0.5 + lookingAt.y,
+                        player.getDeltaMovement().z +  lookingAt.z
+                );
+            }
+        }
+    }
 }
