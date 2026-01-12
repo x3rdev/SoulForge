@@ -164,12 +164,7 @@ public class ClientSetup {
         if (KeyMappings.KEY_FLY.get().isDown()) {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null && player.getInventory().getArmor(2 /* chest */).getItem() instanceof WingItem item && !player.isFallFlying()) {
-                Vec3 lookingAt = player.getLookAngle().scale(item.acceleration * 0.5);
-                player.setDeltaMovement(
-                        player.getDeltaMovement().x + lookingAt.x,
-                        player.getDeltaMovement().y + item.acceleration * 0.5 + lookingAt.y,
-                        player.getDeltaMovement().z +  lookingAt.z
-                );
+                player.setDeltaMovement(item.getBehavior(player, item));
             }
         }
     }
