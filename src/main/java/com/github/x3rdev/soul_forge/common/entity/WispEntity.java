@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +26,7 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class WispEntity extends AmbientCreature implements GeoEntity, TraceableEntity {
 
@@ -55,6 +55,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 4.0F)
                 .add(Attributes.MOVEMENT_SPEED, 0.4F)
+                .add(Attributes.GRAVITY, 0)
                 .build();
     }
 
@@ -78,9 +79,18 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
                     playSound(SoundRegistry.WISP_DING.get());
                 }
             }
-        } else if (this.tickCount % 30 == 0) {
-            level().addParticle(ParticleRegistry.SOUL_PARTICLE.get(), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+        } else if (this.tickCount % 10 == 0) {
+            Vec3 velocity = particleDirection().scale(0.25f);
+            level().addParticle(ParticleRegistry.SOUL_PARTICLE.get(),
+                    this.getX(), this.getY() + 0.5 * this.getBbHeight(), this.getZ(), velocity.x, velocity.y, velocity.z);
         }
+    }
+
+    private static Vec3 particleDirection() {
+        Random random = new Random();
+        double pitch = random.nextDouble(Math.PI / -2, Math.PI / 2);
+        double axis = random.nextDouble(Math.TAU);
+        return new Vec3(Math.cos(axis) * Math.cos(pitch), Math.sin(axis) * Math.cos(pitch), Math.sin(pitch));
     }
 
     @Override

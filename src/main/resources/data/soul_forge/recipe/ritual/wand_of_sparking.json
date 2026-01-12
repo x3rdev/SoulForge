@@ -1,0 +1,42 @@
+{
+  "type": "soul_forge:ritual",
+  "required_research": "soul_forge:soul_steel_awakening",
+  "center_input": {
+    "item": "soul_forge:linear_actuator"
+  },
+  "cardinal_inputs": [
+    {
+      "item": "minecraft:flint_and_steel"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_crystal"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    }
+  ],
+  "diagonal_inputs": [
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    }
+  ],
+  "soul_inputs": {
+    "soul": 10
+  },
+  "result": {
+    "id": "soul_forge:wand_of_sparking",
+    "count": 1
+  }
+}
