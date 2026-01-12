@@ -1,8 +1,8 @@
 package com.github.x3rdev.soul_forge;
 
+import com.github.x3rdev.soul_forge.client.keymapping.KeyMappings;
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
-import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.WordList;
@@ -55,6 +55,7 @@ public class SoulForge {
         neoEventBus.addListener(CommonSetup::playerTickEvent);
         neoEventBus.addListener(CommonSetup::entityAttackEvent);
         modEventBus.addListener(WordList::registerDataMapTypes);
+        neoEventBus.addListener(CommonSetup::entityFallEvent);
 
         ModCompatibility.init();
     }

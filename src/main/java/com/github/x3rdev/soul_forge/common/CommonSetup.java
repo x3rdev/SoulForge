@@ -1,5 +1,6 @@
 package com.github.x3rdev.soul_forge.common;
 
+import com.github.x3rdev.soul_forge.client.keymapping.KeyMappings;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
 import com.github.x3rdev.soul_forge.common.enchantment.EnchantmentBootstrap;
@@ -11,6 +12,7 @@ import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.item.OccultNecklace;
 import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
+import com.github.x3rdev.soul_forge.common.item.WingItem;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
@@ -37,10 +39,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.ServerChatEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -263,5 +268,20 @@ public class CommonSetup {
             }
         }
         return false;
+    }
+
+    @SubscribeEvent
+    public static void entityFallEvent(LivingFallEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player.getInventory().getArmor(2).getItem() instanceof WingItem item) {
+                /* need to send packet to server containing player velocity
+                double velocity = player.getDeltaMovement().y;
+                System.out.println(event.getDistance());
+                System.out.println(velocity);
+                System.out.println(item.adjustedFallHeight((float) velocity));
+                event.setDistance(item.adjustedFallHeight((float) velocity)); */
+                event.setCanceled(true);
+            }
+        }
     }
 }
