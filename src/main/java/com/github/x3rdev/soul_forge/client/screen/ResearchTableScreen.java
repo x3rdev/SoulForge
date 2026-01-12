@@ -14,6 +14,9 @@ import net.minecraft.client.gui.screens.inventory.EnchantmentNames;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -182,7 +185,14 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private void renderLockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         String text = "test abcd some string blah blah blah mysterious text that should light up";
-        guiGraphics.drawWordWrap(this.font, Component.literal(text).withStyle(EnchantmentNames.ROOT_STYLE), leftPos+16, topPos+20, 145,0x181d24);
+        List<FormattedText> elements = new ArrayList<>();
+        for(int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            Style style = getMenu().isCharDiscovered(c) ? Style.EMPTY.withColor(0x411a39) : EnchantmentNames.ROOT_STYLE;
+            elements.add(FormattedText.of(String.valueOf(c), style));
+        }
+        FormattedText composite = FormattedText.composite(elements);
+        guiGraphics.drawWordWrap(this.font, composite, leftPos+16, topPos+20, 145,0x181d24);
         guiGraphics.pose().popPose();
     }
 

@@ -5,6 +5,7 @@ import com.github.x3rdev.soul_forge.common.item.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -85,7 +86,24 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> SOUL_MAGNET = ITEMS.register("soul_magnet",
             () -> new SoulMagnet(new Item.Properties(), 2.5F));
     public static final DeferredHolder<Item, Item> ANCIENT_TABLET = ITEMS.register("ancient_tablet",
-            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+            AncientTablet::new);
+    public static final DeferredHolder<Item, Item> OCCULT_NECKLACE = ITEMS.register("occult_necklace",
+            () -> new OccultNecklace(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> LINEAR_ACTUATOR = ITEMS.register("linear_actuator",
+            () -> new Item(new Item.Properties()));
+    public static final DeferredHolder<Item, Item> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking",
+            () -> new WandOfSparking(new Item.Properties().stacksTo(1)));
+    public static final DeferredHolder<Item, Item> BASIC_WINGS = ITEMS.register("wings",
+            () -> new WingItem(new Item.Properties().stacksTo(1), 0.16f,
+                    (player, item) -> {
+                        Vec3 lookingAt = player.getLookAngle().scale(item.acceleration * 0.5);
+                        return new Vec3(
+                                player.getDeltaMovement().x + lookingAt.x,
+                                player.getDeltaMovement().y + item.acceleration * 0.5 + lookingAt.y,
+                                player.getDeltaMovement().z +  lookingAt.z
+                        );
+                    }
+            ));
 
     public static final DeferredHolder<Item, Item> DEBUG_RESEARCH_UNLEARNER = ITEMS.register("debug_research_unlearner",
             DebugResearchUnlearner::new);

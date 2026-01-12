@@ -73,6 +73,14 @@ public class CuriosCompat {
                 },
                 ItemRegistry.SOUL_MAGNET.get()
         );
+        event.registerItem(
+                CuriosCapability.ITEM,
+                (stack, context) -> new ICurio() {
+                    @Override
+                    public ItemStack getStack() {return stack;}
+                },
+                ItemRegistry.OCCULT_NECKLACE.get()
+        );
     }
 
     public static boolean playerHasResearcherGlassesInCuriosSlots(Player player) {

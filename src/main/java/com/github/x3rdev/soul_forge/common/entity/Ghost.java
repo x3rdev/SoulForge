@@ -59,10 +59,10 @@ public class Ghost extends Monster implements GeoEntity, SmartBrainOwner<Ghost> 
 
     public static AttributeSupplier createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 30.0F)
+                .add(Attributes.ATTACK_DAMAGE, 3.0F)
                 .add(Attributes.ATTACK_KNOCKBACK, 1.0F)
                 .add(Attributes.MAX_HEALTH, 8.0F)
-                .add(Attributes.MOVEMENT_SPEED, 0.25F)
+                .add(Attributes.MOVEMENT_SPEED, 0.4F)
                 .add(Attributes.FOLLOW_RANGE, 35F)
                 .add(Attributes.FALL_DAMAGE_MULTIPLIER, 0.0F)
                 .add(Attributes.GRAVITY, 0.02F)
@@ -73,28 +73,28 @@ public class Ghost extends Monster implements GeoEntity, SmartBrainOwner<Ghost> 
     @Override
     protected void customServerAiStep() {
         tickBrain(this);
-        if (this.isAlive()) {
-            boolean flag = this.isSunBurnTick();
-            if (flag) {
-                ItemStack itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
-                if (!itemstack.isEmpty()) {
-                    if (itemstack.isDamageableItem()) {
-                        Item item = itemstack.getItem();
-                        itemstack.setDamageValue(itemstack.getDamageValue() + this.random.nextInt(2));
-                        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
-                            this.onEquippedItemBroken(item, EquipmentSlot.HEAD);
-                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
-                        }
-                    }
-
-                    flag = false;
-                }
-
-                if (flag) {
-                    this.igniteForSeconds(8.0F);
-                }
-            }
-        }
+//        if (this.isAlive()) {
+//            boolean flag = this.isSunBurnTick();
+//            if (flag) {
+//                ItemStack itemstack = this.getItemBySlot(EquipmentSlot.HEAD);
+//                if (!itemstack.isEmpty()) {
+//                    if (itemstack.isDamageableItem()) {
+//                        Item item = itemstack.getItem();
+//                        itemstack.setDamageValue(itemstack.getDamageValue() + this.random.nextInt(2));
+//                        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
+//                            this.onEquippedItemBroken(item, EquipmentSlot.HEAD);
+//                            this.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+//                        }
+//                    }
+//
+//                    flag = false;
+//                }
+//
+//                if (flag) {
+//                    this.igniteForSeconds(8.0F);
+//                }
+//            }
+//        }
     }
 
     @Override

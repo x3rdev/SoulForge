@@ -72,8 +72,8 @@ public class SoulContainer extends Item {
             int soulCount = getSoulCount(stack);
             String soulType = formatSoulTypeName(getSoulType(stack));
             tooltipComponents.add(Component.translatable(
-                    soulCount == 1 ? "item.soul_forge.soul_container.tooltip" : "item.soul_forge.soul_container.tooltip_plural"
-                    , soulCount + soulType, capacity).withColor(getSoulType(stack).color()));
+                    soulCount == 1 ? "item.soul_forge.soul_container.tooltip" : "item.soul_forge.soul_container.tooltip_plural",
+                    soulCount + soulType, capacity).withColor(getSoulType(stack).color()));
         } else {
             tooltipComponents.add(Component.translatable("item.soul_forge.soul_container.tooltip.empty").withStyle(ChatFormatting.GRAY));
         }

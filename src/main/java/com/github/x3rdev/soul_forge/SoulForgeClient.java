@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.client.ClientSetup;
+import com.github.x3rdev.soul_forge.client.keymapping.KeyMappings;
 import com.github.x3rdev.soul_forge.client.renderer.item.ResearcherGlassesRenderer;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import net.neoforged.api.distmarker.Dist;
@@ -23,6 +24,8 @@ public class SoulForgeClient {
         modEventBus.addListener(ClientSetup::registerShaders);
         modEventBus.addListener(ClientSetup::registerScreens);
         neoEventBus.addListener(ClientSetup::renderGui);
+        modEventBus.addListener(KeyMappings::registerKeyBinds);
+        neoEventBus.addListener(ClientSetup::clientTickEvent);
         neoEventBus.addListener(ResearcherGlassesRenderer::renderGlassesOverlay);
     }
 

@@ -157,8 +157,8 @@ public class Nergal extends Monster implements GeoEntity, SmartBrainOwner<Nergal
                 new OneRandomBehaviour<>(
                     new NergalSwingAttack().cooldownFor(entity -> 80),
                     new NergalSwipeAttack().cooldownFor(entity -> 80),
-                    new NergalScytheThrowAttack().cooldownFor(entity -> 100),
-                    new SummonGhostsAttack().cooldownFor(entity -> 160)
+                    new NergalScytheThrowAttack().cooldownFor(entity -> 100)
+//                    new SummonGhostsAttack().cooldownFor(entity -> 160) // TODO uncomment this
                 )
         );
     }
