@@ -1,0 +1,42 @@
+{
+  "type": "soul_forge:ritual",
+  "required_research": "soul_forge:soul_steel_awakening",
+  "center_input": {
+    "item": "minecraft:gold_ingot"
+  },
+  "cardinal_inputs": [
+    {
+      "item": "minecraft:piston"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    }
+  ],
+  "diagonal_inputs": [
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    },
+    {
+      "item": "soul_forge:soul_steel_ingot"
+    }
+  ],
+  "soul_inputs": {
+    "soul": 50
+  },
+  "result": {
+    "id": "soul_forge:linear_actuator",
+    "count": 1
+  }
+}
