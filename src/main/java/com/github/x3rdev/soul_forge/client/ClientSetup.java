@@ -1,7 +1,7 @@
 package com.github.x3rdev.soul_forge.client;
 
 import com.github.x3rdev.soul_forge.SoulForge;
-import com.github.x3rdev.soul_forge.client.keymapping.KeyMappings;
+import com.github.x3rdev.soul_forge.client.key_mapping.KeyMappings;
 import com.github.x3rdev.soul_forge.client.particle.RitualTrailParticle;
 import com.github.x3rdev.soul_forge.client.particle.SoulParticle;
 import com.github.x3rdev.soul_forge.client.renderer.block.*;
@@ -10,36 +10,26 @@ import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
-import com.github.x3rdev.soul_forge.common.item.ResearcherGlasses;
 import com.github.x3rdev.soul_forge.common.item.WingItem;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
 import com.github.x3rdev.soul_forge.common.registry.ParticleRegistry;
-import com.github.x3rdev.soul_forge.common.research.Research;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 
 public class ClientSetup {

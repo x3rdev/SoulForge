@@ -1,6 +1,5 @@
 package com.github.x3rdev.soul_forge;
 
-import com.github.x3rdev.soul_forge.client.keymapping.KeyMappings;
 import com.github.x3rdev.soul_forge.common.CommonSetup;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
