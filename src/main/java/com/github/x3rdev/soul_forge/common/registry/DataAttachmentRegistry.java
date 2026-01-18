@@ -25,13 +25,6 @@ public class DataAttachmentRegistry {
                     .build()
     );
 
-    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> WORD_STONE_SEED = DATA_ATTACHMENT_TYPES.register(
-            "word_stone_seed", () -> AttachmentType.builder(() -> 0)
-                    .serialize(Codec.INT)
-                    .copyOnDeath()
-                    .build()
-    );
-
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<Map<ResourceKey<Research>, List<Character>>>> RESEARCH_DISCOVERED_CHARS = DATA_ATTACHMENT_TYPES.register(
             "research_discovered_chars", () -> AttachmentType.builder(Map::<ResourceKey<Research>, List<Character>>of)
                     .serialize(Codec.unboundedMap(

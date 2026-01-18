@@ -1,0 +1,67 @@
+{
+  "values": {
+    "soul_forge:ancient_tablet": {
+      "common": [
+        "zqor",
+        "fynx",
+        "blit",
+        "krum",
+        "pavo",
+        "jex",
+        "wrax",
+        "tibo",
+        "lurk",
+        "mend",
+        "gash",
+        "vorn",
+        "quip",
+        "drax",
+        "husk",
+        "bore",
+        "calt",
+        "snip",
+        "yoft",
+        "zeph"
+      ],
+      "uncommon": [
+        "glyph",
+        "ember",
+        "swift",
+        "candy",
+        "fable",
+        "thorn",
+        "quill",
+        "brisk",
+        "morph",
+        "spark",
+        "plume",
+        "vigor",
+        "shade",
+        "orbit",
+        "chant"
+      ],
+      "rare": [
+        "vector",
+        "socket",
+        "thread",
+        "cipher",
+        "buffer",
+        "schema",
+        "module",
+        "packet",
+        "branch",
+        "signal",
+        "matrix",
+        "handle"
+      ],
+      "epic": [
+        "memory",
+        "kernel",
+        "compile",
+        "process",
+        "quantum",
+        "resolve"
+      ]
+    }
+  }
+}

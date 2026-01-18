@@ -92,18 +92,6 @@ public abstract class LevelRendererMixin {
         poseStack.popPose();
     }
 
-    private boolean shouldHighlightEntity(Entity entity) {
-        if(entity instanceof ItemEntity itemEntity) {
-            return Research.getCachedUnlockableResearch(Minecraft.getInstance().player).stream().anyMatch(
-                    researchReference -> researchReference.value().unlockIngredient().test(itemEntity.getItem())
-            );
-        }
-        if(entity instanceof Ghost || entity instanceof Nergal) {
-            return true;
-        }
-        return false;
-    }
-
     private boolean shouldRenderParticle(Camera camera, Entity entity) {
         Vec3 cameraLookVec = new Vec3(camera.getLookVector());
         Vec3 pos = camera.getPosition();

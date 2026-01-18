@@ -100,6 +100,7 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         add("item.soul_forge.soul_container.tooltip", "Contains %s/%s soul");
         add("item.soul_forge.soul_container.tooltip_plural", "Contains %s/%s souls");
         add("item.soul_forge.soul_container.tooltip.empty", "Contains nothing");
+        add("item.soul_forge.ancient_tablet.tooltip", "Tablet ID: %d");
 
         //Container
         add("container.soul_forge.soul_anvil", "Soul Anvil");

@@ -1,15 +1,12 @@
 package com.github.x3rdev.soul_forge.common.packet.handler;
 
-import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendDiscoveredCharsPayload;
 import com.github.x3rdev.soul_forge.common.packet.SendParticlePayload;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
-import com.github.x3rdev.soul_forge.common.packet.SendWordStoneSeedPayload;
 import com.github.x3rdev.soul_forge.common.registry.DataAttachmentRegistry;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 import java.util.HashMap;

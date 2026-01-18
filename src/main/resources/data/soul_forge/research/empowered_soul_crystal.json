@@ -6,7 +6,5 @@
     "id": "soul_forge:empowered_soul_crystal"
   },
   "ritual_reward": "soul_forge:ritual/empowered_soul_crystal",
-  "unlock_ingredient": {
-    "item": "soul_forge:soul_crystal"
-  }
+  "incantation": "test"
 }

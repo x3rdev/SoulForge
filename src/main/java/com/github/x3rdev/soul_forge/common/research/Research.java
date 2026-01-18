@@ -13,6 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
@@ -27,7 +28,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
 
-public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, Ingredient unlockIngredient, boolean inactive) {
+public record Research(ResourceKey<Research> parent, String title, String description, ItemStack iconItemStack, Optional<Component> incantation, boolean inactive) {
 
     private static Set<Holder.Reference<Research>> cachedUnlockableResearch;
 
@@ -40,7 +41,7 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                     Codec.STRING.fieldOf("title").forGetter(Research::title),
                     Codec.STRING.fieldOf("description").forGetter(Research::description),
                     ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("icon_item_stack").orElse(ItemStack.EMPTY).forGetter(Research::iconItemStack),
-                    Ingredient.CODEC.fieldOf("unlock_ingredient").orElse(Ingredient.EMPTY).forGetter(Research::unlockIngredient),
+                    ComponentSerialization.CODEC.optionalFieldOf("incantation").forGetter(Research::incantation),
                     Codec.BOOL.fieldOf("inactive").orElse(false).forGetter(Research::inactive)
             ).apply(instance, Research::new)
     );
@@ -51,7 +52,7 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                 ByteBufCodecs.STRING_UTF8.encode(buffer, value.title);
                 ByteBufCodecs.STRING_UTF8.encode(buffer, value.description);
                 ItemStack.STREAM_CODEC.encode(buffer, value.iconItemStack);
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, value.unlockIngredient);
+                ComponentSerialization.STREAM_CODEC.apply(ByteBufCodecs::optional).encode(buffer, value.incantation);
                 ByteBufCodecs.BOOL.encode(buffer, value.inactive);
             },
             buffer -> {
@@ -59,9 +60,9 @@ public record Research(ResourceKey<Research> parent, String title, String descri
                 String title = ByteBufCodecs.STRING_UTF8.decode(buffer);
                 String description = ByteBufCodecs.STRING_UTF8.decode(buffer);
                 ItemStack iconItemStack = ItemStack.STREAM_CODEC.decode(buffer);
-                Ingredient unlockIngredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                Optional<Component> incantation = ComponentSerialization.STREAM_CODEC.apply(ByteBufCodecs::optional).decode(buffer);
                 boolean inactive = ByteBufCodecs.BOOL.decode(buffer);
-                return new Research(decode, title, description, iconItemStack, unlockIngredient, inactive);
+                return new Research(decode, title, description, iconItemStack, incantation, inactive);
             }
     );
 
@@ -109,11 +110,6 @@ public record Research(ResourceKey<Research> parent, String title, String descri
             return playerHasResearchUnlocked(player, researchReference);
         }
         return true; //No required research -> ritual unlocked by default
-    }
-
-    public static boolean isItemUsedToUnlockNextResearch(ItemStack stack, Player player) {
-        return Research.getCachedUnlockableResearch(player).stream().anyMatch(
-                researchReference -> researchReference.value().unlockIngredient().test(stack));
     }
 
     public static Set<Holder.Reference<Research>> getCachedUnlockableResearch(Player player) {

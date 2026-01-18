@@ -167,36 +167,12 @@ public class CommonSetup {
     public static void playerTickEvent(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
         tickContainers(player);
-        tickInspect(player);
     }
 
     private static void tickContainers(Player player) {
         if(!player.level().isClientSide()) {
             if(player.containerMenu instanceof ResearchTableMenu menu) {
                 menu.tick();
-            }
-        }
-    }
-
-    private static void tickInspect(Player player) {
-        if(!player.level().isClientSide() && ResearcherGlasses.playerHasResearcherGlassesEquipped(player)) {
-            Optional<ItemEntity> itemLookingAt = getItemLookingAt(((ServerPlayer) player));
-            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), player)){
-                inspectProgress++;
-                if(inspectProgress % 4 == 0) {
-                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.7F, 0.2F);
-                }
-                if (inspectProgress == 40) {
-                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 0.2F);
-                    Research.getCachedUnlockableResearch(player).forEach(researchReference -> {
-                        if (researchReference.value().unlockIngredient().test(itemLookingAt.get().getItem())) {
-                            Research.grantResearchToPlayer(((ServerPlayer) player), researchReference);
-                        }
-                    });
-                    inspectProgress = 0;
-                }
-            } else{
-                inspectProgress = 0;
             }
         }
     }

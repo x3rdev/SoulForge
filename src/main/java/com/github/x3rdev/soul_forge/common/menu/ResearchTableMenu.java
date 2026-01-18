@@ -3,15 +3,14 @@ package com.github.x3rdev.soul_forge.common.menu;
 import com.github.x3rdev.soul_forge.common.item.AncientTablet;
 import com.github.x3rdev.soul_forge.common.packet.PickWordPayload;
 import com.github.x3rdev.soul_forge.common.packet.SendDiscoveredCharsPayload;
-import com.github.x3rdev.soul_forge.common.packet.SendWordStoneSeedPayload;
 import com.github.x3rdev.soul_forge.common.packet.UpdateUnlockedResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,6 +19,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
@@ -59,8 +59,6 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         for (int k = 0; k < 9; k++) {
             this.addSlot(new ResearchTableSlot(playerInventory, k, 8 + k * 18, 142));
         }
-
-
     }
 
     public void tick() {
@@ -108,15 +106,13 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         if(!this.player.level().isClientSide()) {
             PacketDistributor.sendToPlayer(((ServerPlayer) player), new SendDiscoveredCharsPayload(this.research.key(), player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS)
                             .getOrDefault(this.research.key(), new ArrayList<>())));
-            int seed = player.getRandom().nextInt();
-            player.setData(DataAttachmentRegistry.WORD_STONE_SEED.get(), seed);
-            PacketDistributor.sendToPlayer(((ServerPlayer) player), new SendWordStoneSeedPayload(containerId, seed));
         }
     }
 
     public String getStoneWord(int index) {
         ItemStack stack = container.getItem(0);
-        return ((AncientTablet) stack.getItem()).getTabletWordList(stack, getWordStoneSeed()).get(index);
+        List<String> tabletWordList = ((AncientTablet) stack.getItem()).getTabletWordList(stack, getWordStoneSeed());
+        return tabletWordList.get(index);
     }
 
     public int getWordStoneSeed() {
@@ -160,6 +156,17 @@ public class ResearchTableMenu extends AbstractContainerMenu {
 
         public AncientTabletSlot(Container container, int slot, int x, int y) {
             super(container, slot, x, y);
+        }
+
+        @Override
+        public void set(ItemStack stack) {
+            super.set(stack);
+            Level level = ResearchTableMenu.this.player.level();
+            if(level instanceof ServerLevel serverLevel) {
+                if (stack.getItem() instanceof AncientTablet tablet) {
+                    tablet.generateTabletSeed(serverLevel, stack);
+                }
+            }
         }
 
         @Override

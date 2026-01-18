@@ -36,16 +36,18 @@ public class AncientTablet extends Item {
     // if the tablet is meant to be readable before being used (such as from a research table), this method
     // can be called as long as the level is not null (hence why this logic isn't in the constructor)
     public void generateTabletSeed(ServerLevel level, ItemStack itemstack) {
-        DimensionDataStorage dataStorage = level.getServer().overworld().getDataStorage();
-        AncientTabletCounter incrementer = dataStorage.computeIfAbsent(
-                new SavedData.Factory<>(
-                        AncientTabletCounter::create,
-                        AncientTabletCounter::load),
-                "ancient_tablet_incrementer");
+        if(itemstack.get(DataComponentRegistry.ANCIENT_TABLET_SEED) == -1) {
+            DimensionDataStorage dataStorage = level.getServer().overworld().getDataStorage();
+            AncientTabletCounter incrementer = dataStorage.computeIfAbsent(
+                    new SavedData.Factory<>(
+                            AncientTabletCounter::create,
+                            AncientTabletCounter::load),
+                    "ancient_tablet_incrementer");
 
-        itemstack.set(DataComponentRegistry.ANCIENT_TABLET_SEED, incrementer.getCount());
+            itemstack.set(DataComponentRegistry.ANCIENT_TABLET_SEED, incrementer.getCount());
 
-        incrementer.increment();
+            incrementer.increment();
+        }
     }
 
     public List<String> getTabletWordList(ItemStack itemstack, int seed) {

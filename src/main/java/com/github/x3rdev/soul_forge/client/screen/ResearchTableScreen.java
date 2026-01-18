@@ -184,15 +184,18 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     private void renderLockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
-        String text = "test abcd some string blah blah blah mysterious text that should light up";
-        List<FormattedText> elements = new ArrayList<>();
-        for(int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            Style style = getMenu().isCharDiscovered(c) ? Style.EMPTY.withColor(0x411a39) : EnchantmentNames.ROOT_STYLE;
-            elements.add(FormattedText.of(String.valueOf(c), style));
+        if(activeResearch.value().incantation().isPresent()) {
+            Component text = activeResearch.value().incantation().get();
+
+            List<FormattedText> elements = new ArrayList<>();
+            for (int i = 0; i < text.getString().length(); i++) {
+                char c = text.getString().charAt(i);
+                Style style = getMenu().isCharDiscovered(c) ? Style.EMPTY.withColor(0x411a39) : EnchantmentNames.ROOT_STYLE;
+                elements.add(FormattedText.of(String.valueOf(c), style));
+            }
+            FormattedText composite = FormattedText.composite(elements);
+            guiGraphics.drawWordWrap(this.font, composite, leftPos + 16, topPos + 20, 145, 0x181d24);
         }
-        FormattedText composite = FormattedText.composite(elements);
-        guiGraphics.drawWordWrap(this.font, composite, leftPos+16, topPos+20, 145,0x181d24);
         guiGraphics.pose().popPose();
     }
 

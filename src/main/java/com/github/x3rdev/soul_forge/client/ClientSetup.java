@@ -108,41 +108,6 @@ public class ClientSetup {
         event.register(MenuTypeRegistry.SOUL_ANVIL.get(), SoulAnvilScreen::new);
     }
 
-    @SubscribeEvent
-    public static void renderGui(RenderGuiLayerEvent.Post event) {
-        Minecraft mc = Minecraft.getInstance();
-        if(mc.player != null && ResearcherGlasses.playerHasResearcherGlassesEquipped(mc.player)) {
-            int scaledWidth = mc.getWindow().getGuiScaledWidth();
-            int scaledHeight = mc.getWindow().getGuiScaledHeight();
-            Optional<ItemEntity> itemLookingAt = getItemLookingAt(event.getPartialTick().getGameTimeDeltaPartialTick(true));
-            if (itemLookingAt.isPresent() && Research.isItemUsedToUnlockNextResearch(itemLookingAt.get().getItem(), mc.player)) {
-                event.getGuiGraphics().drawCenteredString(
-                        mc.font,
-                        Component.translatable("soul_forge.gui.researching"),
-                        scaledWidth / 2,
-                        scaledHeight / 2 + 20,
-                        0xFFFFFFFF);
-            }
-        }
-    }
-
-    public static Optional<ItemEntity> getItemLookingAt(float partialTicks) {
-        Minecraft mc = Minecraft.getInstance();
-
-        Vec3 eyePos = mc.player.getEyePosition(partialTicks);
-        Vec3 lookVec = mc.player.getLookAngle().normalize();
-
-        List<Entity> entities = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            AABB box = AABB.ofSize(eyePos.add(lookVec.scale(i)), 1.25, 1.25, 1.25);
-            entities.addAll(mc.level.getEntities(mc.player, box));
-        }
-        return entities.stream()
-                        .filter(ItemEntity.class::isInstance)
-                        .map(ItemEntity.class::cast)
-                        .min((o1, o2) -> (int) (o1.distanceToSqr(mc.player) - o2.distanceToSqr(mc.player)));
-    }
-
     private static RenderTarget overlayTarget;
 
     public static RenderTarget getOrCreateOverlayTarget() {

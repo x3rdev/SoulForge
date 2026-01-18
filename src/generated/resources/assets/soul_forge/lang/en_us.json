@@ -33,6 +33,7 @@
   "entity.soul_forge.soul": "Soul",
   "entity.soul_forge.soul_scythe_projectile": "Soul Scythe",
   "entity.soul_forge.wisp": "Wisp",
+  "item.soul_forge.ancient_tablet.tooltip": "Tablet ID: %d",
   "item.soul_forge.awakened_soul_steel_boots": "Awakened Soul Steel Boots",
   "item.soul_forge.awakened_soul_steel_chestplate": "Awakened Soul Steel Chestplate",
   "item.soul_forge.awakened_soul_steel_helmet": "Awakened Soul Steel Helmet",

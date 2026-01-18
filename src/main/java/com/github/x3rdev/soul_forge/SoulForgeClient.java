@@ -22,7 +22,6 @@ public class SoulForgeClient {
         modEventBus.addListener(ClientSetup::registerParticleProvider);
         modEventBus.addListener(ClientSetup::registerShaders);
         modEventBus.addListener(ClientSetup::registerScreens);
-        neoEventBus.addListener(ClientSetup::renderGui);
         neoEventBus.addListener(ResearcherGlassesRenderer::renderGlassesOverlay);
     }
 
