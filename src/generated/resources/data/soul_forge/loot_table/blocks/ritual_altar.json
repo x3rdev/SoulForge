@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "soul_forge:ritual_altar"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "soul_forge:blocks/ritual_altar"
+}

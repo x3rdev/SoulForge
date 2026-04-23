@@ -21,4 +21,6 @@ public class BlockEntityRegistry {
             () -> BlockEntityType.Builder.of(SoulCauldronBlockEntity::new, BlockRegistry.SOUL_CAULDRON.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SoulAnvilBlockEntity>> SOUL_ANVIL = BLOCK_ENTITIES.register("soul_anvil",
             () -> BlockEntityType.Builder.of(SoulAnvilBlockEntity::new, BlockRegistry.SOUL_ANVIL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RitualAltarBlockEntity>> RITUAL_ALTAR = BLOCK_ENTITIES.register("ritual_altar",
+            () -> BlockEntityType.Builder.of(RitualAltarBlockEntity::new, BlockRegistry.RITUAL_ALTAR.get()).build(null));
 }

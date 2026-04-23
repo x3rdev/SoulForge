@@ -67,4 +67,6 @@ public class BlockRegistry {
             () -> new ResearchTableBlock(BlockBehaviour.Properties.of()));
     public static final DeferredHolder<Block, SoulAnvilBlock> SOUL_ANVIL = BLOCKS.register("soul_anvil",
             () -> new SoulAnvilBlock(BlockBehaviour.Properties.of()));
+    public static final DeferredHolder<Block, RitualAltarBlock> RITUAL_ALTAR = BLOCKS.register("ritual_altar",
+            () -> new RitualAltarBlock(BlockBehaviour.Properties.of().noOcclusion()));
 }

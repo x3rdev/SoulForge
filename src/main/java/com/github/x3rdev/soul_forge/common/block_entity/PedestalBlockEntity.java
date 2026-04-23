@@ -359,7 +359,6 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         return this.getItem(slot).isEmpty() && stack.getCount() == 1;
     }
 
-    //TODO make this method return false during ritual
     @Override
     public boolean canTakeItem(Container target, int slot, ItemStack stack) {
         return isRitualActive();

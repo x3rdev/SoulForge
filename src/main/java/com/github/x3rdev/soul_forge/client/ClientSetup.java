@@ -65,6 +65,7 @@ public class ClientSetup {
         event.registerBlockEntityRenderer(BlockEntityRegistry.PEDESTAL.get(), PedestalRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_CAULDRON.get(), context -> new SoulCauldronRenderer());
         event.registerBlockEntityRenderer(BlockEntityRegistry.SOUL_ANVIL.get(), context -> new SoulAnvilRenderer());
+        event.registerBlockEntityRenderer(BlockEntityRegistry.RITUAL_ALTAR.get(), RitualAltarRenderer::new);
     }
 
     @SubscribeEvent

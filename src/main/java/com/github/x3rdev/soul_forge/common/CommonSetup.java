@@ -60,6 +60,11 @@ public class CommonSetup {
                 BlockEntityRegistry.PEDESTAL.get(),
                 (blockEntity, direction) -> blockEntity.getItemHandler()
         );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                BlockEntityRegistry.RITUAL_ALTAR.get(),
+                (blockEntity, direction) -> blockEntity.getItemHandler()
+        );
         if(ModCompatibility.curiosModPresent()) {
             CuriosCompat.registerCapabilities(event);
         }

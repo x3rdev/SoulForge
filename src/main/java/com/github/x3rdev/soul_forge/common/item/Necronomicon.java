@@ -143,7 +143,7 @@ public class Necronomicon extends Item implements GeoItem {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController(this, "c", 1, state -> {
+        controllers.add(new AnimationController<>(this, "c", 1, state -> {
             return state.setAndContinue(CLOSED);
         })
                 .triggerableAnim("opening", OPENING)
