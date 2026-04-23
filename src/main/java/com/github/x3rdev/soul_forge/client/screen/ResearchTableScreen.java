@@ -15,18 +15,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
     public static final ResourceLocation INSPECT_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_inspect.png");
@@ -77,8 +73,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(inspectScreenActive()) {
-            int descriptionLineCount = this.font.split(Component.literal(getActiveResearch().value().description()), 2*90).size();
-            topDescriptionLine = Math.clamp(topDescriptionLine-(int)scrollY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
+            int descriptionLineCount = getDescriptionLines().size();
+            topDescriptionLine = Math.clamp(topDescriptionLine - (int) scrollY, 0, Math.max(0, descriptionLineCount - MAX_DESCRIPTION_LINES - 1));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
@@ -99,26 +95,48 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(treeScreenActive()) {
-            if (mouseX - dragX > leftPos + 8 && mouseX - dragX < leftPos + 8 + DRAGGABLE_WINDOW_WIDTH && mouseY - dragY > topPos + 16 && mouseY - dragY < topPos + 16 + DRAGGABLE_WINDOW_HEIGHT) {
-                anchorX += dragX;
-                float xScroll = Math.min(ICON_SIZE / 2F + PADDING, DRAGGABLE_WINDOW_WIDTH - (treeDepth));
-                anchorX = Math.clamp(anchorX, xScroll, ICON_SIZE / 2F + PADDING);
-                anchorY += dragY;
-                float yScroll = -Math.min(0, DRAGGABLE_WINDOW_HEIGHT - (treeBreadth + PADDING));
-                anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT / 2F - yScroll, DRAGGABLE_WINDOW_HEIGHT / 2F + yScroll);
-            }
+            handleTreeDrag(mouseX, mouseY, dragX, dragY);
         }
         if(inspectScreenActive()) {
-            int x = leftPos + 106;
-            int y = topPos + 30;
-            int barBackgroundLength = MAX_DESCRIPTION_LINES*LINE_HEIGHT;
-            int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
-            int barLength = Mth.floor((float)barBackgroundLength*(float)MAX_DESCRIPTION_LINES/descriptionLineCount);
-            if(mouseX > x-5 && mouseX < x+2 && mouseY > y+topDescriptionLine && mouseY < y+topDescriptionLine+barLength) {
-                topDescriptionLine = (int) Math.clamp(topDescriptionLine+4*dragY, 0, Math.max(0, descriptionLineCount-MAX_DESCRIPTION_LINES-1));
-            }
+            handleScrollbarDrag(mouseX, mouseY, dragY);
         }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    private void handleTreeDrag(double mouseX, double mouseY, double dragX, double dragY) {
+        if (!isMouseInTreeWindow(mouseX - dragX, mouseY - dragY)) {
+            return;
+        }
+        anchorX += dragX;
+        float xScroll = Math.min(ICON_SIZE / 2F + PADDING, DRAGGABLE_WINDOW_WIDTH - treeDepth);
+        anchorX = Math.clamp(anchorX, xScroll, ICON_SIZE / 2F + PADDING);
+        anchorY += dragY;
+        float yScroll = -Math.min(0, DRAGGABLE_WINDOW_HEIGHT - (treeBreadth + PADDING));
+        anchorY = Math.clamp(anchorY, DRAGGABLE_WINDOW_HEIGHT / 2F - yScroll, DRAGGABLE_WINDOW_HEIGHT / 2F + yScroll);
+    }
+
+    private void handleScrollbarDrag(double mouseX, double mouseY, double dragY) {
+        int scrollbarX = leftPos + 106;
+        int scrollbarY = topPos + 30;
+        int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
+        if (descriptionLineCount <= MAX_DESCRIPTION_LINES) {
+            return;
+        }
+        int barBackgroundLength = MAX_DESCRIPTION_LINES * LINE_HEIGHT;
+        int barLength = Mth.floor((float) barBackgroundLength * (float) MAX_DESCRIPTION_LINES / descriptionLineCount);
+        if (isMouseOnScrollbar(mouseX, mouseY, scrollbarX, scrollbarY, barLength)) {
+            topDescriptionLine = (int) Math.clamp(topDescriptionLine + 4 * dragY, 0, Math.max(0, descriptionLineCount - MAX_DESCRIPTION_LINES - 1));
+        }
+    }
+
+    private boolean isMouseInTreeWindow(double mouseX, double mouseY) {
+        return mouseX > leftPos + 8 && mouseX < leftPos + 8 + DRAGGABLE_WINDOW_WIDTH &&
+               mouseY > topPos + 16 && mouseY < topPos + 16 + DRAGGABLE_WINDOW_HEIGHT;
+    }
+
+    private boolean isMouseOnScrollbar(double mouseX, double mouseY, int scrollbarX, int scrollbarY, int barLength) {
+        return mouseX > scrollbarX - 5 && mouseX < scrollbarX + 2 &&
+               mouseY > scrollbarY + topDescriptionLine && mouseY < scrollbarY + topDescriptionLine + barLength;
     }
 
     @Override
@@ -185,18 +203,19 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private void renderLockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         if(activeResearch.value().incantation().isPresent()) {
-            Component text = activeResearch.value().incantation().get();
-
-            List<FormattedText> elements = new ArrayList<>();
-            for (int i = 0; i < text.getString().length(); i++) {
-                char c = text.getString().charAt(i);
-                Style style = getMenu().isCharDiscovered(c) ? Style.EMPTY.withColor(0x411a39) : EnchantmentNames.ROOT_STYLE;
-                elements.add(FormattedText.of(String.valueOf(c), style));
-            }
-            FormattedText composite = FormattedText.composite(elements);
-            guiGraphics.drawWordWrap(this.font, composite, leftPos + 16, topPos + 20, 145, 0x181d24);
+            FormattedText incantationText = buildIncantationText(activeResearch.value().incantation().get());
+            guiGraphics.drawWordWrap(this.font, incantationText, leftPos + 16, topPos + 20, 145, 0x181d24);
         }
         guiGraphics.pose().popPose();
+    }
+
+    private FormattedText buildIncantationText(Component incantation) {
+        List<FormattedText> elements = new ArrayList<>();
+        for (char c : incantation.getString().toCharArray()) {
+            Style style = getMenu().isCharDiscovered(c) ? Style.EMPTY : EnchantmentNames.ROOT_STYLE;
+            elements.add(FormattedText.of(String.valueOf(c), style));
+        }
+        return FormattedText.composite(elements);
     }
 
     private void renderResearchTitle(GuiGraphics guiGraphics) {
@@ -212,34 +231,55 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.pose().pushPose();
         int scale = 2;
         guiGraphics.pose().scale(1F/scale, 1F/scale, 1);
-        int x = scale*(leftPos+16);
-        int y = scale*(topPos+31);
-        List<FormattedCharSequence> lines = font.split(Component.literal(activeResearch.value().description()), 2*90);
-        for (int i = topDescriptionLine; i < Math.min(lines.size(), topDescriptionLine+MAX_DESCRIPTION_LINES); i++) {
-            if(i == Math.min(lines.size()-1, topDescriptionLine+MAX_DESCRIPTION_LINES)-1 && lines.size()-1 > topDescriptionLine+MAX_DESCRIPTION_LINES) {
-                guiGraphics.drawString(font, Component.literal("..."), x, y, 0x181d24, false);
-            } else {
-                guiGraphics.drawString(font, lines.get(i), x, y, 0x181d24, false);
-            }
-            y += scale*LINE_HEIGHT;
+        int x = scale * (leftPos + 16);
+        int y = scale * (topPos + 31);
+        List<FormattedCharSequence> lines = getDescriptionLines();
+        int maxLineIndex = Math.min(lines.size(), topDescriptionLine + MAX_DESCRIPTION_LINES);
+        for (int i = topDescriptionLine; i < maxLineIndex; i++) {
+            renderDescriptionLine(guiGraphics, lines, i, x, y);
+            y += scale * LINE_HEIGHT;
         }
         guiGraphics.pose().popPose();
+    }
+
+    private List<FormattedCharSequence> getDescriptionLines() {
+        return font.split(Component.literal(activeResearch.value().description()), 2 * 90);
+    }
+
+    private void renderDescriptionLine(GuiGraphics guiGraphics, List<FormattedCharSequence> lines, int lineIndex, int x, int y) {
+        boolean isLastVisibleLine = lineIndex == Math.min(lines.size() - 1, topDescriptionLine + MAX_DESCRIPTION_LINES) - 1;
+        boolean hasMoreLines = lines.size() - 1 > topDescriptionLine + MAX_DESCRIPTION_LINES;
+        if (isLastVisibleLine && hasMoreLines) {
+            guiGraphics.drawString(font, Component.literal("..."), x, y, 0x181d24, false);
+        } else {
+            guiGraphics.drawString(font, lines.get(lineIndex), x, y, 0x181d24, false);
+        }
     }
 
     private void renderScrollBar(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         int scale = 4;
         guiGraphics.pose().scale(1F/scale, 1F/scale, 1);
-        int x = scale*(leftPos + 106)+1;
-        int y = scale*(topPos + 30);
-        int descriptionLineCount = font.split(Component.literal(activeResearch.value().description()), 2*90).size();
-        if(descriptionLineCount > MAX_DESCRIPTION_LINES) {
-            int barBackgroundLength = MAX_DESCRIPTION_LINES * scale * LINE_HEIGHT;
-            int barLength = Mth.floor((float) barBackgroundLength * (float) MAX_DESCRIPTION_LINES / descriptionLineCount);
-            guiGraphics.fill(x, y, x + 2, y + barBackgroundLength + scale * (LINE_HEIGHT - 2), 0xFFbababa);
-            guiGraphics.fill(x, y + topDescriptionLine * scale, x + 2, y + topDescriptionLine * scale + barLength, 0xFFFFFFFF);
+        int x = scale * (leftPos + 106) + 1;
+        int y = scale * (topPos + 30);
+        int descriptionLineCount = getDescriptionLines().size();
+        if (descriptionLineCount > MAX_DESCRIPTION_LINES) {
+            renderScrollBarBackground(guiGraphics, x, y, scale);
+            renderScrollBarThumb(guiGraphics, x, y, scale, descriptionLineCount);
         }
         guiGraphics.pose().popPose();
+    }
+
+    private void renderScrollBarBackground(GuiGraphics guiGraphics, int x, int y, int scale) {
+        int barBackgroundLength = MAX_DESCRIPTION_LINES * scale * LINE_HEIGHT;
+        guiGraphics.fill(x, y, x + 2, y + barBackgroundLength + scale * (LINE_HEIGHT - 2), 0xFFbababa);
+    }
+
+    private void renderScrollBarThumb(GuiGraphics guiGraphics, int x, int y, int scale, int descriptionLineCount) {
+        int barBackgroundLength = MAX_DESCRIPTION_LINES * scale * LINE_HEIGHT;
+        int barLength = Mth.floor((float) barBackgroundLength * (float) MAX_DESCRIPTION_LINES / descriptionLineCount);
+        int thumbY = y + topDescriptionLine * scale;
+        guiGraphics.fill(x, thumbY, x + 2, thumbY + barLength, 0xFFFFFFFF);
     }
 
     @Override

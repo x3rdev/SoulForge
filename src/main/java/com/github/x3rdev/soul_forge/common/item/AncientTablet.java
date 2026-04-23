@@ -1,10 +1,13 @@
 package com.github.x3rdev.soul_forge.common.item;
 
+import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
+import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import com.github.x3rdev.soul_forge.common.research.WordList;
 import com.github.x3rdev.soul_forge.common.world.AncientTabletCounter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -59,12 +62,9 @@ public class AncientTablet extends Item {
         List<String> epicWords = wordList.epic();
 
         List<String> words = new ArrayList<>();
+        RandomSource random = RandomSource.create(seed);
         // assign words to tablet
-        Random random = new Random(seed);
-        // shifted binomial distribution (produces 3 to 8 words)
-        // words : 0  1  2  3  4  5  6  7  8  9 10
-        // chance: 0  0  0  1  5 10 10  5  1  0  0 (out of 32)
-        int tries = cumulative(5, random.nextInt() % 32) + 3;
+        int tries = getWordCount(seed);
         for (int i = 0; i < tries; i++) {
             float roll = random.nextFloat();
             if(roll < 1/40F) {
@@ -81,21 +81,8 @@ public class AncientTablet extends Item {
         return words;
     }
 
-    private static int cumulative(int n, int i) {
-        int sum = 0;
-        for (int k = 0; k <= i; k++) {
-            sum += combination(n, k);
-            if (i <= sum) return k;
-        }
-        return n;
-    }
-
-    private static int combination(int n, int i) {
-        int nCk = 1;
-        for (int k = 0; k < i; k++) {
-            nCk = nCk * (n - k) / (k + 1);
-        }
-        return nCk;
+    public int getWordCount(int seed) {
+        return (Math.abs(~seed)+seed % (ResearchTableMenu.STONE_COUNT-1))+1;
     }
 
 }

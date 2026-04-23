@@ -95,17 +95,28 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             PacketDistributor.sendToServer(new PickWordPayload(index, this.containerId));
         }
         String stoneWord = getStoneWord(index);
-        Map<ResourceKey<Research>, List<Character>> data = new HashMap<>(player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS));
-        Set<Character> characters = new TreeSet<>(data.getOrDefault(this.research.key(), List.of()));
+        Map<ResourceKey<Research>, List<Character>> discoveredChars =
+                new HashMap<>(player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS));
+        List<Character> characters = new ArrayList<>(discoveredChars.getOrDefault(this.research.key(), Collections.emptyList()));
         for(int i = 0; i < stoneWord.length(); i++) {
-            characters.add(stoneWord.charAt(i));
+            char c = stoneWord.charAt(i);
+            if(!characters.contains(c)) {
+                characters.add(c);
+            }
         }
-        data.put(this.research.key(), characters.stream().toList());
-        player.setData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS, data);
+        discoveredChars.put(this.research.key(), characters);
+        player.setData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS, discoveredChars);
         getTabletStack().shrink(1);
         if(!this.player.level().isClientSide()) {
-            PacketDistributor.sendToPlayer(((ServerPlayer) player), new SendDiscoveredCharsPayload(this.research.key(), player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS)
-                            .getOrDefault(this.research.key(), new ArrayList<>())));
+            ServerPlayer serverPlayer = (ServerPlayer) player;
+
+            List<Character> chars = discoveredChars.getOrDefault(this.research.key(), new ArrayList<>());
+            SendDiscoveredCharsPayload payload = new SendDiscoveredCharsPayload(this.research.key(), chars);
+            PacketDistributor.sendToPlayer(serverPlayer, payload);
+
+            if(isIncantationFullyDiscovered(stoneWord) && !Research.playerHasResearchUnlocked(player, this.research)) {
+                Research.grantResearchToPlayer(serverPlayer, this.research);
+            }
         }
     }
 
@@ -120,7 +131,14 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     public boolean isCharDiscovered(char c) {
-        return player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS).getOrDefault(research.key(), List.of()).contains(c);
+        return player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS).getOrDefault(research.key(), Collections.emptyList()).contains(c);
+    }
+
+    public boolean isIncantationFullyDiscovered(String word) {
+        for (char c : word.toCharArray()) {
+            if (!isCharDiscovered(c)) return false;
+        }
+        return true;
     }
 
     @Override

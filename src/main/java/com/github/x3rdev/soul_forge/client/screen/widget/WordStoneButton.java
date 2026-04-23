@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.client.screen.widget;
 
 import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
+import com.github.x3rdev.soul_forge.common.item.AncientTablet;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -32,8 +33,8 @@ public class WordStoneButton extends AbstractWidget {
             while (wordWidth > 0) {
                 int sub = Math.min(wordWidth, 22);
                 guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX()+2+offset, getY(), 178, 20, sub, 16);
-                wordWidth-=sub;
-                offset+=sub;
+                wordWidth -= sub;
+                offset += sub;
             }
             guiGraphics.blit(ResearchTableScreen.INSPECT_SCREEN_LOCATION, getX()+offset+2, getY(), 200, 20, 2, 16);
             guiGraphics.drawString(screen.getFont(), Component.literal(word), getX()+3, getY()+4, isHovered() ? 0x98caff : 0xbababa, false);
@@ -68,7 +69,8 @@ public class WordStoneButton extends AbstractWidget {
         return super.isActive() &&
                 screen.inspectScreenActive() &&
                 !Research.playerHasResearchUnlocked(Minecraft.getInstance().player, screen.getActiveResearch()) &&
-                !screen.getMenu().getTabletStack().isEmpty();
+                !screen.getMenu().getTabletStack().isEmpty() &&
+                index < ((AncientTablet) screen.getMenu().getTabletStack().getItem()).getWordCount(screen.getMenu().getWordStoneSeed());
     }
 
     @Override

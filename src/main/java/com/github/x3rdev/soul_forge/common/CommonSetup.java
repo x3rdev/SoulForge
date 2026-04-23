@@ -165,8 +165,6 @@ public class CommonSetup {
         level.addFreshEntity(soulEntity);
     }
 
-    private static int inspectProgress = 0;
-
     @SubscribeEvent
     public static void playerTickEvent(PlayerTickEvent.Post event) {
         Player player = event.getEntity();

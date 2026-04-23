@@ -45,6 +45,7 @@ import java.util.*;
 public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
 
     public static final int RITUAL_DURATION = 300;
+    public static final int RITUAL_COMPLETION_CHECK = RITUAL_DURATION - 20;
 
     private enum PedestalOffset {
         NORTH(Vec3i.ZERO.north(3)),
@@ -90,7 +91,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     public static void serverTick(Level level, BlockPos pos, BlockState state, PedestalBlockEntity blockEntity) {
         if(blockEntity.isRitualActive()) {
             blockEntity.incrementRitualTicks();
-            if(blockEntity.getRitualTicks() == RITUAL_DURATION-20) {
+            if(blockEntity.getRitualTicks() == RITUAL_COMPLETION_CHECK) {
                 blockEntity.completeRitual();
                 return;
             }
@@ -98,7 +99,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
                 blockEntity.stopRitual();
                 return;
             }
-            if(blockEntity.getRitualTicks() < RITUAL_DURATION-20 && blockEntity.getRitualTicks() % 3 == 0) {
+            if(blockEntity.getRitualTicks() < RITUAL_COMPLETION_CHECK && blockEntity.getRitualTicks() % 3 == 0) {
                 if (blockEntity.isMasterPedestal()) {
                     Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), blockEntity.buildRitualInput(), level);
                     if (!recipe.isPresent()) {
@@ -157,7 +158,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
             RitualInput input = buildRitualInput();
             Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
             if(recipe.isPresent()) {
-                if(playerHasRitualUnlocked(player, necronomiconStack, recipe.get())) {
+                if(playerHasRitualUnlocked(player, recipe.get())) {
                     startRitual(null, player);
                 } else {
                     level.playSound(null, this.getBlockPos(), SoundEvents.ARMOR_STAND_HIT, SoundSource.BLOCKS);
@@ -183,9 +184,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         return true;
     }
 
-    private boolean playerHasRitualUnlocked(ServerPlayer player, ItemStack necronomiconStack, RecipeHolder<RitualRecipe> recipe) {
+    private boolean playerHasRitualUnlocked(ServerPlayer player, RecipeHolder<RitualRecipe> recipe) {
         return Research.playerHasRitualUnlocked(player, recipe);
-//        return Necronomicon.isRitualUnlocked(player, necronomiconStack, recipe);
     }
 
     private RitualInput buildRitualInput() {

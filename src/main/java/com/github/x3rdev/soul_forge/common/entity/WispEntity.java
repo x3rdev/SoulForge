@@ -26,7 +26,6 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class WispEntity extends AmbientCreature implements GeoEntity, TraceableEntity {
 
@@ -86,10 +85,9 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
         }
     }
 
-    private static Vec3 particleDirection() {
-        Random random = new Random();
-        double pitch = random.nextDouble(Math.PI / -2, Math.PI / 2);
-        double axis = random.nextDouble(Math.TAU);
+    private Vec3 particleDirection() {
+        double pitch = this.random.nextDouble() * Math.PI - Math.PI / 2;
+        double axis = this.random.nextDouble() * Math.TAU;
         return new Vec3(Math.cos(axis) * Math.cos(pitch), Math.sin(axis) * Math.cos(pitch), Math.sin(pitch));
     }
 
