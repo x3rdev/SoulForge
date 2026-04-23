@@ -108,10 +108,13 @@ public class SoulForgeLanguageProvider extends LanguageProvider {
         add("item.soul_forge.soul_container.tooltip.empty", "Contains nothing");
         add("item.soul_forge.ancient_tablet.tooltip", "Tablet ID: %d");
 
-        //Container
+        // Container
         add("container.soul_forge.soul_anvil", "Soul Anvil");
 
-        //Enchantment
+        // Enchantment
         add("enchantment.soul_forge.reaping", "Reaping");
+
+        // Network
+        add("network.soul_forge.update_research_failed", "Failed to update research");
     }
 }

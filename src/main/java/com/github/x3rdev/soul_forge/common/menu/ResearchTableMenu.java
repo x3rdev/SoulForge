@@ -95,9 +95,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     public void pickWord(int index) {
-        if(this.player.level().isClientSide()) {
-            PacketDistributor.sendToServer(new PickWordPayload(index, this.containerId));
-        }
+
         String stoneWord = getStoneWord(index);
         Map<ResourceKey<Research>, List<Character>> discoveredChars =
                 new HashMap<>(player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS));
@@ -112,17 +110,20 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         player.setData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS, discoveredChars);
         hurtOrRemoveTablet();
 
-        if(!this.player.level().isClientSide()) {
+        if(this.player.level().isClientSide()) {
+            PacketDistributor.sendToServer(new PickWordPayload(index, this.containerId));
+        } else {
             ServerPlayer serverPlayer = (ServerPlayer) player;
 
             List<Character> chars = discoveredChars.getOrDefault(this.research.key(), new ArrayList<>());
             SendDiscoveredCharsPayload payload = new SendDiscoveredCharsPayload(this.research.key(), chars);
             PacketDistributor.sendToPlayer(serverPlayer, payload);
 
-            if(this.research.value().incantation().isPresent() &&
-               isIncantationFullyDiscovered(this.research.value().incantation().get().getString()) &&
-               !Research.playerHasResearchUnlocked(player, this.research)) {
-                Research.grantResearchToPlayer(serverPlayer, this.research);
+            if(this.research.value().incantation().isPresent()) {
+                String incantation = this.research.value().incantation().get().getString();
+                if(isIncantationFullyDiscovered(incantation) && !Research.playerHasResearchUnlocked(player, this.research)) {
+                    Research.grantResearchToPlayer(serverPlayer, this.research);
+                }
             }
         }
     }
