@@ -75,6 +75,10 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         return !Research.isEmpty(research);
     }
 
+    public Holder.Reference<Research> getResearch() {
+        return research;
+    }
+
     public ItemStack getTabletStack() {
         return container.getItem(0);
     }

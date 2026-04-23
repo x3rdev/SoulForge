@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
     public static final ResourceLocation INSPECT_SCREEN_LOCATION = ResourceLocation.fromNamespaceAndPath(SoulForge.MOD_ID, "textures/gui/research_table_inspect.png");
@@ -58,7 +59,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         addResearchTreeWidgets(researchTree, 0,0,0, 0);
         this.treeDepth = researchTree.pixelDepth();
         this.treeBreadth = researchTree.pixelBreadth();
-        this.activeResearch = Research.getEmptyResearch(menu.player.registryAccess());
+        this.activeResearch = menu.getResearch();
         addRenderableWidget(new ClickableRitualWidget(leftPos+138, topPos+35, this));
         addRenderableWidget(new ResearchTableBackButton(leftPos+148, topPos+4, this));
         stones = new ArrayList<>();
@@ -143,6 +144,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.pose().pushPose();
+//        guiGraphics.pose().translate(0, 0, -1);
         if(treeScreenActive()) {
             renderTreeScreen(guiGraphics);
         }
@@ -186,8 +188,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderUnlockedResearch(GuiGraphics guiGraphics) {
-        guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 52, 108, 52);
-        guiGraphics.blit(SCROLL_LOCATION, leftPos+123, topPos+17, 0, 104, 46, 52);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(0.5F, 0.5F, 1);
         guiGraphics.drawString(this.font, Component.literal("Unlocks"), 2*(leftPos+136)+1, 2*(topPos+22), 0x181d24, false);
@@ -202,9 +202,10 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     private void renderLockedResearch(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
-        if(activeResearch.value().incantation().isPresent()) {
-            FormattedText incantationText = buildIncantationText(activeResearch.value().incantation().get());
-            guiGraphics.drawWordWrap(this.font, incantationText, leftPos + 16, topPos + 20, 145, 0x181d24);
+        Optional<Component> incantation = activeResearch.value().incantation();
+        if(incantation.isPresent()) {
+            FormattedText incantationText = buildIncantationText(incantation.get());
+            guiGraphics.drawWordWrap(this.font, incantationText, leftPos + 16, topPos + 22, 145, 0x181d24);
         }
         guiGraphics.pose().popPose();
     }
@@ -293,8 +294,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             guiGraphics.blit(TREE_SCREEN_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
             guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + 16, 0, -Mth.floor(anchorX), -Mth.floor(anchorY), DRAGGABLE_WINDOW_WIDTH, DRAGGABLE_WINDOW_HEIGHT, 32, 32);
         }
-        if(inspectScreenActive()){
+        if(inspectScreenActive()) {
             guiGraphics.blit(INSPECT_SCREEN_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+            if(Research.playerHasResearchUnlocked(Minecraft.getInstance().player, getActiveResearch())) {
+                guiGraphics.blit(SCROLL_LOCATION, leftPos+7, topPos+17, 0, 52, 108, 52);
+                guiGraphics.blit(SCROLL_LOCATION, leftPos+123, topPos+17, 0, 104, 46, 52);
+            } else {
+                guiGraphics.blit(SCROLL_LOCATION, leftPos + 7, topPos + 17, 0, 156, 161, 39);
+                guiGraphics.blit(INSPECT_SCREEN_LOCATION, leftPos + 151, topPos + 56, 202, 20, 18, 18);
+            }
         }
     }
 
