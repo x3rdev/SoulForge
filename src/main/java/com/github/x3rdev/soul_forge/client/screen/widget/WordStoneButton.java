@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
 public class WordStoneButton extends AbstractWidget {
 
@@ -50,11 +51,16 @@ public class WordStoneButton extends AbstractWidget {
     }
 
     @Override
-    public void onClick(double mouseX, double mouseY) {
+    public void onClick(double mouseX, double mouseY, int button) {
         if(isActive()) {
-            super.onClick(mouseX, mouseY);
+            super.onClick(mouseX, mouseY, button);
             screen.getMenu().pickWord(this.index);
         }
+    }
+
+    @Override
+    public void onClick(double mouseX, double mouseY) {
+
     }
 
     @Override
@@ -66,11 +72,12 @@ public class WordStoneButton extends AbstractWidget {
 
     @Override
     public boolean isActive() {
+        ItemStack tabletStack = screen.getMenu().getTabletStack();
         return super.isActive() &&
                 screen.inspectScreenActive() &&
                 !Research.playerHasResearchUnlocked(Minecraft.getInstance().player, screen.getActiveResearch()) &&
-                !screen.getMenu().getTabletStack().isEmpty() &&
-                index < ((AncientTablet) screen.getMenu().getTabletStack().getItem()).getWordCount(screen.getMenu().getWordStoneSeed());
+                !tabletStack.isEmpty() &&
+                index < ((AncientTablet) tabletStack.getItem()).getWordCount(tabletStack, screen.getMenu().getWordStoneSeed());
     }
 
     @Override

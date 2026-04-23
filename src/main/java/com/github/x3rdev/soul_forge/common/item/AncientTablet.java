@@ -25,6 +25,7 @@ public class AncientTablet extends Item {
         super(new Item.Properties()
                 .rarity(Rarity.UNCOMMON)
                 .stacksTo(1)
+                .durability(4)
                 .component(DataComponentRegistry.ANCIENT_TABLET_SEED, -1)
         );
     }
@@ -62,9 +63,9 @@ public class AncientTablet extends Item {
         List<String> epicWords = wordList.epic();
 
         List<String> words = new ArrayList<>();
-        RandomSource random = RandomSource.create(seed);
+        RandomSource random = RandomSource.create((long) seed + itemstack.getDamageValue());
         // assign words to tablet
-        int tries = getWordCount(seed);
+        int tries = getWordCount(itemstack, seed);
         for (int i = 0; i < tries; i++) {
             float roll = random.nextFloat();
             if(roll < 1/40F) {
@@ -81,8 +82,8 @@ public class AncientTablet extends Item {
         return words;
     }
 
-    public int getWordCount(int seed) {
-        return (Math.abs(~seed)+seed % (ResearchTableMenu.STONE_COUNT-1))+1;
+    public int getWordCount(ItemStack itemstack, int seed) {
+        return (Math.abs(seed * seed + itemstack.getDamageValue()) % (ResearchTableMenu.STONE_COUNT-1))+1;
     }
 
 }

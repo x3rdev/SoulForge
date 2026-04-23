@@ -224,8 +224,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         guiGraphics.pose().translate(0, -0.5, 0);
         int x = leftPos+16;
         int y = topPos+22;
-        guiGraphics.drawString(font, activeResearch.value().title(), x, y, 0x181d24, false);
+        List<FormattedCharSequence> titleLines = getTitleLines();
+        for(int i = 0; i < titleLines.size(); i++) {
+            guiGraphics.drawString(font, titleLines.get(i), x, y + (i * 9), 0x181d24, false);
+        }
         guiGraphics.pose().popPose();
+    }
+
+    private List<FormattedCharSequence> getTitleLines() {
+        return font.split(Component.literal(activeResearch.value().title()), 90);
     }
 
     private void renderResearchDescription(GuiGraphics guiGraphics) {
@@ -233,7 +240,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         int scale = 2;
         guiGraphics.pose().scale(1F/scale, 1F/scale, 1);
         int x = scale * (leftPos + 16);
-        int y = scale * (topPos + 31);
+        int titleLineCount = getTitleLines().size();
+        int y = scale * (topPos + 31 + (titleLineCount - 1) * 9);
         List<FormattedCharSequence> lines = getDescriptionLines();
         int maxLineIndex = Math.min(lines.size(), topDescriptionLine + MAX_DESCRIPTION_LINES);
         for (int i = topDescriptionLine; i < maxLineIndex; i++) {

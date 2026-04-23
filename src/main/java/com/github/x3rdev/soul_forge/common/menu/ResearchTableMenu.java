@@ -110,7 +110,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
         }
         discoveredChars.put(this.research.key(), characters);
         player.setData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS, discoveredChars);
-        getTabletStack().shrink(1);
+        hurtOrRemoveTablet();
+
         if(!this.player.level().isClientSide()) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
 
@@ -118,9 +119,20 @@ public class ResearchTableMenu extends AbstractContainerMenu {
             SendDiscoveredCharsPayload payload = new SendDiscoveredCharsPayload(this.research.key(), chars);
             PacketDistributor.sendToPlayer(serverPlayer, payload);
 
-            if(isIncantationFullyDiscovered(stoneWord) && !Research.playerHasResearchUnlocked(player, this.research)) {
+            if(this.research.value().incantation().isPresent() &&
+               isIncantationFullyDiscovered(this.research.value().incantation().get().getString()) &&
+               !Research.playerHasResearchUnlocked(player, this.research)) {
                 Research.grantResearchToPlayer(serverPlayer, this.research);
             }
+        }
+    }
+
+    private void hurtOrRemoveTablet() {
+        ItemStack tabletStack = getTabletStack();
+        if(tabletStack.getDamageValue() == tabletStack.getMaxDamage()) {
+            tabletStack.shrink(1);
+        } else {
+            tabletStack.setDamageValue(tabletStack.getDamageValue()+1);
         }
     }
 
