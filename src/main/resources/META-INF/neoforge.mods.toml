@@ -40,3 +40,10 @@ type="optional"
 versionRange="${patchouli_version_range}"
 ordering="NONE"
 side="BOTH"
+[[dependencies.${mod_id}]]
+modId="curios"
+mandatory=false
+type="optional"
+versionRange="${curios_version_range}"
+ordering="NONE"
+side="BOTH"
