@@ -53,29 +53,33 @@ public class SoulMagnet extends Item {
                     }
                 }
             }
+
         }
     }
 
-    private static void tryPickupSoul(Level level, Player player, Soul soul, ItemStack soulContainerStack, Vec3 soulToPlayer) {
+    private static boolean tryPickupSoul(Level level, Player player, Soul soul, ItemStack soulContainerStack, Vec3 soulToPlayer) {
         if(!soul.isRemoved()) {
-            SoulContainer soulContainer = ((SoulContainer) soulContainerStack.getItem());
-            boolean filled = soulContainer.tryFillBottle(soulContainerStack, soul, player);
-            if(filled) {
-                level.playSound(null, soul.getX(), soul.getY(), soul.getZ(), SoundEvents.FOX_TELEPORT, SoundSource.PLAYERS);
-                SendParticlePayload[] payloads = new SendParticlePayload[10];
-                for (int i = 0; i < payloads.length; i++) {
-                    payloads[i] = new SendParticlePayload(ParticleRegistry.SOUL_PARTICLE.get(),
-                            soul.getX()+(level.random.nextFloat()-0.5)*0.3,
-                            soul.getY()+(level.random.nextFloat()-0.5)*0.3,
-                            soul.getZ()+(level.random.nextFloat()-0.5)*0.3,
-                            soulToPlayer.x()+(level.random.nextFloat()-0.5)*0.075,
-                            soulToPlayer.y()+(level.random.nextFloat()-0.5)*0.075,
-                            soulToPlayer.z()+(level.random.nextFloat()-0.5)*0.075
-                    );
-                }
-                PacketDistributor.sendToPlayersTrackingEntity(soul, payloads[0], payloads);
-                soul.remove(Entity.RemovalReason.KILLED);
-            }
+            return false;
         }
+        SoulContainer soulContainer = ((SoulContainer) soulContainerStack.getItem());
+        boolean filled = soulContainer.tryFillBottle(soulContainerStack, soul, player);
+        if(filled) {
+            level.playSound(null, soul.getX(), soul.getY(), soul.getZ(), SoundEvents.FOX_TELEPORT, SoundSource.PLAYERS);
+            SendParticlePayload[] payloads = new SendParticlePayload[10];
+            for (int i = 0; i < payloads.length; i++) {
+                payloads[i] = new SendParticlePayload(ParticleRegistry.SOUL_PARTICLE.get(),
+                        soul.getX()+(level.random.nextFloat()-0.5)*0.3,
+                        soul.getY()+(level.random.nextFloat()-0.5)*0.3,
+                        soul.getZ()+(level.random.nextFloat()-0.5)*0.3,
+                        soulToPlayer.x()+(level.random.nextFloat()-0.5)*0.075,
+                        soulToPlayer.y()+(level.random.nextFloat()-0.5)*0.075,
+                        soulToPlayer.z()+(level.random.nextFloat()-0.5)*0.075
+                );
+            }
+            PacketDistributor.sendToPlayersTrackingEntity(soul, payloads[0], payloads);
+            soul.remove(Entity.RemovalReason.KILLED);
+            return true;
+        }
+        return false;
     }
 }

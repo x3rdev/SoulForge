@@ -103,12 +103,8 @@ public class Soul extends LivingEntity implements GeoEntity {
     }
 
     public SoulType getSoulType() {
-        for (SoulType soulType : SoulType.values()) {
-            if (soulType.toString().equals(entityData.get(DATA_SOUL_TYPE))) {
-                return soulType;
-            }
-        }
-        return SoulType.EMPTY;
+        SoulType soulType = SoulType.getSoulTypeForString(entityData.get(DATA_SOUL_TYPE));
+        return soulType != null ? soulType : SoulType.EMPTY;
     }
 
     public boolean isRenderOnly() {

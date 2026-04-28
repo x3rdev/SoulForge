@@ -204,6 +204,7 @@ public class CommonSetup {
 
     }
 
+    //TODO this needs to be moved into CuriosCompat class
     @SubscribeEvent
     public static void entityAttackEvent(LivingIncomingDamageEvent event) {
         if (isUndead(event.getSource().getEntity()) && event.getEntity() instanceof Player player) {

@@ -42,7 +42,7 @@ public class SoulScytheProjectile extends Projectile implements GeoEntity {
             super.tick();
             level().getEntities(this, this.getBoundingBox().inflate(0.25F)).forEach(entity -> {
                 if (entity != getOwner() && entity.isAttackable()) {
-                    entity.hurt(new DamageTypeRegistry(level().registryAccess()).scythe(this, owner), 8);
+                    entity.hurt(DamageTypeRegistry.scythe(registryAccess(), this, owner), 8);
                 }
             });
             HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
