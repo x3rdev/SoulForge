@@ -1,17 +1,39 @@
 package com.github.x3rdev.soul_forge.common.block_entity;
 
+import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
+import com.github.x3rdev.soul_forge.common.item.Necronomicon;
+import com.github.x3rdev.soul_forge.common.recipe.RitualInput;
+import com.github.x3rdev.soul_forge.common.recipe.RitualRecipe;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
+import com.github.x3rdev.soul_forge.common.registry.BlockRegistry;
+import com.github.x3rdev.soul_forge.common.registry.RecipeTypeRegistry;
+import com.github.x3rdev.soul_forge.common.registry.SoundRegistry;
+import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -21,18 +43,235 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.*;
+
 public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntity, ContainerSingleItem {
-    protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
-    protected static final RawAnimation RITUAL_ANIM = RawAnimation.begin().thenPlay("ritual");
+
+    public static final int RITUAL_DURATION = 300;
+    public static final int RITUAL_COMPLETION_CHECK = RITUAL_DURATION - 20;
+
+    public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
+    public static final RawAnimation RITUAL_ANIM = RawAnimation.begin().thenPlay("ritual");
 
     private final IItemHandler itemHandler = new InvWrapper(this);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    private enum PedestalOffset {
+        NORTH(Vec3i.ZERO.north(3)),
+        NORTH_EAST(Vec3i.ZERO.north(2).east(2)),
+        EAST(Vec3i.ZERO.east(3)),
+        SOUTH_EAST(Vec3i.ZERO.south(2).east(2)),
+        SOUTH(Vec3i.ZERO.south(3)),
+        SOUTH_WEST(Vec3i.ZERO.south(2).west(2)),
+        WEST(Vec3i.ZERO.west(3)),
+        NORTH_WEST(Vec3i.ZERO.north(2).west(2));
+
+        private final Vec3i offset;
+
+        PedestalOffset(Vec3i offset) {
+            this.offset = offset;
+        }
+    }
+
     private ItemStack item;
+    private boolean ritualActive;
+    private int ritualTicks;
+    private @Nullable Player ritualInitiator;
 
     public RitualAltarBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.RITUAL_ALTAR.get(), pos, state);
         this.item = ItemStack.EMPTY;
+        this.ritualActive = false;
+        this.ritualTicks = 0;
+        this.ritualInitiator = null;
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, RitualAltarBlockEntity blockEntity) {
+        if(blockEntity.isRitualActive()) {
+            blockEntity.incrementRitualTicks();
+        }
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, RitualAltarBlockEntity blockEntity) {
+        if(blockEntity.isRitualActive()) {
+            blockEntity.incrementRitualTicks();
+            if(blockEntity.getRitualTicks() == RITUAL_COMPLETION_CHECK) {
+                blockEntity.completeRitual();
+                return;
+            }
+            if(blockEntity.getRitualTicks() > RITUAL_DURATION) {
+                blockEntity.stopRitual();
+                return;
+            }
+            if(blockEntity.getRitualTicks() < RITUAL_DURATION && blockEntity.getRitualTicks() % 3 == 0) {
+                RitualInput input = blockEntity.buildRitualInput();
+                Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, level);
+                if (!recipe.isPresent()) {
+                    level.playSound(null, blockEntity.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
+                    blockEntity.stopRitual();
+                    for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                        level.getBlockEntity(blockEntity.getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).ifPresent(PedestalBlockEntity::stopRitual);
+                    }
+                }
+            }
+
+        }
+    }
+
+    private void completeRitual() {
+        RitualInput input = buildRitualInput();
+        Optional<RecipeHolder<RitualRecipe>> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, level);
+        if(recipe.isPresent()) {
+            Vec3 pos = getBlockPos().getCenter().add(0, 1, 0);
+            ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, recipe.get().value().result());
+            level.addFreshEntity(itemEntity);
+            this.removeTheItem();
+            for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                level.getBlockEntity(getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get()).orElseThrow()
+                        .removeTheItem();
+            }
+            List<SoulCauldronBlockEntity> surroundingStorages = getSurroundingStorages();
+            recipe.get().value().inputSouls().forEach((soulType, integer) -> {
+                int i = integer;
+                while (i > 0) {
+                    for (SoulCauldronBlockEntity blockEntity : surroundingStorages) {
+                        if (blockEntity.getSoulType().equals(soulType) && blockEntity.getSoulCount() > 0) {
+                            blockEntity.setSoulCount(blockEntity.getSoulCount()-1);
+                            i--;
+                        }
+                    }
+                }
+            });
+        } else {
+            SoulForge.LOGGER.warn("ritual ended with no valid recipe");
+        }
+    }
+
+    public void tryStartRitual(ItemStack necronomiconStack, ServerPlayer player) {
+        if(isRitualActive()) {
+            level.playSound(null, this.getBlockPos(), SoundEvents.VILLAGER_NO, SoundSource.BLOCKS);
+            return;
+        }
+        if(isRitualSetupValid()) {
+            RitualInput input = buildRitualInput();
+            Optional<RecipeHolder<RitualRecipe>> recipe = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.RITUAL.get(), input, this.level);
+            if(recipe.isPresent()) {
+                if(Research.playerHasRitualUnlocked(player, recipe.get())) {
+                    startRitual(null, player);
+                } else {
+                    level.playSound(null, this.getBlockPos(), SoundEvents.ARMOR_STAND_HIT, SoundSource.BLOCKS);
+                    Necronomicon.whisper(player, Component.literal("You're knowledge is... insufficient"));
+                }
+            } else {
+                level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS);
+                Necronomicon.whisper(player, Component.literal("These offerings are... inadequate"));
+            }
+        } else {
+            spawnMissingPedestalParticles();
+            Necronomicon.whisper(player, Component.literal("Your ritual setup is... unsatisfactory"));
+        }
+    }
+
+    private boolean isRitualSetupValid() {
+        for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+            BlockState state = this.level.getBlockState(this.getBlockPos().offset(pedestalOffset.offset));
+            if(!state.is(BlockRegistry.PEDESTAL.get())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private RitualInput buildRitualInput() {
+        return new RitualInput(
+                this.getTheItem(),
+                List.of(
+                        getItemOnOtherPedestal(PedestalOffset.NORTH.offset),
+                        getItemOnOtherPedestal(PedestalOffset.EAST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.SOUTH.offset),
+                        getItemOnOtherPedestal(PedestalOffset.WEST.offset)
+                ),
+                List.of(
+                        getItemOnOtherPedestal(PedestalOffset.NORTH_EAST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.SOUTH_EAST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.SOUTH_WEST.offset),
+                        getItemOnOtherPedestal(PedestalOffset.NORTH_WEST.offset)
+                ),
+                getAvailableSouls()
+        );
+    }
+
+    private ItemStack getItemOnOtherPedestal(Vec3i offset) {
+        Optional<PedestalBlockEntity> blockEntity = this.level.getBlockEntity(this.getBlockPos().offset(offset), BlockEntityRegistry.PEDESTAL.get());
+        if(blockEntity.isPresent()) {
+            return blockEntity.get().getTheItem();
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private Map<SoulType, Integer> getAvailableSouls() {
+        Map<SoulType, Integer> availableSouls = new EnumMap<>(SoulType.class);
+        getSurroundingStorages().forEach(blockEntity -> availableSouls.merge(blockEntity.getSoulType(), blockEntity.getSoulCount(), Integer::sum));
+        return availableSouls;
+    }
+
+    private List<SoulCauldronBlockEntity> getSurroundingStorages() {
+        List<SoulCauldronBlockEntity> list = new ArrayList<>();
+        ChunkPos pos = new ChunkPos(getBlockPos());
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                this.level.getChunk(pos.x+i, pos.z+j).getBlockEntities().values().forEach(blockEntity -> {
+                    if(blockEntity instanceof SoulCauldronBlockEntity soulStorage) {
+                        list.add(soulStorage);
+                    }
+                });
+            }
+        }
+        return list;
+    }
+
+    private void spawnMissingPedestalParticles() {
+        for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+            BlockPos pos = this.getBlockPos().offset(pedestalOffset.offset);
+            BlockState state = this.level.getBlockState(pos);
+            if(!state.is(BlockRegistry.PEDESTAL.get())) {
+                ((ServerLevel) this.level).sendParticles(ParticleTypes.SMOKE,
+                        pos.getCenter().x, pos.getCenter().y, pos.getCenter().z,
+                        10, 0, 0, 0, 0.05);
+            }
+        }
+    }
+
+    public void startRitual(BlockPos ritualParentPos, Player player) {
+        this.ritualActive = true;
+        if(ritualParentPos == null) {
+            level.playSound(null, getBlockPos(), SoundRegistry.RITUAL.get(), SoundSource.BLOCKS);
+            for (PedestalOffset pedestalOffset : PedestalOffset.values()) {
+                Optional<PedestalBlockEntity> blockEntity = level.getBlockEntity(getBlockPos().offset(pedestalOffset.offset), BlockEntityRegistry.PEDESTAL.get());
+                blockEntity.orElseThrow().startRitual(getBlockPos());
+            }
+        }
+        this.ritualInitiator = player;
+        this.setChanged();
+    }
+
+    public void stopRitual() {
+        this.ritualActive = false;
+        this.ritualTicks = 0;
+        this.ritualInitiator = null;
+        this.setChanged();
+    }
+
+    public boolean isRitualActive() {
+        return this.ritualActive;
+    }
+
+    public int getRitualTicks() {
+        return this.ritualTicks;
+    }
+
+    public void incrementRitualTicks() {
+        ritualTicks++;
     }
 
     @Override
@@ -43,6 +282,15 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
         } else {
             this.item = ItemStack.EMPTY;
         }
+        if(tag.get("ritualActive") != null) {
+            this.ritualActive = tag.getBoolean("ritualActive");
+        }
+        if(tag.get("ritualTicks") != null) {
+            this.ritualTicks = tag.getInt("ritualTicks");
+        }
+        if(tag.get("ritualInitiator") != null) {
+            this.ritualInitiator = this.level.getPlayerByUUID(tag.getUUID("ritualInitiator"));
+        }
     }
 
     @Override
@@ -50,6 +298,11 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
         super.saveAdditional(tag, registries);
         if(!item.isEmpty()) {
             tag.put("item", item.save(registries));
+        }
+        tag.putBoolean("ritualActive", ritualActive);
+        tag.putInt("ritualTicks", ritualTicks);
+        if(ritualInitiator != null) {
+            tag.putUUID("ritualInitiator", ritualInitiator.getUUID());
         }
     }
 
@@ -80,10 +333,9 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
         return this.getItem(slot).isEmpty() && stack.getCount() == 1;
     }
 
-    //TODO make this method return false during ritual
     @Override
     public boolean canTakeItem(Container target, int slot, ItemStack stack) {
-        return true;
+        return !isRitualActive();
     }
 
     @Nullable

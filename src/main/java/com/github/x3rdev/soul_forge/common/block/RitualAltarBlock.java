@@ -4,6 +4,7 @@ import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
 import com.github.x3rdev.soul_forge.common.block_entity.RitualAltarBlockEntity;
 import com.github.x3rdev.soul_forge.common.item.Necronomicon;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -15,17 +16,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import java.util.stream.Stream;
+import org.jetbrains.annotations.Nullable;
 
 public class RitualAltarBlock extends Block implements EntityBlock {
 
@@ -33,6 +33,22 @@ public class RitualAltarBlock extends Block implements EntityBlock {
 
     public RitualAltarBlock(Properties properties) {
         super(properties);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return level.isClientSide() ? new BlockEntityTicker<T>() {
+            @Override
+            public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
+                RitualAltarBlockEntity.clientTick(level, pos, state, (RitualAltarBlockEntity) blockEntity);
+            }
+        } : new BlockEntityTicker<T>() {
+            @Override
+            public void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
+                RitualAltarBlockEntity.serverTick(level, pos, state, (RitualAltarBlockEntity) blockEntity);
+            }
+        };
     }
 
     @Override
@@ -96,7 +112,7 @@ public class RitualAltarBlock extends Block implements EntityBlock {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock())) {
-            PedestalBlockEntity blockEntity = level.getBlockEntity(pos, BlockEntityRegistry.PEDESTAL.get()).orElseThrow();
+            RitualAltarBlockEntity blockEntity = level.getBlockEntity(pos, BlockEntityRegistry.RITUAL_ALTAR.get()).orElseThrow();
             if (!level.isClientSide()) {
                 ItemStack itemstack = blockEntity.getTheItem();
                 if (!itemstack.isEmpty()) {

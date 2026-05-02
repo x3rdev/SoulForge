@@ -53,8 +53,6 @@ public class SoulForgePlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         SoulForgePlugin.jeiRuntime = jeiRuntime;
-        List<RecipeHolder<RitualRecipe>> list = jeiRuntime.getRecipeManager().createRecipeLookup(RITUAL_RECIPE_TYPE.get()).get().toList();
-        System.out.println(list);
     }
 
     @Override
@@ -87,6 +85,7 @@ public class SoulForgePlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalysts(
                 RITUAL_RECIPE_TYPE.get(),
+                BlockItemRegistry.RITUAL_ALTAR.get(),
                 BlockItemRegistry.PEDESTAL.get(),
                 BlockItemRegistry.SOUL_CAULDRON.get()
         );

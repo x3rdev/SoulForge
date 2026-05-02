@@ -64,9 +64,6 @@ public class PedestalBlock extends Block implements EntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         PedestalBlockEntity blockEntity = level.getBlockEntity(pos, BlockEntityRegistry.PEDESTAL.get()).orElseThrow();
-        if(stack.getItem() instanceof Necronomicon) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
-        }
         if(!blockEntity.getTheItem().isEmpty()) {
             this.takeItemFromPedestal(blockEntity, level, pos, player);
         } else {

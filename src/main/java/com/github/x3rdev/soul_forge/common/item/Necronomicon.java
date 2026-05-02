@@ -2,6 +2,7 @@ package com.github.x3rdev.soul_forge.common.item;
 
 import com.github.x3rdev.soul_forge.client.renderer.item.NecronomiconRenderer;
 import com.github.x3rdev.soul_forge.common.block_entity.PedestalBlockEntity;
+import com.github.x3rdev.soul_forge.common.block_entity.RitualAltarBlockEntity;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.PatchouliCompat;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
@@ -74,7 +75,7 @@ public class Necronomicon extends Item implements GeoItem {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
-        Optional<PedestalBlockEntity> blockEntity = level.getBlockEntity(blockpos, BlockEntityRegistry.PEDESTAL.get());
+        Optional<RitualAltarBlockEntity> blockEntity = level.getBlockEntity(blockpos, BlockEntityRegistry.RITUAL_ALTAR.get());
         if(blockEntity.isPresent()) {
             if(!level.isClientSide()) {
                 blockEntity.get().tryStartRitual(context.getItemInHand(), ((ServerPlayer) context.getPlayer()));
