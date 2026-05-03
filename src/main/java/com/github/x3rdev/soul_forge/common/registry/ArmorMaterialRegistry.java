@@ -53,4 +53,17 @@ public class ArmorMaterialRegistry {
                     0.2F
             ));
 
+    public static final Holder<ArmorMaterial> SOUL_STEEL_WINGS = ARMOR_MATERIALS.register("soul_steel_wings",
+            () -> new ArmorMaterial(
+                    Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                        map.put(ArmorItem.Type.CHESTPLATE, 1);
+                    }),
+                    1,
+                    SoundEvents.ARMOR_EQUIP_CHAIN,
+                    () -> Ingredient.of(ItemRegistry.SOUL_STEEL_INGOT.get()),
+                    List.of(),
+                    0.0F,
+                    0.0F
+            ));
+
 }

@@ -10,7 +10,7 @@ import com.github.x3rdev.soul_forge.common.entity.WispEntity;
 import com.github.x3rdev.soul_forge.common.entity.nergal.Nergal;
 import com.github.x3rdev.soul_forge.common.item.OccultNecklace;
 import com.github.x3rdev.soul_forge.common.item.Scythe;
-import com.github.x3rdev.soul_forge.common.item.WingItem;
+import com.github.x3rdev.soul_forge.common.item.SoulSteelWings;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.packet.SendResearchDataPayload;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
@@ -249,7 +249,7 @@ public class CommonSetup {
     @SubscribeEvent
     public static void entityFallEvent(LivingFallEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.getInventory().getArmor(2).getItem() instanceof WingItem item) {
+            if (player.getInventory().getArmor(2).getItem() instanceof SoulSteelWings item) {
                 /* need to send packet to server containing player velocity
                 double velocity = player.getDeltaMovement().y;
                 System.out.println(event.getDistance());

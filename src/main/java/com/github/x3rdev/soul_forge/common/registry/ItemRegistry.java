@@ -95,16 +95,7 @@ public class ItemRegistry {
     public static final DeferredHolder<Item, Item> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking",
             () -> new WandOfSparking(new Item.Properties().stacksTo(1)));
     public static final DeferredHolder<Item, Item> BASIC_WINGS = ITEMS.register("wings",
-            () -> new WingItem(new Item.Properties().stacksTo(1), 0.16f,
-                    (player, item) -> {
-                        Vec3 lookingAt = player.getLookAngle().scale(item.acceleration * 0.5);
-                        return new Vec3(
-                                player.getDeltaMovement().x + lookingAt.x,
-                                player.getDeltaMovement().y + item.acceleration * 0.5 + lookingAt.y,
-                                player.getDeltaMovement().z +  lookingAt.z
-                        );
-                    }
-            ));
+            () -> new SoulSteelWings(new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> DEBUG_RESEARCH_UNLEARNER = ITEMS.register("debug_research_unlearner",
             DebugResearchUnlearner::new);

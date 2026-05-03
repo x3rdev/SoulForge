@@ -10,7 +10,7 @@ import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.client.screen.SoulAnvilScreen;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.compat.curios.CuriosCompat;
-import com.github.x3rdev.soul_forge.common.item.WingItem;
+import com.github.x3rdev.soul_forge.common.item.SoulSteelWings;
 import com.github.x3rdev.soul_forge.common.registry.BlockEntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.EntityRegistry;
 import com.github.x3rdev.soul_forge.common.registry.MenuTypeRegistry;
@@ -119,8 +119,8 @@ public class ClientSetup {
     public static void clientTickEvent(ClientTickEvent.Post event) {
         if (KeyMappings.KEY_FLY.get().isDown()) {
             LocalPlayer player = Minecraft.getInstance().player;
-            if (player != null && player.getInventory().getArmor(2 /* chest */).getItem() instanceof WingItem item && !player.isFallFlying()) {
-                player.setDeltaMovement(item.getBehavior(player, item));
+            if (player != null && player.getInventory().getArmor(2 /* chest */).getItem() instanceof SoulSteelWings item && !player.isFallFlying()) {
+//                player.setDeltaMovement(item.getBehavior(player, item));
             }
         }
     }
