@@ -83,6 +83,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
             level().addParticle(ParticleRegistry.SOUL_PARTICLE.get(),
                     this.getX(), this.getY() + 0.5 * this.getBbHeight(), this.getZ(), velocity.x, velocity.y, velocity.z);
         }
+
     }
 
     private Vec3 particleDirection() {
@@ -119,7 +120,7 @@ public class WispEntity extends AmbientCreature implements GeoEntity, TraceableE
     }
 
     private Vec3 targetPosition() {
-        return getOwner().position().add(new Vec3(0.5, 2, -0.5).yRot((float) -Math.toRadians(getOwner().yBodyRot)));
+        return getOwner().position().add(new Vec3(0.5, 2, 0.5).yRot((float) -Math.toRadians(getOwner().yBodyRot)));
     }
 
     @Nullable

@@ -24,7 +24,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Zoglin;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -65,6 +67,7 @@ public class CommonSetup {
                 BlockEntityRegistry.RITUAL_ALTAR.get(),
                 (blockEntity, direction) -> blockEntity.getItemHandler()
         );
+
         if(ModCompatibility.curiosModPresent()) {
             CuriosCompat.registerCapabilities(event);
         }

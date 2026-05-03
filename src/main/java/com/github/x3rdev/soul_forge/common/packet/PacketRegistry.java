@@ -2,16 +2,10 @@ package com.github.x3rdev.soul_forge.common.packet;
 
 import com.github.x3rdev.soul_forge.common.packet.handler.ClientPayloadHandler;
 import com.github.x3rdev.soul_forge.common.packet.handler.ServerPayloadHandler;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.neoforged.neoforge.network.handling.IPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class PacketRegistry {
 
@@ -61,11 +55,11 @@ public class PacketRegistry {
                 )
         );
         registrar.playToServer(
-                UpdateUnlockedResearchPayload.TYPE,
-                UpdateUnlockedResearchPayload.STREAM_CODEC,
+                UpdateActiveResearchPayload.TYPE,
+                UpdateActiveResearchPayload.STREAM_CODEC,
                 new DirectionalPayloadHandler<>(
                         (payload, context) -> {},
-                        ServerPayloadHandler::handleUpdateResearch
+                        ServerPayloadHandler::handleUpdateActiveResearch
                 )
         );
     }

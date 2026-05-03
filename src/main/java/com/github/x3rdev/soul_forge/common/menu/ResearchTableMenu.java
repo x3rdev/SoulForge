@@ -3,7 +3,7 @@ package com.github.x3rdev.soul_forge.common.menu;
 import com.github.x3rdev.soul_forge.common.item.AncientTablet;
 import com.github.x3rdev.soul_forge.common.packet.PickWordPayload;
 import com.github.x3rdev.soul_forge.common.packet.SendDiscoveredCharsPayload;
-import com.github.x3rdev.soul_forge.common.packet.UpdateUnlockedResearchPayload;
+import com.github.x3rdev.soul_forge.common.packet.UpdateActiveResearchPayload;
 import com.github.x3rdev.soul_forge.common.registry.*;
 import com.github.x3rdev.soul_forge.common.research.Research;
 import net.minecraft.core.Holder;
@@ -86,7 +86,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     public void setActiveResearch(Holder.Reference<Research> research) {
         if(this.player.level().isClientSide()) {
             PacketDistributor.sendToServer(
-                    new UpdateUnlockedResearchPayload(research.key(), this.containerId));
+                    new UpdateActiveResearchPayload(research.key(), this.containerId));
         } else {
             PacketDistributor.sendToPlayer((ServerPlayer) this.player,
                     new SendDiscoveredCharsPayload(research.getKey(), this.player.getData(DataAttachmentRegistry.RESEARCH_DISCOVERED_CHARS).getOrDefault(research.key(), new ArrayList<>())));

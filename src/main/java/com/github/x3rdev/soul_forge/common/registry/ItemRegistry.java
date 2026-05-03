@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
 import com.github.x3rdev.soul_forge.SoulForge;
+import com.github.x3rdev.soul_forge.common.entity.SoulType;
 import com.github.x3rdev.soul_forge.common.item.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -116,11 +117,16 @@ public class ItemRegistry {
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SoulForge.MOD_ID);
 
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOUL_FORGE_ITEM_TAB = CREATIVE_MODE_TABS.register("main", () -> CreativeModeTab.builder()
-                .icon(Items.NAME_TAG::getDefaultInstance)
+                .icon(ItemRegistry.NECRONOMICON.get()::getDefaultInstance)
                 .title(Component.translatable("itemGroup." + SoulForge.MOD_ID))
                 .displayItems((displayParameters, output) -> {
                     ItemRegistry.ITEMS.getEntries().forEach(itemRegistryObject -> output.accept(itemRegistryObject.get()));
                     BlockItemRegistry.BLOCK_ITEMS.getEntries().forEach(itemRegistryObject -> output.accept(itemRegistryObject.get()));
+                    ItemStack stack = ItemRegistry.LARGE_SOUL_BOTTLE.get().getDefaultInstance();
+                    SoulContainer soulContainer = ((SoulContainer) stack.getItem());
+                    soulContainer.setSoulType(stack, SoulType.SOUL);
+                    soulContainer.setSoulCount(stack, 20);
+                    output.accept(stack);
                 })
                 .build());
     }

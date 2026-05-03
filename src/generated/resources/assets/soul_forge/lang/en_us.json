@@ -78,5 +78,6 @@
   "item.soul_forge.wings": "Basic Wings",
   "item.soul_forge.wisp_amulet": "Wisp Amulet",
   "item.soul_forge.wooden_scythe": "Wooden Scythe",
-  "itemGroup.soul_forge": "Soul Forge"
+  "itemGroup.soul_forge": "Soul Forge",
+  "network.soul_forge.update_research_failed": "Failed to update research"
 }

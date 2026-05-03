@@ -1,9 +1,10 @@
 package com.github.x3rdev.soul_forge.common.registry;
 
+
 import com.github.x3rdev.soul_forge.SoulForge;
 import com.github.x3rdev.soul_forge.common.research.Research;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -32,6 +33,12 @@ public class DataAttachmentRegistry {
                             Codec.list(Codec.sizeLimitedString(1).xmap(string -> string.charAt(0), Object::toString))
                     ))
                     .copyOnDeath()
+                    .build()
+    );
+
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Set<BlockPos>>> INCANTATION_RECEIVER = DATA_ATTACHMENT_TYPES.register(
+            "incantation_receiver", () -> AttachmentType.builder(() -> Set.<BlockPos>of())
+                    // no copying/serializing. if user dies/disconnects we invalidate their incantation
                     .build()
     );
 }

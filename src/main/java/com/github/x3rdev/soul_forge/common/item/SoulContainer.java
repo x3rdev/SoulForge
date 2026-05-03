@@ -135,7 +135,7 @@ public class SoulContainer extends Item {
         return false;
     }
 
-    private void setSoulType(ItemStack stack, SoulType soulType) {
+    public void setSoulType(ItemStack stack, SoulType soulType) {
         stack.set(DataComponentRegistry.STORED_SOUL_TYPE, soulType);
     }
 
@@ -143,7 +143,7 @@ public class SoulContainer extends Item {
         return stack.get(DataComponentRegistry.STORED_SOUL_TYPE);
     }
 
-    private void setSoulCount(ItemStack stack, int soulCount) {
+    public void setSoulCount(ItemStack stack, int soulCount) {
         if(soulCount == 0) {
             setSoulType(stack, SoulType.EMPTY);
         }

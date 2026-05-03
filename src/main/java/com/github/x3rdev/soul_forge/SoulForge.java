@@ -1,6 +1,7 @@
 package com.github.x3rdev.soul_forge;
 
 import com.github.x3rdev.soul_forge.common.CommonSetup;
+import com.github.x3rdev.soul_forge.common.block_entity.RitualAltarBlockEntity;
 import com.github.x3rdev.soul_forge.common.compat.ModCompatibility;
 import com.github.x3rdev.soul_forge.common.packet.PacketRegistry;
 import com.github.x3rdev.soul_forge.common.registry.*;
@@ -55,6 +56,7 @@ public class SoulForge {
         neoEventBus.addListener(CommonSetup::entityAttackEvent);
         modEventBus.addListener(WordList::registerDataMapTypes);
         neoEventBus.addListener(CommonSetup::entityFallEvent);
+        neoEventBus.addListener(RitualAltarBlockEntity::chatEvent);
 
         ModCompatibility.init();
     }

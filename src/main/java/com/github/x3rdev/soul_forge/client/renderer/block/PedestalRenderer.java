@@ -64,7 +64,7 @@ public class PedestalRenderer extends GeoBlockRenderer<PedestalBlockEntity> {
             Vec3 pedestalToPlayer = animatable.getBlockPos().getCenter().vectorTo(Minecraft.getInstance().player.position());
             poseStack.mulPose(Axis.YP.rotation((float) Mth.atan2(pedestalToPlayer.x, pedestalToPlayer.z)));
         } else {
-            poseStack.translate(0.5, 1.0 + 0.25 * Mth.sin((float) (RenderUtil.getCurrentTick() * 0.1F)), 0.5);
+            poseStack.translate(0.5, 1.125 + 0.125 * Mth.sin((float) (RenderUtil.getCurrentTick() * 0.1F)), 0.5);
             poseStack.scale(1.1F, 1.1F, 1.1F);
             poseStack.mulPose(Axis.YP.rotationDegrees((float) RenderUtil.getCurrentTick()));
         }
