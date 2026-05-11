@@ -12,6 +12,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.ContainerSingleItem;
@@ -78,6 +79,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         this.ritualTicks = 0;
         this.ritualParentPos = ritualParentPos;
         this.setChanged();
+        this.syncToClients();
     }
 
     public void stopRitual() {
@@ -85,6 +87,7 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         this.ritualTicks = 0;
         this.ritualParentPos = null;
         this.setChanged();
+        this.syncToClients();
     }
 
     public int getRitualTicks() {
@@ -144,12 +147,14 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
     public void setTheItem(ItemStack item) {
         this.item = item;
         this.setChanged();
+        this.syncToClients();
     }
 
     @Override
     public ItemStack removeTheItem() {
         ItemStack copy = getTheItem().copyAndClear();
         setChanged();
+        syncToClients();
         return copy;
     }
 
@@ -179,10 +184,8 @@ public class PedestalBlockEntity extends BlockEntity implements GeoBlockEntity, 
         return Container.stillValidBlockEntity(this, player);
     }
 
-    @Override
-    public void setChanged() {
-        super.setChanged();
-        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    private void syncToClients() {
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     // client code start

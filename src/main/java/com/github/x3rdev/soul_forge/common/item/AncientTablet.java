@@ -1,6 +1,5 @@
 package com.github.x3rdev.soul_forge.common.item;
 
-import com.github.x3rdev.soul_forge.client.screen.ResearchTableScreen;
 import com.github.x3rdev.soul_forge.common.menu.ResearchTableMenu;
 import com.github.x3rdev.soul_forge.common.registry.DataComponentRegistry;
 import com.github.x3rdev.soul_forge.common.research.WordList;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class AncientTablet extends Item {
 
@@ -57,10 +55,10 @@ public class AncientTablet extends Item {
     public List<String> getTabletWordList(ItemStack itemstack, int seed) {
         // set word list for new tablet
         WordList wordList = itemstack.getItem().builtInRegistryHolder().getData(WordList.DATA_MAP_TYPE);
-        List<String> commonWords = wordList.common();
-        List<String> uncommonWords = wordList.uncommon();
-        List<String> rareWords = wordList.rare();
-        List<String> epicWords = wordList.epic();
+        List<String> commonWords = wordList.commonWords();
+        List<String> uncommonWords = wordList.uncommonWords();
+        List<String> rareWords = wordList.rareWords();
+        List<String> epicWords = wordList.epicWords();
 
         List<String> words = new ArrayList<>();
         RandomSource random = RandomSource.create((long) seed + itemstack.getDamageValue());

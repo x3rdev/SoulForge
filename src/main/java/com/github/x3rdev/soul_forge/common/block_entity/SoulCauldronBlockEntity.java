@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +41,7 @@ public class SoulCauldronBlockEntity extends BlockEntity implements GeoBlockEnti
     public void setSoulType(SoulType soulType) {
         this.soulType = soulType;
         this.setChanged();
+        this.syncToClients();
     }
 
     public int getSoulCount() {
@@ -52,6 +54,7 @@ public class SoulCauldronBlockEntity extends BlockEntity implements GeoBlockEnti
         }
         this.soulCount = soulCount;
         this.setChanged();
+        this.syncToClients();
     }
 
     public int getContainedSoulColor() {
@@ -87,10 +90,8 @@ public class SoulCauldronBlockEntity extends BlockEntity implements GeoBlockEnti
         return saveCustomOnly(registries);
     }
 
-    @Override
-    public void setChanged() {
-        super.setChanged();
-        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+    private void syncToClients() {
+        level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     @Override

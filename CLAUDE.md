@@ -320,3 +320,7 @@ Currently no automated tests. Manual testing:
 - **Curios API:** Accessory slots for trinkets
 
 Compatibility code lives in `common/compat/` with conditional loading checks.
+
+## Notes & TODOs
+
+When noting something to come back to — a bug, a missing feature, a design decision — add it to the **TODO section in `README.md`** under the appropriate category. Do not leave standalone TODO comments in code for things that require broader context; put them in the README where they are visible and tracked.

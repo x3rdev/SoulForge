@@ -25,18 +25,18 @@ public class SoulForgeDataMapProvider extends DataMapProvider {
     protected void gather() {
 //        Currently this is hardcoded because it was easier for me
 
-//        List<String> common = new ArrayList<>();
-//        List<String> uncommon = new ArrayList<>();
-//        List<String> rare = new ArrayList<>();
-//        List<String> epic = new ArrayList<>();
+//        List<String> commonWords = new ArrayList<>();
+//        List<String> uncommonWords = new ArrayList<>();
+//        List<String> rareWords = new ArrayList<>();
+//        List<String> epicWords = new ArrayList<>();
 //        // placeholders
-//        common.add("narg");
-//        common.add("it's morbin' time");
-//        uncommon.add("yee");
-//        rare.add("doohickey");
-//        epic.add("eBic");
+//        commonWords.add("narg");
+//        commonWords.add("it's morbin' time");
+//        uncommonWords.add("yee");
+//        rareWords.add("doohickey");
+//        epicWords.add("eBic");
 //
 //        this.builder(WordList.DATA_MAP_TYPE)
-//                .add(ItemRegistry.ANCIENT_TABLET, new WordList(common, uncommon, rare, epic), false);
+//                .add(ItemRegistry.ANCIENT_TABLET, new WordList(commonWords, uncommonWords, rareWords, epicWords), false);
     }
 }

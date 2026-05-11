@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -147,6 +148,7 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
                     }
                 }
             });
+            this.syncToClients();
         } else {
             SoulForge.LOGGER.warn("ritual ended with no valid recipe");
         }
@@ -313,6 +315,7 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
         }
         this.ritualInitiator = player;
         this.setChanged();
+        this.syncToClients();
     }
 
     public void stopRitual() {
@@ -321,6 +324,7 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
         this.ritualTicks = 0;
         this.ritualInitiator = null;
         this.setChanged();
+        this.syncToClients();
     }
 
     public boolean isRitualActive() {
@@ -380,12 +384,14 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
     public void setTheItem(ItemStack item) {
         this.item = item;
         this.setChanged();
+        this.syncToClients();
     }
 
     @Override
     public ItemStack removeTheItem() {
         ItemStack copy = getTheItem().copyAndClear();
         setChanged();
+        syncToClients();
         return copy;
     }
 
@@ -415,10 +421,8 @@ public class RitualAltarBlockEntity extends BlockEntity implements GeoBlockEntit
         return Container.stillValidBlockEntity(this, player);
     }
 
-    @Override
-    public void setChanged() {
-        super.setChanged();
-        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    private void syncToClients() {
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     //client code start

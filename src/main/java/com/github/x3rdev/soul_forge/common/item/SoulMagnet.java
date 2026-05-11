@@ -58,7 +58,7 @@ public class SoulMagnet extends Item {
     }
 
     private static boolean tryPickupSoul(Level level, Player player, Soul soul, ItemStack soulContainerStack, Vec3 soulToPlayer) {
-        if(!soul.isRemoved()) {
+        if(soul.isRemoved()) {
             return false;
         }
         SoulContainer soulContainer = ((SoulContainer) soulContainerStack.getItem());

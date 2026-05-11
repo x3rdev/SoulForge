@@ -13,13 +13,13 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
 import java.util.List;
 
-public record WordList(List<String> common, List<String> uncommon, List<String> rare, List<String> epic) {
+public record WordList(List<String> commonWords, List<String> uncommonWords, List<String> rareWords, List<String> epicWords) {
     public static final Codec<WordList> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    Codec.list(Codec.STRING).fieldOf("common").forGetter(WordList::common),
-                    Codec.list(Codec.STRING).fieldOf("uncommon").forGetter(WordList::uncommon),
-                    Codec.list(Codec.STRING).fieldOf("rare").forGetter(WordList::rare),
-                    Codec.list(Codec.STRING).fieldOf("epic").forGetter(WordList::epic)
+                    Codec.list(Codec.STRING).fieldOf("commonWords").forGetter(WordList::commonWords),
+                    Codec.list(Codec.STRING).fieldOf("uncommonWords").forGetter(WordList::uncommonWords),
+                    Codec.list(Codec.STRING).fieldOf("rareWords").forGetter(WordList::rareWords),
+                    Codec.list(Codec.STRING).fieldOf("epicWords").forGetter(WordList::epicWords)
             ).apply(instance, WordList::new)
     );
 
@@ -39,20 +39,20 @@ public record WordList(List<String> common, List<String> uncommon, List<String> 
     public String toString() {
         StringBuilder s = new StringBuilder();
         s.append("Common: [");
-        stringFrom(s, common);
+        stringFrom(s, commonWords);
         s.append("Uncommon: [");
-        stringFrom(s, uncommon);
+        stringFrom(s, uncommonWords);
         s.append("Rare: [");
-        stringFrom(s, rare);
+        stringFrom(s, rareWords);
         s.append("Epic: [");
-        stringFrom(s, epic);
+        stringFrom(s, epicWords);
         return s.toString();
     }
 
-    private void stringFrom(StringBuilder s, List<String> uncommon) {
-        for (int i = 0; i < uncommon.size(); i++) {
-            s.append(uncommon.get(i));
-            if (i == uncommon.size() - 1) {
+    private void stringFrom(StringBuilder s, List<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            s.append(list.get(i));
+            if (i == list.size() - 1) {
                 s.append("]\n");
                 break;
             }

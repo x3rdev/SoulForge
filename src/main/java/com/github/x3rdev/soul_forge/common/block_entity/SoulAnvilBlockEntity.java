@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -77,14 +78,16 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
                     level.addFreshEntity(entity);
                     blockEntity.stopTriggeredAnim("c", "forging");
                     blockEntity.setActiveRecipe(null);
+                    blockEntity.setChanged();
+                    blockEntity.syncToClients();
+                } else {
+                    blockEntity.setChanged();
                 }
-                blockEntity.setChanged();
-                blockEntity.getLevel().sendBlockUpdated(pos, state, state, 3);
             } else {
                 blockEntity.setActiveRecipe(null);
-                blockEntity.setChanged();
-                blockEntity.getLevel().sendBlockUpdated(pos, state, state, 3);
                 blockEntity.stopTriggeredAnim("c", "forging");
+                blockEntity.setChanged();
+                blockEntity.syncToClients();
             }
         } else {
             blockEntity.progressTicks = 0;
@@ -103,8 +106,16 @@ public class SoulAnvilBlockEntity extends BaseContainerBlockEntity implements Ge
                 CraftingInput.of(3, 3, IntStream.range(0, 9).mapToObj(this::getItem).toList()),
                 IntStream.range(9, 13).mapToObj(this::getItem).toList());
         Optional<RecipeHolder<SoulAnvilRecipe>> holderOptional = this.level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.SOUL_ANVIL.get(), input, this.level);
-        holderOptional.ifPresent(soulAnvilRecipeRecipeHolder -> setActiveRecipe(soulAnvilRecipeRecipeHolder.value()));
+        holderOptional.ifPresent(soulAnvilRecipeRecipeHolder -> {
+            setActiveRecipe(soulAnvilRecipeRecipeHolder.value());
+            setChanged();
+            syncToClients();
+        });
         this.triggerAnim("c", "forging");
+    }
+
+    private void syncToClients() {
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), Block.UPDATE_CLIENTS);
     }
 
     private Optional<SoulAnvilRecipe> getActiveRecipe() {
